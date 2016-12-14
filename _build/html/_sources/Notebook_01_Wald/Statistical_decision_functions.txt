@@ -940,12 +940,12 @@ over actions and over losses.
   B_OLS = pd.DataFrame(B_OLS, columns=["$\\beta_0$", "$\\beta_1$"])
   B_bayes = pd.DataFrame(B_bayes, columns=["$\\beta_0$", "$\\beta_1$"])
   
-  g1 = sns.jointplot(x = "$\\beta_0$", y = "$\\beta_1$", data=B_OLS, kind="kde", space=0.3, color = sns.color_palette()[0], size=7)
+  g1 = sns.jointplot(x = "$\\beta_0$", y = "$\\beta_1$", data=B_OLS, kind="kde", space=0.3, color = sns.color_palette()[0], size=7, , xlim = (-1, 2), ylim = (-.2, .4))
   g1.ax_joint.plot([mu[0] - sigma[0,1]/sigma[1,1]*mu[1]],[sigma[0,1]/sigma[1,1]], 'ro', color='r', label='best in class')
   g1.set_axis_labels(r'$\beta_0$', r'$\beta_1$', fontsize=18)
   g1.fig.suptitle('Distribution over the action space -- OLS', fontsize=18, y=1.08)
   
-  g2 = sns.jointplot(x = "$\\beta_0$", y = "$\\beta_1$", data=B_bayes, kind="kde", space=0.3, color = sns.color_palette()[0], size=7)
+  g2 = sns.jointplot(x = "$\\beta_0$", y = "$\\beta_1$", data=B_bayes, kind="kde", space=0.3, color = sns.color_palette()[0], size=7, , xlim = (-1, 2), ylim = (-.2, .4))
   g2.ax_joint.plot([mu[0] - sigma[0,1]/sigma[1,1]*mu[1]],[sigma[0,1]/sigma[1,1]], 'ro', color='r', label='best in class')
   g2.set_axis_labels(r'$\beta_0$', r'$\beta_1$', fontsize=18)
   g2.fig.suptitle('Distribution over the action space -- Bayes', fontsize=18, y=1.08)
