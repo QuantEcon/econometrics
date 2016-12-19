@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Asymptotic analysis and consistency &#8212; econometrics 0.1 documentation</title>
+    <title>Asymptotic analysis and consistency &mdash; econometrics 0.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -17,20 +17,17 @@
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="econometrics 0.1 documentation" href="../index.html" />
     <link rel="prev" title="Estimators as Statistical Decision Functions" href="../Notebook_01_Wald/Statistical_decision_functions.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -170,22 +167,32 @@ estimation</em>.</p>
 more precise manner than we did before. There are two, slightly
 different notions depending on the tractability and objectives of the
 decision problem at hand.</p>
-<ul class="simple">
-<li><strong>Consistency in terms of the loss function:</strong> a decision rule,
-<span class="math">\(d: \mathcal{S} \mapsto \mathcal{A}\)</span>, is consistent in terms of
-the loss function <em>relative to :math:`(mathcal{H}, mathcal{A})`</em>,
-if for all <span class="math">\(P \in \mathcal{H}\)</span> the following holds</li>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Consistency in terms of the loss function:</strong> a decision rule,</dt>
+<dd><p class="first last"><span class="math">\(d: \mathcal{S} \mapsto \mathcal{A}\)</span>, is consistent in terms of
+the loss function relative to <span class="math">\((\mathcal{H}, \mathcal{A})\)</span>,
+if for all <span class="math">\(P \in \mathcal{H}\)</span> the following holds</p>
+</dd>
+</dl>
+</li>
 </ul>
-<div class="math">
+<blockquote>
+<div><div class="math">
 \[L(P, d(Z^n)) \ \ \underset{n \to \infty}{\overset{\text{P}}{\rightarrow}} \ \ \inf_{a \in \mathcal{A}}L(P, a) = L\left(P, a^{*}_{L, P,\mathcal{A}}\right)\]</div>
-<ul class="simple">
-<li><strong>Consistency in terms of the action:</strong> a decision rule,
-<span class="math">\(d: \mathcal{S} \mapsto \mathcal{A}\)</span>, is consistent in terms of
-the action <em>relative to :math:`(mathcal{H}, mathcal{A})`</em>, if for
-all <span class="math">\(P \in \mathcal{H}\)</span> the following holds</li>
-</ul>
-<div class="math">
+</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>Consistency in terms of the action:</strong> a decision rule,</dt>
+<dd><p class="first"><span class="math">\(d: \mathcal{S} \mapsto \mathcal{A}\)</span>, is consistent in terms of
+the action relative to <span class="math">\((\mathcal{H}, \mathcal{A})\)</span>, if for
+all <span class="math">\(P \in \mathcal{H}\)</span> the following holds</p>
+<div class="last math">
 \[P\left\{z^{\infty} \big| \lim_{n \to \infty} m\left(d(z_n), a^*_{L, P, \mathcal{A}}\right) &gt; \epsilon\right\} = 0 \quad \text{for} \quad \forall\epsilon&gt;0,\]</div>
+</dd>
+</dl>
+</li>
+</ul>
 <p>where <span class="math">\(m(\cdot, \cdot)\)</span> is a metric on the action space
 <span class="math">\(\mathcal{A}\)</span>. The necessary condition&#8212;in the case of analog
 estimators&#8212;for this notion of consistency is the identifiability of
@@ -314,8 +321,8 @@ tail probabilities are smaller than <span class="math">\(\varepsilon\)</span>,
 </li>
 </ul>
 <p>A possible approach to avoid this complication is to require the
-existence of an integer <span class="math">\(N(\varepsilon, \delta)\)</span> <em>independent of
-:math:`a`</em>, such that for all sample sizes larger than
+existence of an integer <span class="math">\(N(\varepsilon, \delta)\)</span> independent of
+<span class="math">\(a\)</span>, such that for all sample sizes larger than
 <span class="math">\(N(\epsilon, \delta)\)</span></p>
 <div class="math">
 \[\lim_{n\to \infty} P\left\{\sup_{a \in\mathcal{A}} \left| L(P_n, a) - L(P, a) \right| &gt; \delta\right\} = 0.\]</div>
@@ -729,13 +736,13 @@ consider the the set of vectors</p>
 \[\mathcal{L}(z^n) := \left\{ (l(z_1), \ldots, l(z_n)) \in \mathbb{R}^n \mid l \in \mathcal{L} \right\}.\]</div>
 <p>This is the number of ways one can label points of a sample using
 functions in the class <span class="math">\(\mathcal{F}\)</span>. The <strong>empirical Rademacher
-complexity of :math:`mathcal{L}`</strong> for fixed <span class="math">\(z^n\)</span> is defined as</p>
+complexity</strong> of <span class="math">\(\mathcal{L}\)</span> for fixed <span class="math">\(z^n\)</span> is defined as</p>
 <div class="math">
 \[\mathcal{R}\left(\frac{\mathcal{L}(z^n)}{n} \right) := \mathbb{E}_{\epsilon}\left[\sup_{l\in \mathcal{L}}\Big| \frac{1}{n}\sum_{i=1}^n \epsilon_i l(z_i) \Big| \right]\]</div>
 <p>where the expectation is taken with respect to the iid Rademacher random
 variables, <span class="math">\(\epsilon_i\)</span> which take value in <span class="math">\(\{-1, 1\}\)</span> with
 equal probability.</p>
-<p>The <strong>Rademacher complexity of :math:`mathcal{L}`</strong> at sample size
+<p>The <strong>Rademacher complexity</strong> of <span class="math">\(\mathcal{L}\)</span> at sample size
 <span class="math">\(n\)</span> is defined as</p>
 <div class="math">
 \[\mathcal{R}_n\left(\mathcal{L}\right) := \mathbb{E}_{Z^n} \Big[\mathcal{R}\left(\frac{\mathcal{L}(z^n)}{n} \right)\Big]\]</div>
@@ -993,15 +1000,15 @@ University Press.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/Notebook_02_Asymptotics/Asymptotic_analysis_consistency.rst.txt"
+      <li><a href="../_sources/Notebook_02_Asymptotics/Asymptotic_analysis_consistency.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1015,11 +1022,11 @@ University Press.</p>
       &copy;2016, Daniel Csaba, Balint Szoke.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
-      <a href="../_sources/Notebook_02_Asymptotics/Asymptotic_analysis_consistency.rst.txt"
+      <a href="../_sources/Notebook_02_Asymptotics/Asymptotic_analysis_consistency.txt"
           rel="nofollow">Page source</a>
     </div>
 
