@@ -12,7 +12,7 @@ Contents:
    :maxdepth: 2
 
    Notebook_01_Wald/Statistical_decision_functions.rst
-   Notebook_02_Asymptotics/Asymptotic_analysis_consistency.rst
+   Notebook_02_Asymptotics/asymptotic_analysis_text.rst
 
 Indices and tables
 ==================
