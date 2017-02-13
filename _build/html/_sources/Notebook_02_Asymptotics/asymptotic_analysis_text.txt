@@ -46,9 +46,9 @@ represents how the different confidence bands associated with the
 distribution of the action evolve as the sample size goes to infinity.
 Apparently, for sufficiently large sample sizes, the confidence bands
 concentrate around the true value, which, due to the correct
-specification is equivalent to the best in class action. |image0|
+specification is equivalent to the best in class action.
 
-.. |image0| image:: ./asymptotic_cointoss_consistency.png
+.. image:: ./asymptotic_cointoss_consistency.png
 
 This property of the decision rule is called **consistency**. One of the
 main objectives of this notebook is to investigate the conditions under
@@ -254,9 +254,9 @@ existence of an integer :math:`N(\varepsilon, \delta)` *independent of*
 
 This notion is called the **uniform law of large numbers** referring to
 the fact that the convergence is guaranteed simultaneously for all
-actions in :math:`\mathcal{A}`. |image0|
+actions in :math:`\mathcal{A}`.
 
-.. |image0| image:: ./asymptotic_cointoss_tail.png
+.. image:: ./asymptotic_cointoss_tail.png
 
 A special case -- plug-in estimators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -490,9 +490,9 @@ expressed in terms of the moments of the random variable :math:`Z`.
 Note that for :math:`q = 2`, this form delivers the Chebyshev inequality
 (see the right panel of the Figure). This approach to bounding tail
 probabilities is quite general. Controlling higher order moments leads
-to (weakly) tighter bounds on the tail probabilities. |image0|
+to (weakly) tighter bounds on the tail probabilities.
 
-.. |image0| image:: ./asymptotic_markov_chebyshev.png
+.. image:: ./asymptotic_markov_chebyshev.png
 
 Chernoff bounds
 ~~~~~~~~~~~~~~~
@@ -641,9 +641,9 @@ functions is given by the quadratic class
 
 Below we see how the Rademacher compexity of
 :math:`\mathcal{L}_{\mathcal{A}}` converges to zero as the sample size
-grows to infinity. |image0|
+grows to infinity.
 
-.. |image0| image:: ./asymptotic_rademacher_cointoss.png
+.. image:: ./asymptotic_rademacher_cointoss.png
 
 Sinusoid classification
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -660,9 +660,8 @@ Rademacher complexity for a fixed realization of the sample,
 *Remark:* In order to have a closed form solution for the optimal
 classifier we are selecting the sample at convenient points. This is
 without loss of generality and useful for illustrative purposes.
-|image0|
 
-.. |image0| image:: ./asymptotic_rademacher_sinusoid.png
+.. image:: ./asymptotic_rademacher_sinusoid.png
 
 As we can see, by choosing a sufficiently high frequency we can always
 find a curve which classifies the data perfectly. Consequently, the

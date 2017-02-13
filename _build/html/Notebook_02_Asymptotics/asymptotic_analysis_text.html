@@ -79,7 +79,8 @@ represents how the different confidence bands associated with the
 distribution of the action evolve as the sample size goes to infinity.
 Apparently, for sufficiently large sample sizes, the confidence bands
 concentrate around the true value, which, due to the correct
-specification is equivalent to the best in class action. <img alt="image0" src="../_images/asymptotic_rademacher_sinusoid.png" /></p>
+specification is equivalent to the best in class action.</p>
+<img alt="../_images/asymptotic_cointoss_consistency.png" src="../_images/asymptotic_cointoss_consistency.png" />
 <p>This property of the decision rule is called <strong>consistency</strong>. One of the
 main objectives of this notebook is to investigate the conditions under
 which it can be established.</p>
@@ -263,7 +264,8 @@ existence of an integer <span class="math">\(N(\varepsilon, \delta)\)</span> <em
 \[\lim_{n\to \infty} P\left\{\sup_{a \in\mathcal{A}} \left| L(P_n, a) - L(P, a) \right| &gt; \delta\right\} = 0.\]</div>
 <p>This notion is called the <strong>uniform law of large numbers</strong> referring to
 the fact that the convergence is guaranteed simultaneously for all
-actions in <span class="math">\(\mathcal{A}\)</span>. <img alt="image0" src="../_images/asymptotic_rademacher_sinusoid.png" /></p>
+actions in <span class="math">\(\mathcal{A}\)</span>.</p>
+<img alt="../_images/asymptotic_cointoss_tail.png" src="../_images/asymptotic_cointoss_tail.png" />
 </div>
 <div class="section" id="a-special-case-plug-in-estimators">
 <h3>A special case &#8211; plug-in estimators<a class="headerlink" href="#a-special-case-plug-in-estimators" title="Permalink to this headline">¶</a></h3>
@@ -466,7 +468,8 @@ expressed in terms of the moments of the random variable <span class="math">\(Z\
 <p>Note that for <span class="math">\(q = 2\)</span>, this form delivers the Chebyshev inequality
 (see the right panel of the Figure). This approach to bounding tail
 probabilities is quite general. Controlling higher order moments leads
-to (weakly) tighter bounds on the tail probabilities. <img alt="image0" src="../_images/asymptotic_rademacher_sinusoid.png" /></p>
+to (weakly) tighter bounds on the tail probabilities.</p>
+<img alt="../_images/asymptotic_markov_chebyshev.png" src="../_images/asymptotic_markov_chebyshev.png" />
 </div>
 <div class="section" id="chernoff-bounds">
 <h3>Chernoff bounds<a class="headerlink" href="#chernoff-bounds" title="Permalink to this headline">¶</a></h3>
@@ -590,7 +593,8 @@ functions is given by the quadratic class</p>
 \[\mathcal{L}_{\mathcal{A}} := \{l_a : l_a(z) = (z - a)^2, \ \  a \in [0, 1]\subseteq \mathbb{R}\}\]</div>
 <p>Below we see how the Rademacher compexity of
 <span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span> converges to zero as the sample size
-grows to infinity. <img alt="image0" src="../_images/asymptotic_rademacher_sinusoid.png" /></p>
+grows to infinity.</p>
+<img alt="../_images/asymptotic_rademacher_cointoss.png" src="../_images/asymptotic_rademacher_cointoss.png" />
 </div>
 <div class="section" id="sinusoid-classification">
 <h4>Sinusoid classification<a class="headerlink" href="#sinusoid-classification" title="Permalink to this headline">¶</a></h4>
@@ -603,8 +607,8 @@ Rademacher complexity for a fixed realization of the sample,
 <span class="math">\(z^n\)</span>.</p>
 <p><em>Remark:</em> In order to have a closed form solution for the optimal
 classifier we are selecting the sample at convenient points. This is
-without loss of generality and useful for illustrative purposes.
-<img alt="image0" src="../_images/asymptotic_rademacher_sinusoid.png" /></p>
+without loss of generality and useful for illustrative purposes.</p>
+<img alt="../_images/asymptotic_rademacher_sinusoid.png" src="../_images/asymptotic_rademacher_sinusoid.png" />
 <p>As we can see, by choosing a sufficiently high frequency we can always
 find a curve which classifies the data perfectly. Consequently, the
 Ramdemacher complexity always takes its maximum irrespective of the
