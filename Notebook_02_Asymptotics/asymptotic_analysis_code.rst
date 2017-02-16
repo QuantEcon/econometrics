@@ -15,7 +15,6 @@ Code
     
     import matplotlib.pyplot as plt
     from matplotlib.patches import ConnectionPatch
-    from ipywidgets import interact, FloatSlider
     
     colors = sns.color_palette("Blues")
     plt.rc('text', usetex=True)
@@ -35,8 +34,8 @@ Code
     perc75 = [stats.binom(n, theta0).ppf(.8)/n for n in sample_sizes]
     perc95 = [stats.binom(n, theta0).ppf(.95)/n for n in sample_sizes]
     
-    fig, ax = plt.subplots(1, 2, figsize = (16, 5))
-    fig.suptitle("Evolution of the maximumum likelihood estimator's distribution in the coin tossing example", fontsize = 17)
+    fig, ax = plt.subplots(1, 2, figsize = (12, 4))
+    fig.suptitle("Evolution of the maximumum likelihood estimator's distribution in the coin tossing example", y = 1.02, fontsize = 14)
     small_sample = 200
     ax[0].fill_between(sample_sizes[:small_sample], perc5[:small_sample], perc25[:small_sample], 
                        color = colors[2], alpha = .5, label = '$5\%$-$95\%$ percentiles')
@@ -47,18 +46,19 @@ Code
     ax[0].axhline(theta0, color = colors[5], lw = 2, label = r'True $\theta_0$')
     ax[0].set_xlim([10, 300])
     ax[0].set_ylim([0.4, 1])
-    ax[0].set_xlabel('Sample size', fontsize = 14)
-    ax[0].legend(loc='best', fontsize = 14)
+    ax[0].set_xlabel('Sample size', fontsize = 12)
+    ax[0].legend(loc='best', fontsize = 12)
     
     ax[1].fill_between(sample_sizes, perc5, perc25, color = colors[2], alpha = .5, label = '$5\%$-$95\%$ percentiles')
     ax[1].fill_between(sample_sizes, perc25, perc75, color = colors[3], alpha = .5, label = '$20\%$-$80\%$ percentiles')
     ax[1].fill_between(sample_sizes, perc75, perc95, color = colors[2], alpha = .5)
     ax[1].axhline(theta0, color = colors[5], lw = 2, label = r'True $\theta_0$')
     ax[1].set_ylim([0.4, 1])
-    ax[1].set_xlabel('Sample size', fontsize = 14)
-    ax[1].legend(loc='best', fontsize = 14)
+    ax[1].set_xlabel('Sample size', fontsize = 12)
+    ax[1].legend(loc='best', fontsize = 12)
     ax[1].axhline(theta0, color = colors[5], lw = 2, label = r'True $\theta_0$')
-    plt.savefig('asymptotic_cointoss_consistency.png', format = 'png', dpi = 300, bbox_inches='tight')
+    plt.tight_layout()
+    plt.savefig('asymptotic_cointoss_consistency.png', format = 'png', dpi = 800, bbox_inches='tight')
     plt.show()
 
 
@@ -118,22 +118,23 @@ Code
     action_grid2 = [.99, .95, .9, .8]
     delta = .02
     
-    fig, ax = plt.subplots(1, 2, figsize = (16, 5))
+    fig, ax = plt.subplots(1, 2, figsize = (12, 4))
     fig.suptitle('Tail probabilities for the MLE estimator (evaluated with quadratic loss) in the coin tossing example \n' + 
                  r"$\delta = {:1.2f}$,  $\theta_0 = {:1.2f}$".format(delta, theta0), 
-                fontsize = 18, y = 1.05)
+                fontsize = 14, y = 1.06)
     for i, a in enumerate(action_grid1):
         ax[0].plot(sample_size, [prob(delta, a, stats.binom(nn, theta0)) for nn in sample_size], 
                    label = r'a = {:1.2f}'.format(a), color = colors[2 + i])
-    ax[0].legend(loc = 'best', fontsize = 15)
-    ax[0].set_xlabel('Sample size', fontsize = 14)
+    ax[0].legend(loc = 'best', fontsize = 12)
+    ax[0].set_xlabel('Sample size', fontsize = 12)
     
     for i, a in enumerate(action_grid2):
         ax[1].plot(sample_size, [prob(delta, a, stats.binom(nn, theta0)) for nn in sample_size], 
                    label = r'a = {:1.2f}'.format(a), color = colors[2 + i])
-    ax[1].legend(loc = 'best', fontsize = 15)
-    ax[1].set_xlabel('Sample size', fontsize = 14)
-    plt.savefig('asymptotic_cointoss_tail.png', format = 'png', dpi = 400, bbox_inches='tight')
+    ax[1].legend(loc = 'best', fontsize = 12)
+    ax[1].set_xlabel('Sample size', fontsize = 12)
+    plt.tight_layout()
+    plt.savefig('asymptotic_cointoss_tail.png', format = 'png', dpi = 800, bbox_inches='tight')
     plt.show()
 
 
@@ -153,7 +154,7 @@ Code
     
     colors = sns.color_palette()
     
-    fig, ax = plt.subplots(1, 2, figsize = (16, 5))
+    fig, ax = plt.subplots(1, 2, figsize = (12, 4))
     ax[0].add_artist(ConnectionPatch(xyA=(0, 0), xyB=(10, 0), coordsA="data", coordsB="data",
                                      arrowstyle="->", mutation_scale=10, lw = 2))
     ax[0].add_artist(ConnectionPatch(xyA=(0, 0), xyB=(0, 3.5), coordsA="data", coordsB="data",
@@ -163,14 +164,14 @@ Code
     ax[0].plot(z, f2, color = colors[1], lw = 3, label = r'$\frac{Z}{t}$')
     ax[0].set_xticklabels([])
     ax[0].set_yticklabels([])
-    ax[0].text(9.3, -.25, r'$Z$', fontsize = 17)
-    ax[0].text(8, 3, r'$\frac{Z}{t}$', fontsize = 16)
-    ax[0].text(5, .7, '$\mathbf{1}\{Z \geq t\}$', fontsize = 16)
-    ax[0].text(t - .05, -.25, '$t$', fontsize = 16)
-    ax[0].text(0, -.25, '$0$', fontsize = 16)
-    ax[0].text( -.6, .93, r'$1$', fontsize = 16)
+    ax[0].text(9.3, -.25, r'$Z$', fontsize = 12)
+    ax[0].text(8, 3, r'$\frac{Z}{t}$', fontsize = 12)
+    ax[0].text(5, .7, '$\mathbf{1}\{Z \geq t\}$', fontsize = 12)
+    ax[0].text(t - .05, -.25, '$t$', fontsize = 12)
+    ax[0].text(0, -.25, '$0$', fontsize = 12)
+    ax[0].text( -.6, .93, r'$1$', fontsize = 12)
     ax[0].axhline(1, linestyle = '--', color = 'k', lw = 1)
-    ax[0].set_title('Logic behind Markov\'s inequality', fontsize=18)
+    ax[0].set_title('Logic behind Markov\'s inequality', fontsize=16)
     
     t = 2.5
     mu = 2
@@ -185,16 +186,17 @@ Code
     ax[1].plot(z, g2, color = colors[1], lw = 3, label = r'$Z/t$')
     ax[1].set_xticklabels([])
     ax[1].set_yticklabels([])
-    ax[1].text(mu + 5.3, -.25, r'$Z$', fontsize = 17)
-    ax[1].text(4.7, 3, r'$\frac{|Z-\mu|^2}{t^2}$', fontsize = 20)
-    ax[1].text(4.7, .7, r'$\mathbf{1}\{|Z -\mu |\geq t\}$', fontsize = 16)
-    ax[1].text(mu - .05, -.25, r'$\mu$', fontsize = 16)
-    ax[1].text(mu + t - .15, -.25, r'$\mu + t$', fontsize = 16)
-    ax[1].text(mu - t - .15, -.25, r'$\mu - t$', fontsize = 16)
-    ax[1].text(mu - 6 - .6, .93, r'$1$', fontsize = 16)
-    ax[1].set_title('Logic behind Chebyshev\'s inequality', fontsize=18)
+    ax[1].text(mu + 5.3, -.25, r'$Z$', fontsize = 12)
+    ax[1].text(4.7, 3, r'$\frac{|Z-\mu|^2}{t^2}$', fontsize = 12)
+    ax[1].text(4.7, .7, r'$\mathbf{1}\{|Z -\mu |\geq t\}$', fontsize = 12)
+    ax[1].text(mu - .05, -.25, r'$\mu$', fontsize = 12)
+    ax[1].text(mu + t - .15, -.25, r'$\mu + t$', fontsize = 12)
+    ax[1].text(mu - t - .15, -.25, r'$\mu - t$', fontsize = 12)
+    ax[1].text(mu - 6 - .6, .93, r'$1$', fontsize = 12)
+    ax[1].set_title('Logic behind Chebyshev\'s inequality', fontsize=16)
     ax[1].set_ylim([0, 4])
-    plt.savefig('asymptotic_markov_chebyshev.png', format = 'png', dpi = 400, bbox_inches='tight')
+    plt.tight_layout()
+    plt.savefig('asymptotic_markov_chebyshev.png', format = 'png', dpi = 800, bbox_inches='tight')
     plt.show()
 
 
@@ -256,12 +258,13 @@ Code
 
 .. code:: python
 
-    fig, ax = plt.subplots(figsize = (10, 5))
+    fig, ax = plt.subplots(figsize = (6, 4))
     ax.plot(samples, RC, lw = 3)
-    ax.set_title("Rademacher complexity of $\mathcal{L}_{\mathcal{A}}$ in the coin tossing example", fontsize = 17)
-    ax.set_xlabel('Sample size', fontsize = 15)
+    ax.set_title("Rademacher complexity of $\mathcal{L}_{\mathcal{A}}$ \nin the coin tossing example", fontsize = 14)
+    ax.set_xlabel('Sample size', fontsize = 12)
     ax.set_ylim([0, .25])
-    plt.savefig('asymptotic_rademacher_cointoss.png', format = 'png', dpi = 400, bbox_inches='tight')
+    plt.tight_layout()
+    plt.savefig('asymptotic_rademacher_cointoss.png', format = 'png', dpi = 800, bbox_inches='tight')
     plt.show()
 
 
@@ -279,7 +282,7 @@ Code
         return np.array([1 if x >= .5 else -1 for x in aux])
     
     n = 5
-    fig, ax = plt.subplots(figsize = (10, 6))
+    fig, ax = plt.subplots(figsize = (6, 4))
     
     x = np.array([2**(-(i+1)) for i in range(n)])
     y = rademacher(int(n))
@@ -298,9 +301,10 @@ Code
     ax.scatter(x, y, color = 'r')
     ax.set_xlim([-.2, 1.2])
     ax.set_ylim([-1.5, 1.5])
-    ax.text(.8, 1.2, r'$R' + r'_{}(x^{}, \epsilon^{}) = $'.format({int(n)}, {int(n)}, {int(n)}) + ' {:.4f}'.format(R), fontsize=18)
-    ax.set_title('Evolution of maximum attainable correlation\n for given sample and noise', fontsize=18)
-    plt.savefig('asymptotic_rademacher_sinusoid.png', format = 'png', dpi = 400, bbox_inches='tight')
+    ax.text(.7, 1.2, r'$R' + r'_{}(x^{}, \epsilon^{}) = $'.format({int(n)}, {int(n)}, {int(n)}) + ' {:.4f}'.format(R), fontsize=12)
+    ax.set_title('Evolution of maximum attainable correlation\n for given sample and noise', fontsize=14)
+    plt.tight_layout()
+    plt.savefig('asymptotic_rademacher_sinusoid.png', format = 'png', dpi = 800, bbox_inches='tight')
     plt.show()
 
 
