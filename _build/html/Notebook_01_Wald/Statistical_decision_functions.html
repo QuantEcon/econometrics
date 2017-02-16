@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Estimators as Statistical Decision Functions &#8212; econometrics 0.1 documentation</title>
+    <title>Estimators as Statistical Decision Functions &mdash; econometrics 0.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -25,11 +25,9 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="econometrics 0.1 documentation" href="../index.html" />
-    <link rel="next" title="Asymptotic analysis and consistency" href="../Notebook_02_Asymptotics/asymptotic_analysis_text.html" />
     <link rel="prev" title="Welcome to econometrics’s documentation!" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -58,8 +56,7 @@ is derived from an unknown true data generating mechanism.</li>
 <li>We present some straightforward examples to illustrate the main
 ideas.</li>
 </ul>
-<div class="section" id="to-do-add-notations">
-<h2>TO DO: Add Notations<a class="headerlink" href="#to-do-add-notations" title="Permalink to this headline">¶</a></h2>
+<p><strong>TO DO: Add Notations</strong></p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -82,10 +79,11 @@ ideas.</li>
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p><strong>TO DO: add links to QE lectures (ensemble, ergodicity, LLN)</strong></p>
+<div class="section" id="stationarity-and-statistical-models">
+<h2>Stationarity and statistical models<a class="headerlink" href="#stationarity-and-statistical-models" title="Permalink to this headline">¶</a></h2>
 <p>The observed data are modelled as a partial realization of a stochastic
 process <span class="math">\(\{Z_t\}_{t\in\mathbb{Z}}\)</span> taking values in
 <span class="math">\(\mathbb{R}^{k}\)</span>. Denote a particular realization as the sequence
@@ -103,8 +101,9 @@ strictly stationary and study its statistical properties by taking
 long-run time averages of the realization <span class="math">\(z^{\infty}\)</span> (or
 functions thereof) like</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}\lim_{n\to \infty}\frac{1}{n}\sum_{t = 1}^{n} z_t\quad\quad \lim_{n\to \infty}\frac{1}{n} \sum_{t = 1}^{n} z^2_t\quad\quad \lim_{n\to \infty}\frac{1}{n}\sum_{t = k}^{n+k} z_{t}z_{t-k}\\Since the mechanism is assumed to be stable over time, it does not\end{aligned}\end{align} \]</div>
-<p>matter when we start observing the process.</p>
+\[\lim_{n\to \infty}\frac{1}{n}\sum_{t = 1}^{n} z_t\quad\quad \lim_{n\to \infty}\frac{1}{n} \sum_{t = 1}^{n} z^2_t\quad\quad \lim_{n\to \infty}\frac{1}{n}\sum_{t = k}^{n+k} z_{t}z_{t-k}\]</div>
+<p>Since the mechanism is assumed to be stable over time, it does not
+matter when we start observing the process.</p>
 <p>Notice, however, that strictly speaking these time averages are
 properties of the particular realization, the extent to which they can
 be generalized to the mechanism itself is not obvious. To address this
@@ -122,6 +121,8 @@ other words, with statistical models the time series and ensemble
 averages coincide, which is the property known as <strong>ergodicity</strong>.
 Roughly speaking, ergodicity allows us to learn about the ensemble
 dimension by using a <em>single</em> realization <span class="math">\(z^{\infty}\)</span>.</p>
+<div class="section" id="dependence">
+<h3>Dependence<a class="headerlink" href="#dependence" title="Permalink to this headline">¶</a></h3>
 <p>In reality, however, being endowed only with a partial history of
 <span class="math">\(z^{\infty}\)</span>, we cannot calculate the exact log-run time averages.
 Nonetheless, by imposing more structure on the problem and having a
@@ -170,26 +171,40 @@ a formula similar to (1). Having said that the block distribution
 the minimal block we need to know and treat it as an observation.
 Statistical models can be represented by their prediction about the
 ensemble distribution <span class="math">\(P\)</span> of this observable.</p>
+</div>
+<div class="section" id="true-data-generating-mechanism">
+<h3>True data generating mechanism<a class="headerlink" href="#true-data-generating-mechanism" title="Permalink to this headline">¶</a></h3>
 <p>We assume that the mechanism underlying <span class="math">\(\{Z_t\}_{t\in\mathbb{Z}}\)</span>
 can be represented with a statistical model <span class="math">\(P_0\)</span> and it is called
 <em>true data generating process</em>. We seek to learn about the features of
 this model from the observed data.</p>
+</div>
+</div>
+</div>
+<div class="section" id="primitives-of-the-problem">
+<h1>Primitives of the problem<a class="headerlink" href="#primitives-of-the-problem" title="Permalink to this headline">¶</a></h1>
 <p>Every statistical decision problem that we will consider can be
 represented with a triple <span class="math">\((\mathcal{H}, \mathcal{A}, L)\)</span>, where</p>
 <ol class="arabic simple">
-<li><strong>Assumed statistical models</strong>,
-<span class="math">\(\mathcal{H}\subset \mathcal{P}\)</span> &gt; A collection of statistical
-models (ergodic probability measures) over the observed data, which
-captures our <em>assumptions</em> about the data generating mechanism
-underlying <span class="math">\(\{Z_t\}_{t\in\mathbb{Z}}\)</span>. Ergodicity implies that
-with infinite data we could single out one element from
-<span class="math">\(\mathcal{H}\)</span>.</li>
-<li><strong>Action space</strong>, <span class="math">\(\mathcal{A}\)</span> &gt; The set of allowable actions.
-It is an abstract set embodying our proposed <em>specification</em> by which
-we aim to capture features of the true data generating mechanism.</li>
-<li><strong>Loss function</strong>
-<span class="math">\(L: \mathcal{P}\times \mathcal{A} \mapsto \mathbb{R}_+\)</span> &gt; The
-loss function measures the performance of alternative actions
+<li><strong>Assumed statistical models</strong> &#8211; <span class="math">\(\mathcal{H}\subset \mathcal{P}\)</span></li>
+</ol>
+<blockquote>
+<div>A collection of statistical models (ergodic probability measures) over
+the observed data, which captures our <em>assumptions</em> about the data
+generating mechanism underlying <span class="math">\(\{Z_t\}_{t\in\mathbb{Z}}\)</span>.
+Ergodicity implies that with infinite data we could single out one
+element from <span class="math">\(\mathcal{H}\)</span>.</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><strong>Action space</strong> &#8211; <span class="math">\(\mathcal{A}\)</span></li>
+</ol>
+<blockquote>
+<div>The set of allowable actions. It is an abstract set embodying our proposed <em>specification</em> by which
+we aim to capture features of the true data generating mechanism.</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>Loss function</strong> &#8211; <span class="math">\(L: \mathcal{P}\times \mathcal{A} \mapsto \mathbb{R}_+\)</span></li>
+</ol>
+<blockquote>
+<div><p>The loss function measures the performance of alternative actions
 <span class="math">\(a\in \mathcal{A}\)</span> under a given distribution
 <span class="math">\(P\in \mathcal{P}\)</span>, where <span class="math">\(\mathcal{P}\)</span> denotes the space
 of strictly stationary probability distributions over the observed
@@ -199,30 +214,31 @@ determined by features of the data generating mechanism that we are
 interested in. By assigning zero distance to models that share a
 particular set of features (e.g. conditional expectation, set of
 moments, etc.), the loss function can &#8216;determine&#8217; the domain of
-effective actions.</li>
-</ol>
+effective actions.</p>
 <p>Given the assumed statistical models, we can restrict the domain of the
 loss function without loss in generality such that,
 <span class="math">\(L: \mathcal{H}\times\mathcal{A} \mapsto \mathbb{R}_+\)</span>.</p>
-<hr class="docutils" />
+</div></blockquote>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p><strong>Quadratic loss:</strong></p>
 <p>The most commonly used loss function is the quadratic</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}L(P, a) = \int (z - a)^2\mathrm{d}P(z)\\where the action space is :math:`\mathcal{A}\subseteq \mathbb{R}^{k}`.\end{aligned}\end{align} \]</div>
-<p>Another important case is when we can write <span class="math">\(Z = (Y, X)\)</span>, the loss
+\[L(P, a) = \int (z - a)^2\mathrm{d}P(z)\]</div>
+<p>where the action space is <span class="math">\(\mathcal{A}\subseteq \mathbb{R}^{k}\)</span>.
+Another important case is when we can write <span class="math">\(Z = (Y, X)\)</span>, the loss
 function is</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}L(P, a) = \int (y - a(x))^2\mathrm{d}P(y, z)\\and the action space :math:`\mathcal{A}` contains some well behaving\end{aligned}\end{align} \]</div>
-<p>real functions of <span class="math">\(X\)</span>.</p>
+\[L(P, a) = \int (y - a(x))^2\mathrm{d}P(y, z)\]</div>
+<p>and the action space <span class="math">\(\mathcal{A}\)</span> contains some well behaving
+real functions of <span class="math">\(X\)</span>.</p>
 <p><strong>Relative entropy loss:</strong></p>
 <p>When we specificy a whole distribution and are willing to approximate
 <span class="math">\(P\)</span>, one useful measure for comparison of distributions is the
 Kullback-Leibler divergence, or relative entropy</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}L(P, a) = - \int \log \frac{p}{a}(z) \mathrm{d}P(z)\\in which case the action space is\end{aligned}\end{align} \]</div>
-<p><span class="math">\(\mathcal{A} = \{a: Z \mapsto \mathbb{R}_+ : \int a(z)\mathrm{d}z = 1 \}\)</span>.</p>
+\[L(P, a) = - \int \log \frac{p}{a}(z) \mathrm{d}P(z)\]</div>
+<p>in which case the action space is <span class="math">\(\mathcal{A} = \{a: Z \mapsto \mathbb{R}_+ : \int a(z)\mathrm{d}z = 1 \}\)</span>.</p>
 <p><strong>Generalized Method of Moments:</strong></p>
 <p>Following the exposition of Manski (1994), many econometric problems can
 be cast as solving <span class="math">\(T(P, \theta) = \mathbf{0}\)</span> in the parameter
@@ -234,16 +250,17 @@ in terms of unconditional moment restrictions, for example, we can write
 some function <span class="math">\(g\)</span>. Taking an <em>origin-preserving continuous
 transformation</em> <span class="math">\(r:\mathbb{R}^m \mapsto \mathbb{R}_+\)</span> so that</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}T(P, \theta) = \mathbf{0} \iff r(T)=0\\we can present the problem in terms of minimizing a particular loss\end{aligned}\end{align} \]</div>
-<p>function. Define the action space as <span class="math">\(\mathcal{A} = \Theta\)</span>, then
+\[T(P, \theta) = \mathbf{0} \iff r(T)=0\]</div>
+<p>we can present the problem in terms of minimizing a particular loss
+function. Define the action space as <span class="math">\(\mathcal{A} = \Theta\)</span>, then
 the method of moment estimator minimizes the loss
 <span class="math">\(L(P, \theta) = r\circ T(P, \theta)\)</span>. The most common form of
 <span class="math">\(L\)</span> is</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}L(P, \theta) = \left[\int g(z; \theta)\mathrm{d}P(z)\right]' W \left[\int g(z; \theta)\mathrm{d}P(z)\right]\\where :math:`W` is a :math:`m\times m` positive-definite weighting\end{aligned}\end{align} \]</div>
-<p>matrix.</p>
+\[L(P, \theta) = \left[\int g(z; \theta)\mathrm{d}P(z)\right]' W \left[\int g(z; \theta)\mathrm{d}P(z)\right]\]</div>
+<p>where <span class="math">\(W\)</span> is a <span class="math">\(m\times m\)</span> positive-definite weighting
+matrix.</p>
 </div>
-<hr class="docutils" />
 <div class="section" id="best-in-class-action">
 <h2>Best in-class action<a class="headerlink" href="#best-in-class-action" title="Permalink to this headline">¶</a></h2>
 <p>By using a loss function, we acknowledge that learning about the true
@@ -253,6 +270,8 @@ specification. The loss function expresses our assessment about which
 features are important and how deviations from the true features are
 being punished. With a specified triple we can define <strong>best in-class
 action</strong> as</p>
+<div class="math">
+\[a^*_{L,\ P,\ \mathcal{A}} := \arg\min_{a \in \mathcal{A}} L(P,a).\]</div>
 </div>
 <div class="section" id="features">
 <h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
@@ -271,11 +290,13 @@ the true <span class="math">\(\gamma(P)\)</span>. We will talk more about misspe
 the following sections. A couple of examples should help clarifying the
 introduced concepts.</p>
 <ul>
-<li><p class="first"><strong>Conditional expectation &#8211; regression function estimation</strong> &gt;
-Consider the quadratic loss function over the domain of all square
+<li><p class="first"><strong>Conditional expectation &#8211; regression function estimation</strong></p>
+<p>Consider the quadratic loss function over the domain of all square
 integrable functions <span class="math">\(a: X \to \mathbb{R}\)</span>, where
 <span class="math">\(Z = (Y, X)\)</span> and <span class="math">\(Y\)</span> is a scalar. The corresponding
 feature is</p>
+<div class="math">
+\[\gamma(P) = \arg\min_{a \in L^2(X)} \int\limits_{(Y,X)} (y - a(x))^2\mathrm{d}P(y, x)\]</div>
 <p>and it is equal to the conditional expectation
 <span class="math">\(\gamma(P) = \mathbb{E}[Y|X]\)</span>. If the action space
 <span class="math">\(\mathcal{A}\)</span> does not include all square integrable functions,
@@ -285,10 +306,13 @@ will be different from <span class="math">\(\gamma(P)\)</span> in general. In ot
 the linear specification for the conditional expectation <span class="math">\(Y|X\)</span>
 is misspecified.</p>
 </li>
-<li><p class="first"><strong>Density function estimation</strong> &gt; Consider the Kullback-Leibler
+<li><p class="first"><strong>Density function estimation</strong></p>
+<p>Consider the Kullback-Leibler
 distance over the set of distributions with existing density
 functions. Denote this set by <span class="math">\(D_Z\)</span>. Given that the true
 <span class="math">\(P\in D_Z\)</span>, the corresponding feature is</p>
+<div class="math">
+\[\gamma(P) = \arg\min_{a \in D_Z} \int\limits_{Z}\log\left(\frac{p(z)}{a(z)}\right) \mathrm{d}P(z)\]</div>
 <p>which provides the density <span class="math">\(p\in\mathbb{R}_+^Z\)</span> such that
 <span class="math">\(\int p(z)\mathrm{d}z =1\)</span> and for any sensible set
 <span class="math">\(B\subseteq \mathbb{R}^k\)</span>,
@@ -306,11 +330,10 @@ possible about <span class="math">\(\mathcal{H}\)</span> in order to avoid incre
 assumptions. Once we determined <span class="math">\(\mathcal{H}\)</span>, the next step is to
 choose the specification, that is the action space <span class="math">\(\mathcal{A}\)</span>.</p>
 <ul class="simple">
-<li>One approach is to tie <span class="math">\(\mathcal{H}\)</span> and <span class="math">\(\mathcal{A}\)</span>
-together. For example, the assumptions of the standard linear
-regression model outline the distributions contained in
-<span class="math">\(\mathcal{H}\)</span> (normal with zero mean and homoscedasticity), for
-which the natural action space is the space of affine functions.</li>
+<li>One approach is to tie <span class="math">\(\mathcal{H}\)</span> and <span class="math">\(\mathcal{A}\)</span> together.
+For example, the assumptions of the standard linear regression model outline
+the distributions contained in <span class="math">\(\mathcal{H}\)</span> (normal with zero mean and homoscedasticity),
+for which the natural action space is the space of affine functions.</li>
 <li>On the other hand, many approaches explicitly disentangle
 <span class="math">\(\mathcal{A}\)</span> from <span class="math">\(\mathcal{H}\)</span> and try to be agnostic
 about the maintained assumptions <span class="math">\(\mathcal{H}\)</span> and rather
@@ -330,68 +353,70 @@ arising from the randomness of the sample.</p>
 minimizes the &#8220;distance&#8221; between <span class="math">\(\mathcal{A}\)</span> and the true
 statistical model, thus measuring the benchmark bias stemming from
 restricting <span class="math">\(\mathcal{A}\)</span>.</p>
+</div>
 <div class="section" id="example-coin-tossing">
-<h3>Example - Coin tossing<a class="headerlink" href="#example-coin-tossing" title="Permalink to this headline">¶</a></h3>
+<h2>Example - Coin tossing<a class="headerlink" href="#example-coin-tossing" title="Permalink to this headline">¶</a></h2>
 <p>The observable is a binary variable <span class="math">\(Z\in\{0, 1\}\)</span> generated by
 some statistical model. One might approach this problem by using the
 following triple</p>
+<ul>
+<li><p class="first"><em>Assumed statistical models</em>, <span class="math">\(\mathcal{H}\)</span>:</p>
 <ul class="simple">
-<li><em>Assumed statistical models, :math:`mathcal{H}`:</em> &gt; * <span class="math">\(Z\)</span> is
-generated by an i.i.d. Bernoulli distribution, i.e.
-<span class="math">\(\mathcal{H} = \{P(z; \theta): \theta \in[0,1]\}\)</span> &gt; * The
-probability mass function associated with the distribution
+<li><span class="math">\(Z\)</span> is generated by an i.i.d. Bernoulli distribution, i.e.
+<span class="math">\(\mathcal{H} = \{P(z; \theta): \theta \in[0,1]\}\)</span></li>
+<li>The probability mass function associated with the distribution
 <span class="math">\(P(z;\theta)\in\mathcal{H}\)</span> has the form</li>
 </ul>
 <div class="math">
 \[p(z; \theta) = \theta^z(1-\theta)^{1-z}\]</div>
-<ul>
-<li><p class="first"><em>Action space, :math:`mathcal{A}`:</em> &gt; * Let the action space be
-equal to <span class="math">\(\mathcal{H}\)</span>, that is
-<span class="math">\(\mathcal{A} = \{P(z, a): a\in[0,1]\} = \mathcal{H}\)</span>.</p>
 </li>
-<li><p class="first"><em>Loss function, :math:`L`</em>: We entertain two alternative loss
-functions &gt; * Relative entropy</p>
+<li><p class="first"><em>Action space</em>, <span class="math">\(\mathcal{A}\)</span>:</p>
+<ul class="simple">
+<li>Let the action space be equal to <span class="math">\(\mathcal{H}\)</span>, that is
+<span class="math">\(\mathcal{A} = \{P(z, a): a\in[0,1]\} = \mathcal{H}\)</span>.</li>
+</ul>
+</li>
+<li><p class="first"><em>Loss function</em>, <span class="math">\(L\)</span>: We entertain two alternative loss functions</p>
+<ul class="simple">
+<li>Relative entropy</li>
+</ul>
+<div class="math">
+\[L_{RE}(P, a) = \sum_{z\in\{0,1\}} p(z;  \theta)\log \frac{p(z; \theta)}{p(z; a)} = E_{\theta}[\log p(z; \theta)] - E_{\theta}[\log p(z; a)]\]</div>
+<ul class="simple">
+<li>Quadratic loss</li>
+</ul>
+<div class="math">
+\[L_{MSE}(P, a) = \sum_{z\in\{0,1\}} p(z;  \theta)(\theta - a)^2 = E_{\theta}[(\theta - a)^2]\]</div>
 </li>
 </ul>
 </div>
 <div class="section" id="example-linear-regression-function">
-<h3>Example - Linear regression function<a class="headerlink" href="#example-linear-regression-function" title="Permalink to this headline">¶</a></h3>
+<h2>Example - Linear regression function<a class="headerlink" href="#example-linear-regression-function" title="Permalink to this headline">¶</a></h2>
 <p>In the basic setup of regression function estimation we write
 <span class="math">\(Z=(Y,X)\in\mathbb{R}^2\)</span> and the objective is to predict the value
 of <span class="math">\(Y\)</span> as a function of <span class="math">\(X\)</span> using the quadratic loss
 function. Let <span class="math">\(\mathcal{F}:= \{f:X \mapsto Y\}\)</span> be the family of
 all functions mapping from <span class="math">\(X\)</span> to <span class="math">\(Y\)</span>. The following is an
 example for a triple</p>
-<ul>
-<li><p class="first"><em>Assumed statistical models, :math:`mathcal{H}`</em></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
+<li><em>Assumed statistical models</em>, <span class="math">\(\mathcal{H}\)</span><ul>
 <li><span class="math">\((Y,X)\)</span> is generated by an i.i.d. joint Normal
 distribution, <span class="math">\(\mathcal{N}(\mu, \Sigma)\)</span>, implying that the
-true regression function, i.e. conditional expectation, is going
-to be affine</li>
+true regression function, i.e. conditional expectation, is affine</li>
 </ul>
-</div></blockquote>
 </li>
-<li><p class="first"><em>Action space, :math:`mathcal{A}`</em></p>
-<blockquote>
-<div><ul class="simple">
+<li><em>Action space</em>, <span class="math">\(\mathcal{A}\)</span><ul>
 <li>The action space is the set of affine functions over <span class="math">\(X\)</span>,
-i.e.
-<span class="math">\(\mathcal{A}:= \{a \in \mathcal{F} : a(x) = \beta_0 + \beta_1\cdot x\}\)</span></li>
+i.e. <span class="math">\(\mathcal{A}:= \{a \in \mathcal{F} : a(x) = \beta_0 + \beta_1\cdot x\}\)</span></li>
 </ul>
-</div></blockquote>
 </li>
-<li><p class="first"><em>Loss function, :math:`L`</em></p>
-<blockquote>
-<div><ul>
-<li><p class="first">Quadratic loss function</p>
+<li><em>Loss function</em>, <span class="math">\(L\)</span><ul>
+<li>Quadratic loss function</li>
+</ul>
 </li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
-</div>
+<div class="math">
+\[L(P, f) = \int\limits_{(Y,X)}(y - f(x))^2\mathrm{d}P(y,x)\]</div>
 </div>
 </div>
 <div class="section" id="statistical-decision-functions">
@@ -399,6 +424,8 @@ i.e.
 <p>As stated before, for each potential statistical model we choose the
 optimal best in-class action where optimality is gauged by the loss
 function.</p>
+<div class="math">
+\[a^*_{L, P, \mathcal{A}} = \arg\min_{a\in\mathcal{A}}L(P,a).\]</div>
 <p>If one knows the data generating process, there is no need for
 statistical inference. What makes the problem statistical is that the
 distribution <span class="math">\(P\)</span> describing the environment is not known. The
@@ -414,6 +441,8 @@ grows, we define the domain of the decision rule to be the set of
 samples of all potential sample sizes,
 <span class="math">\(\mathcal{S}:= \bigcup_{n\geq1}Z^n\)</span>. The decision rule is defined
 as a sequence of functions</p>
+<div class="math">
+\[d:\mathcal{S} \mapsto \mathcal{A} \quad \quad \text{that is} \quad \quad \{d(z^n)\}_{n\geq 1}\subseteq \mathcal{A},\quad \forall z^{\infty}\]</div>
 <div class="section" id="example-cont-estimator-for-coin-tossing">
 <h2>Example (cont) - estimator for coin tossing<a class="headerlink" href="#example-cont-estimator-for-coin-tossing" title="Permalink to this headline">¶</a></h2>
 <p>One common way to find a decision rule is to plug the empirical
@@ -424,8 +453,9 @@ obtain</p>
 <p>and to look for an action that minimizes this sample analog. In case of
 relative entropy loss, it is</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}d(z^n) := \arg \min_{a} L(P_{n}, a) = \arg\max_{a} \frac{1}{n}\sum_{i=1}^{n} \log f(z_i ,a) = \arg\max_{a}  \frac{1}{n}\underbrace{\left(\sum_{i=1}^{n} z_i\right)}_{:= y}\log a + \left(\frac{n-y}{n}\right)\log(1-a)\\where we define the random variable :math:`Y_n := \sum_{i = 1}^{n} Z_i`\end{aligned}\end{align} \]</div>
-<p>as the number of <span class="math">\(1\)</span>s in the sample of size <span class="math">\(n\)</span>, with
+\[d(z^n) := \arg \min_{a} L(P_{n}, a) = \arg\max_{a} \frac{1}{n}\sum_{i=1}^{n} \log f(z_i ,a) = \arg\max_{a}  \frac{1}{n}\underbrace{\left(\sum_{i=1}^{n} z_i\right)}_{:= y}\log a + \left(\frac{n-y}{n}\right)\log(1-a)\]</div>
+<p>where we define the random variable <span class="math">\(Y_n := \sum_{i = 1}^{n} Z_i\)</span>
+as the number of <span class="math">\(1\)</span>s in the sample of size <span class="math">\(n\)</span>, with
 <span class="math">\(y\)</span> denoting a particular realization. The solution of the above
 problem is the <em>maximum likelihood estimator</em> taking the following form</p>
 <div class="math">
@@ -437,7 +467,6 @@ problem is the <em>maximum likelihood estimator</em> taking the following form</
 of relative entropy, the decision rule would be identical to
 <span class="math">\(d_{mle}(z^n)\)</span>. Nonetheless, the two loss funcions can lead to
 very different assessment of the decision rule as will be shown below.</p>
-<hr class="docutils" />
 <p>For comparison, we consider another decision rule, a particular Bayes
 estimator (posterior mean), which takes the following form</p>
 <div class="math">
@@ -453,27 +482,36 @@ likelihood estimator, with possibly different statistical properties.</p>
 <p>In this case the approach that we used to derive the maximum likelihood
 estimator in the coin tossing example leads to the following sample
 analog objective function</p>
+<div class="math">
+\[d_{OLS}(z^n):= \arg\min_{a \in \mathcal{A}}L(P_{n},a) = \arg\min_{\beta_0, \ \beta_1} \sum_{t=1}^n (y_t - \beta_0 - \beta_1\cdot x_t)^2\]</div>
 <p>With a bit of an abuse of notation redefine <span class="math">\(X\)</span> to include the
 constant for the intercept, i.e. <span class="math">\(\mathbf{X} = (\mathbf{1}, x^n)\)</span>.
 Then the solution for the vector of coefficients,
 <span class="math">\(\mathbf{\beta}=(\beta_0, \beta_1)\)</span>, in the ordinary least squares
 regression is given by</p>
+<div class="math">
+\[\hat{\mathbf{\beta}}_{OLS} := (\mathbf{X}^T \mathbf{X})^{-1}\mathbf{X}^T \mathbf{Y}\]</div>
 <p>Hence, after sample <span class="math">\(z^n\)</span>, the decision rule predicts <span class="math">\(y\)</span> as
 an affine function given by <span class="math">\(d_{OLS}(z^n) = \hat{a}_{OLS}\)</span> such
 that</p>
-<hr class="docutils" />
+<div class="math">
+\[\hat{a}_{OLS}(x) := \langle \mathbf{\hat{\beta}}_{OLS}, (1, x) \rangle.\]</div>
 <p>Again, for comparison we consider a Bayesian decision rule where the
 conditional prior distribution of <span class="math">\(\beta\)</span> is distributed as
 <span class="math">\(\beta|\sigma \sim \mathcal{N}(\mu_b, \sigma^2\mathbf{\Lambda_b}^{-1})\)</span>.
 (<span class="math">\(\sigma^2=(1-\rho^2)\sigma_Y^2\)</span> in our joint normal
 specification.) Then the decision rule is given by</p>
+<div class="math">
+\[\hat{\mathbf{\beta}}_{bayes} := (\mathbf{X}^T \mathbf{X} + \mathbf{\Lambda_b})^{-1}(\mathbf{\Lambda_b} \mu_b + \mathbf{X}^T \mathbf{Y})\]</div>
 <p>Hence, decision rule after sample <span class="math">\(z^n\)</span> is an affine function
 given by <span class="math">\(d_{bayes}(z^n) = \hat{a}_{bayes}\)</span> such that</p>
+<div class="math">
+\[\hat{a}_{bayes}(x) := \langle \mathbf{\hat{\beta}}_{bayes}, (1, x) \rangle.\]</div>
 <p>Later we will talk more about Bayes estimators and the idea behind them.</p>
 </div>
 </div>
 <div class="section" id="induced-distributions-over-actions-and-losses">
-<h1>Induced Distributions over Actions and Losses<a class="headerlink" href="#induced-distributions-over-actions-and-losses" title="Permalink to this headline">¶</a></h1>
+<h1>Induced distributions over actions and losses<a class="headerlink" href="#induced-distributions-over-actions-and-losses" title="Permalink to this headline">¶</a></h1>
 <p>For each realization of the sample, <span class="math">\(Z^n = z^n\)</span>, the decision rule
 assigns an action <span class="math">\(d(z^n)\in\mathcal{A}\)</span> which then can be
 evaluated with the loss function <span class="math">\(L(P, d(z^n))\)</span> using a particular
@@ -500,10 +538,14 @@ another is if the probability of being under a certain loss level is
 always greater for one decision rule than the other. For instance, we
 could say that <span class="math">\(d_1\)</span> is a better decision rule than <span class="math">\(d_2\)</span>
 relative to <span class="math">\(\mathcal{H}\)</span> if for all <span class="math">\(P\in\mathcal{H}\)</span></p>
+<div class="math">
+\[P\{z^n: L(P, d_1(z^n)) \leq x\} \geq P\{z^n: L(P, d_2(z^n)) \leq x\} \quad \forall \ x\in\mathbb{R}\]</div>
 <p>which is equivalent to stating that the induced distribution of
 <span class="math">\(d_2\)</span> is first-order stochastically dominating the induced
 distribution of <span class="math">\(d_1\)</span> for every <span class="math">\(P\in\mathcal{H}\)</span>. This, of
 course, implies that</p>
+<div class="math">
+\[\mathbb{E}[L(P, d_1(z^n))] \leq \mathbb{E}[L(P, d_2(z^n))]\]</div>
 <p>where the expectation is taken with respect to the sample distributed
 according to <span class="math">\(P\)</span>.</p>
 <p>In fact, the expected value of the induced loss is the most common
@@ -512,6 +554,8 @@ real line, this measure always gives a single real number which serves
 as a basis of comparison for a given data generating process. The
 expected value of the loss induced by a decision rule is called <strong>the
 risk</strong> of the decision rule and is denoted by</p>
+<div class="math">
+\[R_n(P, d) = \mathbb{E}[L(P, d(z^n))].\]</div>
 <p>This functional now provides a clear and straightforward ordering of
 decision rules so that <span class="math">\(d_1\)</span> is preferred to <span class="math">\(d_2\)</span> for a
 given sample size <span class="math">\(n\)</span>, if
@@ -519,8 +563,9 @@ given sample size <span class="math">\(n\)</span>, if
 <p>The fundamental problem of statistical decision theory is to select a
 decision rule which is optimal in terms of its risk no matter what the
 true underlying <span class="math">\(P\)</span> is. However, as pointed out by Ferguson (1967)</p>
-<p><em>&#8220;situations in which a best decision rule exists are rare and
-uninteresting&#8221;</em> (p. 28).</p>
+<blockquote>
+<div><em>&#8220;situations in which a best decision rule exists are rare and
+uninteresting&#8221;</em> (p. 28).</div></blockquote>
 <p>One might use the concept of admissibility to rule out certain decision
 rules but in most cases this procedure leaves plenty of competing
 options to choose from. Moreover, most commonly used techniques are
@@ -627,20 +672,12 @@ Bernoulli (correct specification) with * <span class="math">\(\theta_0 = 0.79\)<
     <span class="n">loss_quad_mle</span> <span class="o">=</span> <span class="n">quadratic_loss</span><span class="p">(</span><span class="n">theta0</span><span class="p">,</span> <span class="n">decision_rule</span><span class="p">)</span>
     <span class="n">loss_quad_bayes</span> <span class="o">=</span> <span class="n">quadratic_loss</span><span class="p">(</span><span class="n">theta0</span><span class="p">,</span> <span class="n">decision_rule_bayes</span><span class="p">)</span>
 
-    <span class="n">loss_dist_re_mle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule</span><span class="p">,</span>
-                                                  <span class="s2">&quot;relative_entropy&quot;</span><span class="p">,</span>
-                                                  <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_re_mle</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">loss_dist_re_mle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule</span><span class="p">,</span> <span class="s2">&quot;relative_entropy&quot;</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_re_mle</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
     <span class="n">loss_dist_re_mle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">true_dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">loss_dist_re_mle</span><span class="p">,</span> <span class="n">true_dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
-    <span class="n">loss_dist_re_bayes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule_bayes</span><span class="p">,</span>
-                                                    <span class="s2">&quot;relative_entropy&quot;</span><span class="p">,</span>
-                                                    <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_re_bayes</span><span class="p">])</span>
+    <span class="n">loss_dist_re_bayes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule_bayes</span><span class="p">,</span> <span class="s2">&quot;relative_entropy&quot;</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_re_bayes</span><span class="p">])</span>
 
-    <span class="n">loss_dist_quad_mle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule</span><span class="p">,</span>
-                                                  <span class="s2">&quot;quadratic&quot;</span><span class="p">,</span>
-                                                  <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_quad_mle</span><span class="p">])</span>
-    <span class="n">loss_dist_quad_bayes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule_bayes</span><span class="p">,</span>
-                                                    <span class="s2">&quot;quadratic&quot;</span><span class="p">,</span>
-                                                    <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_quad_bayes</span><span class="p">])</span>
+    <span class="n">loss_dist_quad_mle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule</span><span class="p">,</span> <span class="s2">&quot;quadratic&quot;</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_quad_mle</span><span class="p">])</span>
+    <span class="n">loss_dist_quad_bayes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">loss_distribution</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">decision_rule_bayes</span><span class="p">,</span> <span class="s2">&quot;quadratic&quot;</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loss_quad_bayes</span><span class="p">])</span>
 
     <span class="n">risk_re_mle</span> <span class="o">=</span> <span class="n">loss_re_mle</span> <span class="o">@</span> <span class="n">loss_dist_re_mle</span>
     <span class="n">risk_re_bayes</span> <span class="o">=</span> <span class="n">loss_re_bayes</span> <span class="o">@</span> <span class="n">loss_dist_re_bayes</span>
@@ -707,14 +744,14 @@ Bernoulli (correct specification) with * <span class="math">\(\theta_0 = 0.79\)<
     <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">22</span><span class="p">])</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
 
-
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/Statistical_decision_functions_16_0.png" src="../_images/Statistical_decision_functions_16_0.png" />
+<p><strong>NOTE</strong>: we should break this figure into separate pieces and compare the objects using fixed parameter values (no slider)</p>
 </div>
 <div class="section" id="discussion">
-<h2>Discussion:<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
+<h2>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
 <p>Role of the loss function</p>
 <ul class="simple">
 <li>For all sample sizes, the probability mass function of the MLE
@@ -755,26 +792,24 @@ that it flips the ordering of decision rules.</li>
 <div class="section" id="example-cont-induced-distributions-for-linear-regression">
 <h2>Example (cont) - induced distributions for linear regression<a class="headerlink" href="#example-cont-induced-distributions-for-linear-regression" title="Permalink to this headline">¶</a></h2>
 <p>Take the simple case when the data is i.i.d. and</p>
-<ul>
-<li><p class="first"><span class="math">\((Y,X) \sim \mathcal{N}(\mu, \Sigma)\)</span> where</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
+<li><span class="math">\((Y,X) \sim \mathcal{N}(\mu, \Sigma)\)</span> where<ul>
 <li><span class="math">\(\mu = (1, 3)\)</span></li>
 <li><span class="math">\(\Sigma = \begin{bmatrix} 4 &amp; 1 \\ 1 &amp; 8 \end{bmatrix}\)</span></li>
 </ul>
-</div></blockquote>
 </li>
-<li><p class="first"><span class="math">\(n=50\)</span></p>
-</li>
+<li><span class="math">\(n=50\)</span></li>
 </ul>
 <p>In this case the optimal regression function is affine (correct
 specification) and the coefficients are given by</p>
+<div class="math">
+\[\begin{split}\beta_0 &amp;= \mu_Y - \rho\frac{\sigma_Y}{\sigma_X}\mu_X = 1 - \frac{1}{8} 3 = -0.625 \\
+\beta_1 &amp;= \rho\frac{\sigma_Y}{\sigma_X} = \frac{1}{8} = 0.125\end{split}\]</div>
 <p>For the Bayes estimator consider</p>
 <blockquote>
 <div><ul class="simple">
 <li>the prior mean being <span class="math">\(\mu_b = (2, 2)\)</span></li>
-<li>the precision matrix being
-<span class="math">\(\Lambda_b = \begin{bmatrix} 6 &amp; -3 \\ -3 &amp; 6 \end{bmatrix}\)</span></li>
+<li>the precision matrix being <span class="math">\(\Lambda_b = \begin{bmatrix} 6 &amp; -3 \\ -3 &amp; 6 \end{bmatrix}\)</span></li>
 </ul>
 </div></blockquote>
 <p>With the given specification we can simulate the induced distributions
@@ -843,20 +878,20 @@ over actions and over losses.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">B_OLS</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">B_OLS</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_0$&quot;</span><span class="p">,</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_1$&quot;</span><span class="p">])</span>
 <span class="n">B_bayes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">B_bayes</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_0$&quot;</span><span class="p">,</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_1$&quot;</span><span class="p">])</span>
 
-<span class="n">g1</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_0$&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_1$&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">B_OLS</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">g1</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_0$&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_1$&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">B_OLS</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="p">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">g1</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">mu</span><span class="p">[</span><span class="mi">1</span><span class="p">]],[</span><span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;best in class&#39;</span><span class="p">)</span>
 <span class="n">g1</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">r&#39;$\beta_0$&#39;</span><span class="p">,</span> <span class="s1">r&#39;$\beta_1$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
 <span class="n">g1</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribution over the action space -- OLS&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.08</span><span class="p">)</span>
 
-<span class="n">g2</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_0$&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_1$&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">B_bayes</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">g2</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_0$&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">beta_1$&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">B_bayes</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="p">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">g2</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">mu</span><span class="p">[</span><span class="mi">1</span><span class="p">]],[</span><span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;best in class&#39;</span><span class="p">)</span>
 <span class="n">g2</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="s1">r&#39;$\beta_0$&#39;</span><span class="p">,</span> <span class="s1">r&#39;$\beta_1$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
 <span class="n">g2</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribution over the action space -- Bayes&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.08</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/Statistical_decision_functions_20_0.png" src="../_images/Statistical_decision_functions_20_0.png" />
-<img alt="../_images/Statistical_decision_functions_20_1.png" src="../_images/Statistical_decision_functions_20_1.png" />
+<a class="reference internal image-reference" href="../_images/Statistical_decision_functions_20_0.png"><img alt="../_images/Statistical_decision_functions_20_0.png" src="../_images/Statistical_decision_functions_20_0.png" style="width: 423.3px; height: 468.34999999999997px;" /></a>
+<a class="reference internal image-reference" href="../_images/Statistical_decision_functions_20_1.png"><img alt="../_images/Statistical_decision_functions_20_1.png" src="../_images/Statistical_decision_functions_20_1.png" style="width: 423.3px; height: 468.34999999999997px;" /></a>
 <p>The best in class action in the normal case is the affine function with
 coefficients <span class="math">\((\beta_0, \beta_1) = (-.625, .125)\)</span>. This action is
 depicted by a red dot on the graphs above. We can compute the
@@ -982,6 +1017,8 @@ approximation of the regression function is completely well defined.</p>
 <p>One could measure this approximation error via the loss function without
 introducing the inference problem. The <strong>approximation error</strong>
 quantified via the loss is given by</p>
+<div class="math">
+\[\min_{a\in\mathcal{A}} L(P,a) - L(P, \gamma(P)) \quad\quad (2)\]</div>
 <p>This naturally leads to a dilemma regarding the &#8220;size&#8221; of the action
 space. In principle, with a relatively rich <span class="math">\(\mathcal{A}\)</span>, we can
 get closer to the truth by making the the difference in (2) small.
@@ -998,6 +1035,8 @@ sample sizes that misspecification concerns become secondary.</p>
 from classical statistics. To see this, decompose the excessive risk of
 a decision rule <span class="math">\(d\)</span> for a given sample size <span class="math">\(n\)</span> (relative to
 the value of loss at the truth) as</p>
+<div class="math">
+\[R_n(P, d) - L\left(P, \gamma(P) \right) = \underbrace{R_n(P, d) - L\left(P, a^{*}_{L,P, \mathcal{A}}\right)}_{\text{estimation error}} + \underbrace{L\left(P, a^{*}_{L, P, \mathcal{A}}\right)- L\left(P, \gamma(P)\right)}_{\text{approximation error}}\]</div>
 <p>The <strong>estimation error</strong> stems from the fact that we do not know
 <span class="math">\(P\)</span>, so we have to use a finite sample to approximate the best
 in-class action. The second term, which is not influenced by any random
@@ -1010,6 +1049,8 @@ through changing the action space <span class="math">\(\mathcal{A}\)</span>. If
 small, while the bias (approximation error) is large, leading to
 underfitting. On the other hand, with a rich <span class="math">\(\mathcal{A}\)</span>, the
 estimation error might get &#8220;too&#8221; large, implying overfitting.</p>
+<div class="section" id="a-warning">
+<h2>A warning<a class="headerlink" href="#a-warning" title="Permalink to this headline">¶</a></h2>
 <p>The introduced notion of misspecification is a <em>statistical</em> one. From a
 modeler&#8217;s point of view, a natural question to ask is to what extent
 misspecification affects the economic interpretation of the parameters
@@ -1024,9 +1065,10 @@ deliver here, but it is worth keeping in mind the list of very strong
 assumptions necessary to give well-defined meaning to the parameters
 that we seek to estimate. An interesting discussion can be found in
 Chapter 4 of White (1994).</p>
-<hr class="docutils" />
+</div>
+</div>
 <div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
 <p>Breiman, Leo (1969). Probability and Stochastic Processes: With a View
 Towards Applications. Houghton Mifflin</p>
 <p>Ferguson, Thomas S. (1967). Mathematical Statistics: A Decision
@@ -1037,7 +1079,6 @@ North-Holland, Amsterdam.</p>
 <p>White, Halbert (1994), Estimation, Inference and Specification Analysis
 (Econometric Society Monographs). Cambridge University Press</p>
 </div>
-</div>
 
 
           </div>
@@ -1047,18 +1088,21 @@ North-Holland, Amsterdam.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Estimators as Statistical Decision Functions</a><ul>
-<li><a class="reference internal" href="#to-do-add-notations">TO DO: Add Notations</a></li>
+<li><a class="reference internal" href="#">Estimators as Statistical Decision Functions</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#stationarity-and-statistical-models">Stationarity and statistical models</a><ul>
+<li><a class="reference internal" href="#dependence">Dependence</a></li>
+<li><a class="reference internal" href="#true-data-generating-mechanism">True data generating mechanism</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#primitives-of-the-problem">Primitives of the problem</a><ul>
 <li><a class="reference internal" href="#examples">Examples</a></li>
 <li><a class="reference internal" href="#best-in-class-action">Best in-class action</a></li>
-<li><a class="reference internal" href="#features">Features</a><ul>
+<li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#example-coin-tossing">Example - Coin tossing</a></li>
 <li><a class="reference internal" href="#example-linear-regression-function">Example - Linear regression function</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#statistical-decision-functions">Statistical Decision Functions</a><ul>
@@ -1066,25 +1110,25 @@ North-Holland, Amsterdam.</p>
 <li><a class="reference internal" href="#example-cont-estimator-for-linear-regression-function">Example (cont) - estimator for linear regression function</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#induced-distributions-over-actions-and-losses">Induced Distributions over Actions and Losses</a><ul>
+<li><a class="reference internal" href="#induced-distributions-over-actions-and-losses">Induced distributions over actions and losses</a><ul>
 <li><a class="reference internal" href="#evaluating-decision-functions">Evaluating Decision Functions</a></li>
 <li><a class="reference internal" href="#example-cont-induced-distributions-for-coin-tossing">Example (cont) - induced distributions for coin tossing</a></li>
-<li><a class="reference internal" href="#discussion">Discussion:</a></li>
+<li><a class="reference internal" href="#discussion">Discussion</a></li>
 <li><a class="reference internal" href="#example-cont-induced-distributions-for-linear-regression">Example (cont) - induced distributions for linear regression</a></li>
 <li><a class="reference internal" href="#id1">Discussion</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#misspecification-and-the-bias-variance-dilemma">Misspecification and the bias-variance dilemma</a><ul>
-<li><a class="reference internal" href="#references">References</a></li>
+<li><a class="reference internal" href="#a-warning">A warning</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#references">References</a></li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../index.html" title="previous chapter">Welcome to econometrics&#8217;s documentation!</a></li>
-      <li>Next: <a href="../Notebook_02_Asymptotics/asymptotic_analysis_text.html" title="next chapter">Asymptotic analysis and consistency</a></li>
   </ul></li>
 </ul>
 </div>
@@ -1098,8 +1142,8 @@ North-Holland, Amsterdam.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1113,8 +1157,8 @@ North-Holland, Amsterdam.</p>
       &copy;2016, Daniel Csaba, Balint Szoke.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="../_sources/Notebook_01_Wald/Statistical_decision_functions.txt"

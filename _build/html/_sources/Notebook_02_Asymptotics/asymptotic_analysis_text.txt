@@ -49,7 +49,6 @@ concentrate around the true value, which, due to the correct
 specification is equivalent to the best in class action.
 
 .. image:: ./asymptotic_cointoss_consistency.png
-   :alt: 
 
 This property of the decision rule is called **consistency**. One of the
 main objectives of this notebook is to investigate the conditions under
@@ -257,8 +256,7 @@ This notion is called the **uniform law of large numbers** referring to
 the fact that the convergence is guaranteed simultaneously for all
 actions in :math:`\mathcal{A}`.
 
-.. figure:: ./asymptotic_cointoss_tail.png
-   :alt: 
+.. image:: ./asymptotic_cointoss_tail.png
 
 A special case -- plug-in estimators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -494,8 +492,7 @@ Note that for :math:`q = 2`, this form delivers the Chebyshev inequality
 probabilities is quite general. Controlling higher order moments leads
 to (weakly) tighter bounds on the tail probabilities.
 
-.. figure:: ./asymptotic_markov_chebyshev.png
-   :alt: 
+.. image:: ./asymptotic_markov_chebyshev.png
 
 Chernoff bounds
 ~~~~~~~~~~~~~~~
@@ -647,9 +644,6 @@ Below we see how the Rademacher compexity of
 grows to infinity.
 
 .. image:: ./asymptotic_rademacher_cointoss.png
-   :width: 640
-   :height: 410
-   :align: center
 
 Sinusoid classification
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -667,11 +661,7 @@ Rademacher complexity for a fixed realization of the sample,
 classifier we are selecting the sample at convenient points. This is
 without loss of generality and useful for illustrative purposes.
 
-.. image:: ./asymptotic_rademacher_sinusoid.png 
-   :width: 640
-   :height: 410
-   :align: center
-
+.. image:: ./asymptotic_rademacher_sinusoid.png
 
 As we can see, by choosing a sufficiently high frequency we can always
 find a curve which classifies the data perfectly. Consequently, the
@@ -749,7 +739,7 @@ University Press.
 White, Halbert (1994), Estimation, Inference and Specification Analysis
 (Econometric Society Monographs). Cambridge University Press.
 
----------
+The code for the simulations and producing the graphs is found
+`here <./asymptotic_analysis_code.ipynb>`__.
 
-The code for the simulations and generating the graphs can be found  `here.
-<https://github.com/QuantEcon/econometrics/blob/master/_build/html/Notebook_02_Asymptotics/asymptotic_analysis_code.html>`_.
+.. include:: ./asymptotic_analysis_code.rst
