@@ -12,6 +12,8 @@ Contents:
    :maxdepth: 2
 
    Notebook_01_wald/statistical_decision_functions_text.rst
+   Notebook_02_asymptotics/asymptotic_analysis_text.rst
+   Notebook_03_finite/finite_text.rst
    
 
 Indices and tables
