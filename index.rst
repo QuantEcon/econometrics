@@ -11,8 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   Notebook_01_Wald/statistical_decision_functions_text.rst
-   Notebook_02_Asymptotics/asymptotic_analysis_text.rst
+   Notebook_01_wald/statistical_decision_functions_text.rst
+   
 
 Indices and tables
 ==================
