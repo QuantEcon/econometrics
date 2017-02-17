@@ -1,0 +1,973 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Estimators as Statistical Decision Functions &#8212; econometrics 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="econometrics 0.1 documentation" href="../index.html" />
+    <link rel="prev" title="Welcome to econometrics’s documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="estimators-as-statistical-decision-functions">
+<h1>Estimators as Statistical Decision Functions<a class="headerlink" href="#estimators-as-statistical-decision-functions" title="Permalink to this headline">¶</a></h1>
+<p><strong>Date: February 2017</strong></p>
+<p>In this notebook we discuss some key concepts of statistical decision
+theory in order to provide a general framework for the comparison of
+alternative estimators based on their finite sample performance.</p>
+<ul class="simple">
+<li>The primitive object is a statistical decision problem containing a
+loss function, an action space, and a set of assumed statistical
+models. We present estimation problems familiar from econometrics as
+special cases of statistical decision problems. The common framework
+helps highlighting similarities and differences.</li>
+<li>We compare estimators based on their (finite sample) risk, where risk
+is derived from an unknown true data generating mechanism.</li>
+<li>We present some straightforward examples to illustrate the main
+ideas.</li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="notation">
+<h2>Notation<a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math">\(\mathbb{R}\)</span> and <span class="math">\(\mathbb{Z}\)</span> denote the space of reals
+and integers, respectively. <span class="math">\(\mathbb{R}_+\)</span> is the space of
+nonnegative real numbers. We use the notation <span class="math">\(X^Y\)</span> for a function
+space that consists of functions mapping from the space <span class="math">\(Y\)</span> into
+the space <span class="math">\(X\)</span>. As a result, <span class="math">\(\mathbb{R}^{d\mathbb{Z}}\)</span>
+denotes the space of sequences made up of <span class="math">\(d\)</span>-dimensional real
+numbers, while <span class="math">\(\mathbb R^{Z}_+\)</span> denotes the set of functions
+mapping from the range of (random) variable <span class="math">\(Z\)</span> to the space of
+nonnegative reals.</p>
+<p>Let <span class="math">\(Z_t\)</span> be a <span class="math">\(d\)</span>-dimensional random vector representing
+the value that the <span class="math">\(d\)</span> observables take at period <span class="math">\(t\)</span>. The
+stochastic process <span class="math">\(\{Z_t\}_{t\in\mathbb Z}\)</span> is denoted by
+<span class="math">\(Z^{\infty}\)</span>, the partial history including <span class="math">\(n\)</span> consecutive
+elements of <span class="math">\(Z^{\infty}\)</span> is
+<span class="math">\(Z^{n}:=\{Z_1, Z_2, \dots, Z_n\}\)</span>. Small letters stand for
+realizations of random variables, hence <span class="math">\(z^{\infty}\)</span>, <span class="math">\(z^n\)</span>
+and <span class="math">\(z\)</span> represent the realization of the stochastic process, the
+sample and a single observation, respectively.</p>
+<p>We use capital letters for distributions, small letter counterparts
+denote the associated densities. For example, we use the generic
+<span class="math">\(Q\)</span> notation for ergodic distributions, <span class="math">\(q\)</span> for the
+corresponding density and <span class="math">\(q(\cdot|\cdot)\)</span> for the conditional
+density. Caligraphic letters are used to denote sets:</p>
+<ul class="simple">
+<li><span class="math">\(\mathcal{P}\)</span> &#8211; the set of <em>strictly stationary</em> probability
+distributions over the observables</li>
+<li><span class="math">\(\mathcal{Q}\subset \mathcal{P}\)</span> &#8211; the set of <em>ergodic</em>
+distributions (statistical models) over the observables</li>
+<li><span class="math">\(\mathcal{F}\)</span> &#8211; <em>admissible space</em>: abstract function space
+including all functions for which the loss function is well defined</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="stationarity-and-statistical-models">
+<h3>Stationarity and statistical models<a class="headerlink" href="#stationarity-and-statistical-models" title="Permalink to this headline">¶</a></h3>
+<p>We model data as a partial realization of a stochastic process
+<span class="math">\(Z^{\infty}\)</span> taking values in <span class="math">\(\mathbb{R}^{d}\)</span>. Denote a
+particular realization as
+<span class="math">\(z^{\infty} \in \mathbb{R}^{k\mathbb{Z}}\)</span> and let the partial
+history <span class="math">\(z^{n}\)</span> containing <span class="math">\(n\)</span> consecutive elements of the
+realization be the <em>sample</em> of size <span class="math">\(n\)</span>. We assume that there
+exists a core mechanism undelying this process that describes the
+relationship among the elements of the vector <span class="math">\(Z\)</span>. Our aim is to
+draw inference about this mechanism after observing a single partial
+realization <span class="math">\(z^{n}\)</span>.</p>
+<p>How is this possible without being able to draw different samples under
+the exact same conditions? Following the exposition of <a class="reference internal" href="#breiman-1969" id="id1">[Breiman-1969]</a> fruitful approach is to assume that the underlying mechanism is time invariant with the stochastic process being
+strictly stationary and study its statistical properties by taking
+long-run time averages of the realization <span class="math">\(z^{\infty}\)</span> (or
+functions thereof), e.g.</p>
+<div class="math">
+\[\lim_{n\to \infty}\frac{1}{n}\sum_{t = 1}^{n} z_t\quad\quad \lim_{n\to \infty}\frac{1}{n} \sum_{t = 1}^{n} z^2_t\quad\quad \lim_{n\to \infty}\frac{1}{n}\sum_{t = k}^{n+k} z_{t}z_{t-k}\]</div>
+<p>Since the mechanism is assumed to be stable over time, it does not
+matter when we start observing the process.</p>
+<p>Notice, however, that strictly speaking these time averages are
+properties of the particular realization, the extent to which they can
+be generalized to the mechanism itself is not obvious. To address this
+question, it is illuminating to bundle realizations that share certain
+statistical properties together in order to construct a universe of
+(counterfactual) alternative <span class="math">\(z^{\infty}\)</span>-s, the so called
+<em>ensemble</em>. Statistical properties of the data generating mechanism can
+be summarized by assigning probabilities to (sets of) these
+<span class="math">\(z^{\infty}\)</span>-s in an internally consistent manner. These
+considerations lead to the idea of statistical models.</p>
+<p><strong>Statistical models</strong> are probability distributions over sequences
+<span class="math">\(z^{\infty}\)</span> that assign probabilities so that the unconditional
+moments are consistent with the associated long-run time averages. In
+other words, with statistical models the time series and ensemble
+averages coincide, which is the property known as <strong>ergodicity</strong>.
+Roughly speaking, ergodicity allows us to learn about the ensemble
+dimension by using a <em>single</em> realization <span class="math">\(z^{\infty}\)</span>.</p>
+</div>
+<div class="section" id="dependence">
+<h3>Dependence<a class="headerlink" href="#dependence" title="Permalink to this headline">¶</a></h3>
+<p>In reality, being endowed only with a partial history of
+<span class="math">\(z^{\infty}\)</span>, we cannot calculate the exact log-run time averages.
+By imposing more structure on the problem and having a sufficiently
+large sample, however, we can obtain reasonable approximations. To this
+end, we need to assume some form of weak independence (&#8220;mixing&#8221;), or
+more precisely, the property that on average, the dependence between the
+elements of <span class="math">\(\{Z_t\}_{t\in\mathbb{Z}}\)</span> dies out as we increase the
+gap between them.</p>
+<p>Consequently, if we observe a <em>long</em> segment of <span class="math">\(z^{\infty}\)</span> and
+cut it up into shorter consecutive pieces, say of length <span class="math">\(l\)</span>,
+then, we might consider these pieces (provided that <span class="math">\(l\)</span> is &#8220;large
+enough&#8221;) as nearly independent records from the distribution of the
+<span class="math">\(l\)</span>-block, <span class="math">\(Z^l\)</span>. To clarify this point, consider a
+statistical model <span class="math">\(Q_{Z^{\infty}}\)</span> (joint distribution over
+sequences <span class="math">\(z^{\infty}\)</span>) with density function
+<span class="math">\(q_{z^{\infty}}\)</span> and denote the implied density of the sample as
+<span class="math">\(q_{n}\)</span>. Note that because of strict stationarity, it is enough to
+use the number of consecutive elements as indices. Under general
+regularity conditions we can decompose this density as</p>
+<div class="math">
+\[q_{n}\left(z^n\right) = q_{n-1}\left(z_n | z^{n-1}\right)q_{n-1}\left(z^{n-1}\right) = q_{n-1}\left(z_n | z^{n-1}\right)q_{n-2}\left(z_{n-1}|z^{n-2}\right)\dots q_{1}\left(z_{2}|z_1\right)q_{1}\left(z_1\right)\]</div>
+<p>For simplicity, we assume that the stochastic process is Markov so that
+the partial histories <span class="math">\(z^{i}\)</span> for <span class="math">\(i=1,\dots, n-1\)</span> in the
+conditioning sets can be replaced by the &#8220;right&#8221; number of lags
+<span class="math">\(z^{n-1}_{n-l}\)</span> and we can drop the subindex from the conditional
+densties</p>
+<div class="math">
+\[q_{n}(z^n) = q(z_n | z^{n-1}_{n-1-l})q(z_{n-1}|z^{n-2}_{n-2-l})\dots q(z_{l+1}|z_{1}^{l})q_{l}(z^l) \quad\quad\quad (1)\]</div>
+<p>This assumption is much stronger than what we really need. First, it
+suffices to require the existence of a history-dependent latent state
+variable similar to the Kalman filter. Moreover, we could also relax the
+Markov assumption and allow for dependence that dies out only
+asymptotically. In practice, however, we often have a stong view about
+the dependency structure, or at least we are willing to use economic
+theory to guide our choice of <span class="math">\(l\)</span>. In these cases we almost always
+assume a Markovian structure. For simplicity, in these lectures, unless
+otherwise stated, we will restrict ourselves to the family of Markov
+processes.</p>
+<p>This assumption allows us to learn about the underlying mechanism
+<span class="math">\(Q_{Z^{\infty}}\)</span> via its <span class="math">\(l+1\)</span>-period building blocks. Once
+we determine the (ensemble) distribution of the block,
+<span class="math">\(Q_{Z^{[l+1]}}\)</span>, we can &#8220;build up&#8221; <span class="math">\(Q_{Z^{\infty}}\)</span> from
+these blocks by using a formula similar to (1). Having said that the
+block distribution <span class="math">\(Q_{Z^{[l+1]}}\)</span> carries the same information as
+<span class="math">\(Q_{Z^{\infty}}\)</span>. Therefore, from now on, we define <span class="math">\(Z\)</span> as
+the minimal block we need to know and treat it as an <strong>observation</strong>.
+Statistical models can be represented by their predictions about the
+ensemble distribution <span class="math">\(P\)</span> of this observable.</p>
+</div>
+<div class="section" id="true-data-generating-process">
+<h3>True data generating process<a class="headerlink" href="#true-data-generating-process" title="Permalink to this headline">¶</a></h3>
+<p>We assume that the mechanism underlying <span class="math">\(Z^{\infty}\)</span> can be
+represented with a statistical model <span class="math">\(P\)</span> and it is called <strong>true
+data generating process (DGP)</strong>. We seek to learn about the features of
+this model from the observed data.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="primitives-of-the-problem">
+<h2>Primitives of the problem<a class="headerlink" href="#primitives-of-the-problem" title="Permalink to this headline">¶</a></h2>
+<p>Following <a class="reference internal" href="#wald-1950" id="id2">[Wald-1950]</a> every statistical decision problem that we will consider can be
+represented with a triple <span class="math">\((\mathcal{H}, \mathcal{A}, L)\)</span>, where</p>
+<ol class="arabic">
+<li><p class="first"><strong>Assumed statistical models</strong>,
+<span class="math">\(\mathcal{H}\subseteq \mathcal{Q} \subset \mathcal{P}\)</span></p>
+<p><span class="math">\(\mathcal{H}\)</span> is a collection of ergodic probability measures
+over the observed data, which captures our <em>maintained assumptions</em>
+about the mechanism underlying <span class="math">\(Z^{\infty}\)</span>. The set of all
+ergodic distributions <span class="math">\(\mathcal{Q}\)</span> is a strict subset of
+<span class="math">\(\mathcal{P}\)</span>&#8211;the space of strictly stationary probability
+distributions over the observed data. In fact, the set of ergodic
+distributions, <span class="math">\(\mathcal{Q}\)</span>, constitute the extremum points of
+the set <span class="math">\(mathcal{P}\)</span>. Ergodicity implies that with infinite
+data we could single out one element from <span class="math">\(\mathcal{H}\)</span>.</p>
+</li>
+<li><p class="first"><strong>Action space</strong>, <span class="math">\(\mathcal{A}\subseteq \mathcal{F}\)</span></p>
+<p>The set of allowable actions. It is an abstract set embodying our
+proposed <em>specification</em> by which we aim to capture features of the
+true data generating mechanism. It is a subset of
+<span class="math">\(\mathcal{F}\)</span>&#8211;the largest possible set of functions for which
+the loss function (see below) is well defined.</p>
+</li>
+<li><p class="first"><strong>Loss function</strong>
+<span class="math">\(L: \mathcal{P}\times \mathcal{F} \mapsto \mathbb{R}_+\)</span></p>
+<p>The loss function measures the performance of alternative actions
+<span class="math">\(a\in \mathcal{F}\)</span> under a given distribution
+<span class="math">\(P\in \mathcal{P}\)</span>. In principle, <span class="math">\(L\)</span> measures the
+distance between distributions in <span class="math">\(\mathcal{P}\)</span> along
+particular dimensions determined by features of the data generating
+mechanism that we are interested in. By assigning zero distance to
+models that share a particular set of features (e.g. conditional
+expectation, set of moments, etc.), the loss function can &#8216;determine&#8217;
+the relevant features of the problem.</p>
+</li>
+</ol>
+<p>Given the assumed statistical models, we can restrict the domain of the
+loss function without loss in generality such that,
+<span class="math">\(L: \mathcal{H}\times\mathcal{A}\mapsto\mathbb{R}_+\)</span>.</p>
+<hr class="docutils" />
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p><strong>Quadratic loss:</strong></p>
+<p>The most commonly used loss function is the quadratic</p>
+<div class="math">
+\[L(P, a) = \int \lVert z - a \rVert^2\mathrm{d}P(z)\]</div>
+<p>where the admissible space is
+<span class="math">\(\mathcal{F}\subseteq \mathbb{R}^{k}\)</span>. Another important case is
+when we can write <span class="math">\(Z = (Y, X)\)</span>, where <span class="math">\(Y\)</span> is univariate and
+the loss function is</p>
+<div class="math">
+\[L(P, a) = \int (y - a(x))^2\mathrm{d}P(y, z)\]</div>
+<p>and the admissible space <span class="math">\(\mathcal{F}\)</span> contains all square
+integrable real functions of <span class="math">\(X\)</span>.</p>
+<p><strong>Relative entropy loss:</strong></p>
+<p>When we specificy a whole distribution and are willing to approximate
+<span class="math">\(P\)</span>, one useful measure for comparison of distributions is the
+Kullback-Leibler divergence, or relative entropy</p>
+<div class="math">
+\[L(P, a) = - \int \log \frac{p}{a}(z) \mathrm{d}P(z)\]</div>
+<p>in which case the admissible space is the set of distributions which
+have a density (w.r.t. the Lebesgue measure)
+<span class="math">\(\mathcal{F} = \{a: Z \mapsto \mathbb{R}_+ : \int a(z)\mathrm{d}z=1\}\)</span>.</p>
+<p><strong>Generalized Method of Moments:</strong></p>
+<p>Following the exposition of <a class="reference internal" href="#manski-1988" id="id3">[Manski-1988]</a>, many
+econometric problems can be cast as solving the equation
+<span class="math">\(T(P, \theta) = \mathbf{0}\)</span> in the parameter <span class="math">\(\theta\)</span>, for a
+given function <span class="math">\(T: \mathcal{P}\times\Theta \mapsto \mathbb{R}^m\)</span>
+with <span class="math">\(\Theta\)</span> being the parameter space. By expressing estimation
+problems in terms of unconditional moment restrictions, for example, we
+can write
+<span class="math">\(T(P, \theta) = \int g(z; \theta)\mathrm{d}P(z) = \mathbf{0}\)</span> for
+some function <span class="math">\(g\)</span>. Taking an <em>origin-preserving continuous
+transformation</em> <span class="math">\(r:\mathbb{R}^m \mapsto \mathbb{R}_+\)</span> so that</p>
+<div class="math">
+\[T(P, \theta) = \mathbf{0} \iff r(T)=0\]</div>
+<p>we can present the problem in terms of minimizing a particular loss
+function. Define the admissible space as <span class="math">\(\mathcal{F} = \Theta\)</span>,
+then the method of moment estimator minimizes the loss
+<span class="math">\(L(P, \theta) = r\circ T(P, \theta)\)</span>. The most common form of
+<span class="math">\(L\)</span> is</p>
+<div class="math">
+\[L(P, \theta) = \left[\int g(z; \theta)\mathrm{d}P(z)\right]' W \left[\int g(z; \theta)\mathrm{d}P(z)\right]\]</div>
+<p>where <span class="math">\(W\)</span> is a <span class="math">\(m\times m\)</span> positive-definite weighting
+matrix.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="features-and-the-best-in-class-action">
+<h3>Features and the best-in-class action<a class="headerlink" href="#features-and-the-best-in-class-action" title="Permalink to this headline">¶</a></h3>
+<p>By using a loss function, we acknowledge that learning about the true
+mechanism might be too ambitious, so we better focus our attention only
+on certain features of it and try to approximate those with our
+specification. The loss function expresses our assessment about the
+importance of different features and about the penalty used to punish
+deviations from the true features. We define the <strong>feature functional</strong>
+<span class="math">\(\gamma: \mathcal{P}\mapsto \mathcal{F}\)</span> by the following
+optimization over the admissible space <span class="math">\(\mathcal{F}\)</span></p>
+<div class="math">
+\[\gamma(P) := \arg\min_{a \in \mathcal{F}} \ L(P,a)\]</div>
+<p>and say that <span class="math">\(\gamma(P)\)</span> captures the features of <span class="math">\(P\)</span> that
+we wish to learn about. It follows that by changing <span class="math">\(L\)</span> we are
+effectively changing the features of interest.</p>
+<p>If one knew the data generating process, there would be no need for
+statistical inference. What makes the problem statistical is that the
+distribution <span class="math">\(P\)</span> describing the environment is unknown. The
+statistician must base her action on the available data, which is a
+partial realization of the underlying data generating mechanism. As we
+will see, this lack of information implies that for statistical
+inference the whole admissible space <span class="math">\(\mathcal F\)</span> is almost always
+&#8220;too large&#8221;. As a result, one typically looks for an approximation in a
+restricted action space <span class="math">\(\mathcal{A}\subsetneq \mathcal{F}\)</span>, for
+which we define the <strong>best-in-class action</strong> as follows</p>
+<div class="math">
+\[a^*_{L,\ P,\ \mathcal{A}} := \arg\min_{a \in \mathcal{A}} \ L(P,a).\]</div>
+<p>Whith a restricted action space, this best-in-class action might differ
+from the true feature <span class="math">\(\gamma(P)\)</span>. We can summarize this scenario
+compactly by <span class="math">\(\gamma(P)\notin \mathcal{A}\)</span> and saying that our
+specification embodied by <span class="math">\(\mathcal{A}\)</span> is <strong>misspecified</strong>.
+Naturally, in such cases properties of the loss function become crucial
+by specifying the nature of punishments used to weight deviations from
+<span class="math">\(\gamma(P)\)</span>. We will talk more about misspecification in the
+following sections. A couple of examples should help clarifying the
+introduced concepts.</p>
+<ul class="simple">
+<li><strong>Conditional expectation &#8211; regression function estimation</strong>
+Consider the quadratic loss function over the domain of all
+square integrable functions <span class="math">\(L^2(X, \mathbb{R})\)</span> and let
+<span class="math">\(Z = (Y, X)\)</span>, where <span class="math">\(Y\)</span> is a scalar. The
+corresponding feature is</li>
+</ul>
+<div class="math">
+\[\gamma(P) = \mathbb{E}[Y|X] = \arg\min_{a \in L^2(X)} \int\limits_{(Y,X)} (y - a(x))^2\mathrm{d}P(y, x)\]</div>
+<p>If the action space <span class="math">\(\mathcal{A}\)</span> does not include all square
+integrable functions, but only the set of affine functions, the best
+in class action, i.e., the linear projection of <span class="math">\(Y\)</span> to the
+space spanned by <span class="math">\(X\)</span>, will be different from <span class="math">\(\gamma(P)\)</span>
+in general. In other words, the linear specification for the
+conditional expectation <span class="math">\(Y|X\)</span> is misspecified.</p>
+<ul class="simple">
+<li><strong>Density function estimation</strong> Consider the Kullback-Leibler
+distance over the set of distributions with existing density
+functions. Denote this set by <span class="math">\(D_Z\)</span>. Given that the true
+<span class="math">\(P\in D_Z\)</span>, the corresponding feature is</li>
+</ul>
+<div class="math">
+\[\gamma(P) = \arg\min_{a \in D_Z} \int\limits_{Z}\log\left(\frac{p(z)}{a(z)}\right) \mathrm{d}P(z)\]</div>
+<p>which provides the density <span class="math">\(p\in\mathbb{R}_+^Z\)</span> such that
+<span class="math">\(\int p(z)\mathrm{d}z =1\)</span> and for any sensible set
+<span class="math">\(B\subseteq \mathbb{R}^k\)</span>,
+<span class="math">\(\int_B p(z)\mathrm{d}z = P(B)\)</span>. If the action space
+<span class="math">\(\mathcal{A}\)</span> is only a parametric subset of <span class="math">\(D_Z\)</span>, the
+best in class action will be the best approximation in terms of
+KLIC. For an extensive treatment see <a class="reference internal" href="#white-1994" id="id4">[White-1994]</a>.</p>
+</div>
+<div class="section" id="statistical-models-vs-specifications">
+<h3>Statistical models vs. specifications<a class="headerlink" href="#statistical-models-vs-specifications" title="Permalink to this headline">¶</a></h3>
+<p>An important aspect of the statistical decision problem is the
+relationship between <span class="math">\(\mathcal{H}\)</span> and <span class="math">\(\mathcal{A}\)</span>. Our
+<em>maintained assumptions</em> about the mechanism are embodied in
+<span class="math">\(\mathcal{H}\)</span>, so a natural attitude is to be as agnostic as
+possible about <span class="math">\(\mathcal{H}\)</span> in order to avoid incredible
+assumptions. Once we determined <span class="math">\(\mathcal{H}\)</span>, the next step is to
+choose the specification, that is the action space <span class="math">\(\mathcal{A}\)</span>.</p>
+<ul class="simple">
+<li>One approach is to tie <span class="math">\(\mathcal{H}\)</span> and <span class="math">\(\mathcal{A}\)</span>
+together. For example, the assumptions of the standard linear
+regression model outline the distributions contained in
+<span class="math">\(\mathcal{H}\)</span> (normal with zero mean and homoscedasticity), for
+which the natural action space is the space of affine functions.</li>
+<li>On the other hand, many approaches explicitly disentangle
+<span class="math">\(\mathcal{A}\)</span> from <span class="math">\(\mathcal{H}\)</span> and try to be agnostic
+about the maintained assumptions <span class="math">\(\mathcal{H}\)</span> and rather
+impose restrictions on the action space <span class="math">\(\mathcal{A}\)</span>. At the
+cost of giving up some potentially undominated actions this approach
+can largely influence the success of the inference problem in finite
+samples.</li>
+</ul>
+<p>By choosing an action space not being tied to the set of assumed
+statistical models, the statistician inherently introduces a possibility
+of misspecification &#8211; for some statistical models there could be an
+action outside of the action space which would fare better than any
+other action within <span class="math">\(\mathcal{A}\)</span>. However, coarsening the action
+space in this manner has the benefit of restricting the variability of
+estimated actions arising from the randomness of the sample.</p>
+<p>In this case, the best-in-class action has a special role, namely, it
+minimizes the &#8220;distance&#8221; between <span class="math">\(\mathcal{A}\)</span> and the true
+feature <span class="math">\(\gamma(\mathcal A)\)</span>, thus measuring the benchmark bias
+stemming from restricting <span class="math">\(\mathcal{A}\)</span>.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-coin-tossing">
+<h2>Example - Coin tossing<a class="headerlink" href="#example-coin-tossing" title="Permalink to this headline">¶</a></h2>
+<p>The observable is a binary variable <span class="math">\(Z\in\{0, 1\}\)</span> generated by
+some statistical model. One might approach this problem by using the
+following triple</p>
+<ul class="simple">
+<li><em>Assumed statistical models</em>, <span class="math">\(\mathcal{H}\)</span>:<ul>
+<li><span class="math">\(Z\)</span> is generated by an i.i.d. Bernoulli distribution, i.e.
+<span class="math">\(\mathcal{H} = \{P(z; \theta): \theta \in[0,1]\}\)</span></li>
+<li>The probability mass function associated with the distribution
+<span class="math">\(P(z;\theta)\in\mathcal{H}\)</span> has the form</li>
+</ul>
+</li>
+</ul>
+<div class="math">
+\[p(z; \theta) = \theta^z(1-\theta)^{1-z}.\]</div>
+<ul>
+<li><p class="first"><em>Action space</em>, <span class="math">\(\mathcal{A}\)</span>:</p>
+<ul class="simple">
+<li>Let the action space be equal to <span class="math">\(\mathcal{H}\)</span>, that is
+<span class="math">\(\mathcal{A} = \{P(z, a): a\in[0,1]\} = \mathcal{H}\)</span>.</li>
+</ul>
+</li>
+<li><p class="first"><em>Loss function</em>, <span class="math">\(L\)</span>: We entertain two alternative loss
+functions</p>
+<ul class="simple">
+<li>Relative entropy</li>
+</ul>
+<div class="math">
+\[L_{RE}(P, a) = \sum_{z\in\{0,1\}} p(z;  \theta)\log \frac{p(z; \theta)}{p(z; a)} = E_{\theta}[\log p(z; \theta)] - E_{\theta}[\log p(z; a)]\]</div>
+<ul class="simple">
+<li>Quadratic loss</li>
+</ul>
+</li>
+</ul>
+<div class="math">
+\[L_{MSE}(P, a) = \sum_{z\in\{0,1\}} p(z;  \theta)(\theta - a)^2 = E_{\theta}[(\theta - a)^2]\]</div>
+<p>where <span class="math">\(E_{\theta}\)</span> denotes the expectation operator with respect
+to the distribution <span class="math">\(P(z; \theta)\in\mathcal{H}\)</span>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-linear-regression-function">
+<h2>Example - Linear regression function<a class="headerlink" href="#example-linear-regression-function" title="Permalink to this headline">¶</a></h2>
+<p>In the basic setup of regression function estimation we write
+<span class="math">\(Z=(Y,X)\in\mathbb{R}^2\)</span> and the objective is to predict the value
+of <span class="math">\(Y\)</span> as a function of <span class="math">\(X\)</span> by penalizing the deviations
+through the quadratic loss function. Let
+<span class="math">\(\mathcal{F}:= \{f:X \mapsto Y\}\)</span> be the family of square
+integrable functions mapping from <span class="math">\(X\)</span> to <span class="math">\(Y\)</span>. The following
+is an example for a triple</p>
+<ul class="simple">
+<li><em>Assumed statistical models</em>, <span class="math">\(\mathcal{H}\)</span><ul>
+<li><span class="math">\((Y,X)\)</span> is generated by an i.i.d. joint Normal distribution,
+<span class="math">\(\mathcal{N}(\mu, \Sigma)\)</span>, implying that the true
+regression function, i.e. conditional expectation, is affine.</li>
+</ul>
+</li>
+<li><em>Action space</em>, <span class="math">\(\mathcal{A}\)</span><ul>
+<li>The action space is the set of affine functions over <span class="math">\(X\)</span>,
+i.e.
+<span class="math">\(\mathcal{A}:= \{a \in \mathcal{F} : a(x) = \beta_0 + \beta_1 x\}\)</span>.</li>
+</ul>
+</li>
+<li><em>Loss function</em>, <span class="math">\(L\)</span><ul>
+<li>Quadratic loss function</li>
+</ul>
+</li>
+</ul>
+<div class="math">
+\[L(P, f) = \int\limits_{(Y,X)}(y - f(x))^2\mathrm{d}P(y,x)\]</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="statistical-decision-functions">
+<h2>Statistical Decision Functions<a class="headerlink" href="#statistical-decision-functions" title="Permalink to this headline">¶</a></h2>
+<!---
+The time invariant stochastic relationship between the data and the environment allows the decision maker to carry out statistical inference regarding the data generating process.
+---><p>A <strong>statistical decision function</strong> (or statistical decision rule) is a
+function mapping samples (of different sizes) to actions from
+<span class="math">\(\mathcal{A}\)</span>. In order to flexibly talk about the behavior of
+decision rules as the sample size grows to infinity, we define the
+domain of the decision rule to be the set of samples of all potential
+sample sizes, <span class="math">\(\mathcal{S}:= \bigcup_{n\geq1}Z^n\)</span>. The decision
+rule is then defined as a sequence of functions</p>
+<div class="math">
+\[d:\mathcal{S} \mapsto \mathcal{A} \quad \quad \text{that is} \quad \quad \{d(z^n)\}_{n\geq 1}\subseteq \mathcal{A},\quad \forall z^{n}, \forall n\geq 1.\]</div>
+<hr class="docutils" />
+<div class="section" id="example-cont-estimator-for-coin-tossing">
+<h3>Example (cont) - estimator for coin tossing<a class="headerlink" href="#example-cont-estimator-for-coin-tossing" title="Permalink to this headline">¶</a></h3>
+<p>One common way to find a decision rule is to plug the empirical
+distribution <span class="math">\(P_{n}\)</span> into the loss function <span class="math">\(L(P, a)\)</span> to
+obtain</p>
+<div class="math">
+\[L_{RE}\left(P_{n}; a\right) = \frac{1}{n}\sum_{i = 1}^{n} \log \frac{p(z_i; \theta)}{p(z_i; a)}\quad\quad\text{and}\quad\quad L_{MSE}\left(P_{n}; a\right) = \frac{1}{n}\sum_{i = 1}^{n} (z_i -a)^2\]</div>
+<p>and to look for an action that minimizes this sample analog. In case of
+relative entropy loss, it is</p>
+<div class="math">
+\[d(z^n) := \arg \min_{a} L(P_{n}, a) = \arg\max_{a\in[0,1]} \frac{1}{n}\sum_{i=1}^{n} \log f(z_i ,a) = \arg\max_{a\in[0,1]}  \frac{1}{n}\underbrace{\left(\sum_{i=1}^{n} z_i\right)}_{:= y}\log a + \left(\frac{n-y}{n}\right)\log(1-a)\]</div>
+<p>where we define the random variable <span class="math">\(Y_n := \sum_{i = 1}^{n} Z_i\)</span>
+as the number of <span class="math">\(1\)</span>s in the sample of size <span class="math">\(n\)</span>, with
+<span class="math">\(y\)</span> denoting a particular realization. The solution of the above
+problem is the <em>maximum likelihood estimator</em> taking the following form</p>
+<div class="math">
+\[\hat{a}(z^n) = \frac{1}{n}\sum_{i=1}^{n} z_i = \frac{y}{n}\]</div>
+<p>and hence the <strong>maximum likelihood</strong> decision rule is</p>
+<div class="math">
+\[d_{mle}(z^n) = P(z, \hat{a}(z^n)).\]</div>
+<p>It is straightforward to see that if we used the quadratic loss instead
+of relative entropy, the decision rule would be identical to
+<span class="math">\(d_{mle}(z^n)\)</span>. Nonetheless, the two loss functions can lead to
+very different assessment of the decision rule as will be shown below.</p>
+<hr class="docutils" />
+<p>For comparison, we consider another decision rule, a particular Bayes
+estimator (posterior mean), which takes the following form</p>
+<div class="math">
+\[d_{bayes}(z^n) = P(z, \hat{a}_B(z^n))\quad\quad\text{where}\quad\quad \hat{a}_B(z^n) = \frac{\sum^{n}_{i=1} z_i + \alpha}{n + \alpha + \beta} = \frac{y + \alpha}{n + \alpha + \beta}\]</div>
+<p>where <span class="math">\(\alpha, \beta &gt; 0\)</span> are given parameters of the Beta prior.
+Later, we will see how one can derive such estimators. What is important
+for us now is that this is an alternative decision rule arising from the
+same triple <span class="math">\((\mathcal{H}, \mathcal{A}, L_{MSE})\)</span> as the maximum
+likelihood estimator, with possibly different statistical properties.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-cont-estimator-for-linear-regression-function">
+<h3>Example (cont) - estimator for linear regression function<a class="headerlink" href="#example-cont-estimator-for-linear-regression-function" title="Permalink to this headline">¶</a></h3>
+<p>In this case the approach that we used to derive the maximum likelihood
+estimator in the coin tossing example leads to the following sample
+analog objective function</p>
+<div class="math">
+\[d_{OLS}(z^n):= \arg\min_{a \in \mathcal{A}}L(P_{n},a) = \arg\min_{\beta_0, \ \beta_1} \sum_{t=1}^n (y_t - \beta_0 - \beta_1 x_t)^2.\]</div>
+<p>With a bit of an abuse of notation redefine <span class="math">\(X\)</span> to include the
+constant for the intercept, i.e.
+<span class="math">\(\mathbf{X} = (\mathbf{\iota}, x^n)\)</span>. Then the solution for the
+vector of coefficients, <span class="math">\(\mathbf{\beta}=(\beta_0, \beta_1)\)</span>, in
+the ordinary least squares regression is given by</p>
+<div class="math">
+\[\hat{\mathbf{\beta}}_{OLS} := (\mathbf{X}^T \mathbf{X})^{-1}\mathbf{X}^T \mathbf{Y}.\]</div>
+<p>Hence, after sample <span class="math">\(z^n\)</span>, the decision rule predicts <span class="math">\(y\)</span> as
+an affine function given by <span class="math">\(d_{OLS}(z^n) = \hat{a}_{OLS}\)</span> such
+that</p>
+<div class="math">
+\[\hat{a}_{OLS}(x) := \langle \mathbf{\hat{\beta}}_{OLS}, (1, x) \rangle\]</div>
+<p>where <span class="math">\(\langle \cdot, \cdot \rangle\)</span> denotes the inner product on
+<span class="math">\(\mathbb R^{2}\)</span>.</p>
+<hr class="docutils" />
+<p>Again, for comparison we consider a Bayesian decision rule where the
+conditional prior distribution of <span class="math">\(\beta\)</span> is distributed as
+<span class="math">\(\beta|\sigma \sim \mathcal{N}(\mu_b, \sigma^2\mathbf{\Lambda_b}^{-1})\)</span>.
+Then the decision rule is given by</p>
+<div class="math">
+\[\hat{\mathbf{\beta}}_{bayes} := (\mathbf{X}^T \mathbf{X} + \mathbf{\Lambda_b})^{-1}(\mathbf{\Lambda_b} \mu_b + \mathbf{X}^T \mathbf{Y}).\]</div>
+<p>Hence, decision rule after sample <span class="math">\(z^n\)</span> is an affine function
+given by <span class="math">\(d_{bayes}(z^n) = \hat{a}_{bayes}\)</span> such that</p>
+<div class="math">
+\[\hat{a}_{bayes}(x) := \langle \mathbf{\hat{\beta}}_{bayes}, (1, x) \rangle.\]</div>
+<p>Again, our only purpose here is to show that we can define alternative
+decision rules for the same triple
+<span class="math">\((\mathcal{H}, \mathcal{A}, L_{MSE})\)</span> which might exhibit
+different statistical properties.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="induced-distributions-over-actions-and-losses">
+<h2>Induced Distributions over Actions and Losses<a class="headerlink" href="#induced-distributions-over-actions-and-losses" title="Permalink to this headline">¶</a></h2>
+<p>For a given sample <span class="math">\(z^n\)</span>, the decision rule assigns an action
+<span class="math">\(d(z^n)\in\mathcal{A}\)</span>, which is then evaluated with the loss
+function <span class="math">\(L(P, d(z^n))\)</span> using a particular distribution
+<span class="math">\(P\in\mathcal{H}\)</span>. Evaluating the decision rule and the loss
+function with a single sample, however, does not capture the uncertainty
+arising from the randomness of the sample. To get that we need to assess
+the decision rule in counterfactual worlds with different realizations
+for <span class="math">\(Z^n\)</span>.</p>
+<p>For each possible data generating mechanism, we can characterize the
+properties of a given decision rule by considering the distribution that
+it induces over losses. It is instructive to note that the decision rule
+<span class="math">\(d\)</span> in fact gives rise to</p>
+<ul class="simple">
+<li><strong>induced action distribution:</strong> distribution induced by <span class="math">\(d\)</span>
+over the action space, <span class="math">\(\mathcal{A}\)</span></li>
+<li><strong>induced loss distribution:</strong> distribution induced by <span class="math">\(d\)</span> over
+the loss space, i.e. <span class="math">\(\mathbb{R}_+\)</span>.</li>
+</ul>
+<p>This approach proves to be useful as the action space can be an abstract
+space with no immediate notion of metric while the range of the loss
+function is always the real line (or a subset of it). In other words, a
+possible way to compare different decision rules is to compare the
+distributions they induce over losses under different data generating
+mechanisms for a fixed sample size.</p>
+<div class="section" id="evaluating-decision-functions">
+<h3>Evaluating Decision Functions<a class="headerlink" href="#evaluating-decision-functions" title="Permalink to this headline">¶</a></h3>
+<p>Comparing distributions, however, is often an ambiguous task. A special
+case where one could safely claim that one decision rule is better than
+another is if the probability that the loss is under a certain <span class="math">\(x\)</span>
+level is always greater for one decision rule than the other. For
+instance, we could say that <span class="math">\(d_1\)</span> is a better decision rule than
+<span class="math">\(d_2\)</span> relative to <span class="math">\(\mathcal{H}\)</span> if for all
+<span class="math">\(P\in\mathcal{H}\)</span></p>
+<div class="math">
+\[P\{z^n: L(P, d_1(z^n)) \leq x\} \geq P\{z^n: L(P, d_2(z^n)) \leq x\} \quad \forall \ x\in\mathbb{R}\]</div>
+<p>which is equivalent to stating that the induced distribution of
+<span class="math">\(d_2\)</span> is <em>first-order stochastically dominating</em> the induced
+distribution of <span class="math">\(d_1\)</span> for every <span class="math">\(P\in\mathcal{H}\)</span>. This, of
+course, implies that</p>
+<div class="math">
+\[\mathbb{E}[L(P, d_1(z^n))] \leq \mathbb{E}[L(P, d_2(z^n))]\]</div>
+<p>where the expectation is taken with respect to the sample distributed
+according to <span class="math">\(P\)</span>.</p>
+<p>In fact, the expected value of the induced loss is the most common
+measure to evaluate decision rules. Since the loss is defined over the
+real line, this measure always gives a single real number which serves
+as a basis of comparison for a given data generating process. The
+expected value of the loss induced by a decision rule is called <strong>the
+risk</strong> of the decision rule and is denoted by</p>
+<div class="math">
+\[R_n(P, d) = \mathbb{E}[L(P, d(z^n))].\]</div>
+<p>This functional now provides a clear and straightforward ordering of
+decision rules so that <span class="math">\(d_1\)</span> is preferred to <span class="math">\(d_2\)</span> for a
+given sample size <span class="math">\(n\)</span>, if
+<span class="math">\(R_n(P, d_1) &lt; R_n\left(P, d_2\right)\)</span>. Following this logic, it
+might be tempting to look for the decision rule that is optimal in terms
+of finite sample risk. This problem, however, is immensly complicated
+because its criterion function hinges on an object, <span class="math">\(P\)</span>, that we
+cannot observe.</p>
+<p>Nonetheless, statistical decision theory provides a very useful common
+framework in which different approaches to constructing decision rules
+can be analyzed, highlighting their relative strengths and weaknesses.
+In notebook3 and notebook4 {REF to notebooks} we will consider three
+approaches, each of them having alternative ways to handle the ignorance
+about the true risk.</p>
+<ol class="arabic simple">
+<li><strong>Classical approach:</strong> where the main assessment of a decision rule
+is based on its asymptotic properties.</li>
+<li><strong>Bayesian approach:</strong> where the ignorance about <span class="math">\(P\)</span> is
+resolved by the use of a prior.</li>
+<li><strong>Statistical learning theory approach:</strong> where a decision rule is
+judged according to its performance under the least favorable
+(worst-case) distribution.</li>
+</ol>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-cont-induced-distributions-for-coin-tossing">
+<h3>Example (cont) - induced distributions for coin tossing<a class="headerlink" href="#example-cont-induced-distributions-for-coin-tossing" title="Permalink to this headline">¶</a></h3>
+<p>Consider the case when the true data generating process is indeed i.i.d.
+Bernoulli with parameter <span class="math">\(\theta_0\)</span>. This implies that we have a
+correctly sepcified model. The sample that we are endowed with to use
+for inference has the size <span class="math">\(n=25\)</span>.</p>
+<ul class="simple">
+<li>The left panel in the following figure represents the distribution of
+the sample. More precisely, the different sample realizations
+<span class="math">\(z^n\)</span> have equal probability, but because all information
+contained in a given sample can be summerized by the sum of
+<span class="math">\(1\)</span>s, <span class="math">\(Y=\sum_{t=1}^{n} Z_t\)</span> and <span class="math">\(Y\)</span> is a
+sufficient statistic, we plot the distribution of <span class="math">\(Y\)</span> instead.</li>
+<li>The right panel shows the shapes of the two loss functions that we
+are considering. Notice that while quadratic loss is symmetric,
+relative entropy loss is asymmetric. That is, although both loss
+functions give rise to the same decision rule, we see that they
+punish deviations from the truth (red vertical line) quite
+differently. In particular, the entropy loss is unbounded over the
+domain: at <span class="math">\(a=0\)</span> and <span class="math">\(a=1\)</span> its value is undefined (or
+takes infinity).</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/example1_fig1.png" />
+</div>
+<p>The left and right panels of the following figure shows the induced
+action distributions of the MLE and Bayes decision rules (when
+<span class="math">\(\alpha=5\)</span>, <span class="math">\(\beta=2\)</span>) respectively for two alternative
+values of <span class="math">\(\theta_0\)</span>. More transparent colors denote the scenario
+corresponding to the sample distribution of last figure. Faded colors
+show the distributions induced by an alternative <span class="math">\(\theta_0\)</span>, while
+the prior parameters of the Bayes decision rule are kept fixed.</p>
+<ul class="simple">
+<li><strong>Bias vs. variance:</strong> The MLE estimator is unbiased in the sense
+that its mean always coincide with the true <span class="math">\(\theta_0\)</span>. In
+contrast, the Bayes estimator is biased, the extent of which depends
+on the relationship between the prior parameters and the true value:
+when the prior concentrates near <span class="math">\(\theta_0\)</span>, the bias is small,
+but as the faded distributions demonstrate, for other
+<span class="math">\(\theta_0\)</span>s the bias can be significant. Notice, however,
+that <span class="math">\(d_{bayes}\)</span> is always less dispersed than <span class="math">\(d_{mle}\)</span>,
+in the sense that the values to which it assigns positive probability
+are more densely placed in <span class="math">\([0, 1]\)</span>. Exploiting this trade-off
+between bias and variance will be a crucial device in finding
+decision rules with low risk.</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/example1_fig2.png" />
+</div>
+<p>Finally, the figure below compares the performance of the two decision
+rules according to the their finite sample risk. The first row
+represents the induced loss distribution of the MLE estimator for the
+relative entropy and quadratic loss functions. The two panels of the
+second row show the same distributions for the Bayes decision rule. The
+vertical dashed lines indicate the value of the respective risk
+functionals.</p>
+<ul class="simple">
+<li><strong>Loss function matters:</strong> For all sample sizes, the probability mass
+function of the MLE estimator assigns positive probability to both
+<span class="math">\(a=0\)</span> and <span class="math">\(a = 1\)</span>, whereas the support of the Bayes
+estimator lies always in the interior <span class="math">\((0, 1)\)</span>. This difference
+has significant consequences for the relative entropy risk, because
+as we saw above <span class="math">\(L_{RE}\)</span> is undefined at the boundaries of
+<span class="math">\([0, 1]\)</span>. As a result, the relative entopy risk of the MLE
+estimator does not exist and so the Bayes estimator always wins in
+terms of realative entropy. The secret of <span class="math">\(d_{bayes}\)</span> is to
+shrink the effective action space.</li>
+<li><strong>Dependence on :math:`theta_0:`</strong> Comparing the decision rules in
+terms of the quadratic loss reveals that the true <span class="math">\(\theta_0\)</span> is
+a critical factor. It determines the size of the bias (hence the
+risk) of the Bayes estimator. Since <span class="math">\(\theta_0\)</span> is unknown, this
+naturally introduces a subjective (not data driven) element into our
+analysis: when the prior happens to concentrate around the true
+<span class="math">\(\theta_0\)</span> the Bayes estimator performs better than the MLE,
+otherwise the bias could be so large that it flips the ordering of
+decision rules.</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/example1_fig3.png" />
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-cont-induced-distributions-for-linear-regression">
+<h3>Example (cont) - induced distributions for linear regression<a class="headerlink" href="#example-cont-induced-distributions-for-linear-regression" title="Permalink to this headline">¶</a></h3>
+<p>Suppose that our model is correctly specified. In particular, let the
+data generating mechanism be i.i.d. with</p>
+<div class="math">
+\[\begin{split} (Y,X) \sim \mathcal{N}(\mu, \Sigma) \quad\quad \text{where}\quad\quad  \mu = (1, 3)\quad \text{and}\quad \Sigma =
+\begin{bmatrix}
+    4  &amp; 1 \\
+    1 &amp; 8
+\end{bmatrix}.\end{split}\]</div>
+<p>Under this data generating mechanism, the optimal regression function is
+affine with coefficients</p>
+<div class="math">
+\[\begin{split}\begin{align}
+\beta_0 &amp;= \mu_Y - \rho\frac{\sigma_Y}{\sigma_X}\mu_X = 1 - \frac{1}{8} 3 = -0.625, \\
+\beta_1 &amp;= \rho\frac{\sigma_Y}{\sigma_X} = \frac{1}{8} = 0.125.
+\end{align}\end{split}\]</div>
+<p>Due to correct specification, these coefficients in fact determine the
+feature, i.e. the true regression function.</p>
+<p>For the Bayes estimator consider the prior</p>
+<div class="math">
+\[\begin{split}\mu \sim \mathcal{N}\left(\mu_b, \Lambda_b^{-1}\right) \quad\quad \text{where}\quad\quad  \mu_b = (2, 2)\quad \text{and}\quad \Lambda_b =
+\begin{bmatrix}
+    6  &amp; -3 \\
+    -3 &amp; 6
+\end{bmatrix}\end{split}\]</div>
+<p>and suppose that <span class="math">\(\Sigma\)</span> is known. Let the sample size be
+<span class="math">\(n=50\)</span>. With the given specification we can <em>simulate</em> the induced
+action and loss distributions.</p>
+<p>The following figure shows contour plots of the induced action
+distributions associated with the OLS and Bayes estimators. The red dot
+depicts the best-in-class action.</p>
+<ul class="simple">
+<li>One can see that the OLS estimator is unbiased in the sense that the
+induced action distribution concentrates around the best-in-class
+action. In contrast, the Bayes estimator exhibits a slight bias.</li>
+<li>On the other hand, the variance of the Bayes decision rule is smaller
+than that of the OLS estimator.</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/example2_fig1.png" />
+</div>
+<p>Using quadrature methods one can calculate the loss of each action which
+gives rise to the induced loss distribution. As an approximation to
+these induced loss distributions, the following figure shows the
+histograms emerging from these calculations.</p>
+<ul class="simple">
+<li>In terms of risk the slightly bigger bias of the Bayes estimate is
+compensated by its lower variance (across the different sample
+realizations). As a result, in this particular example, the risk of
+the Bayes decision rule is lower than that of the OLS estimator.</li>
+<li>The true feature lies within the action space and the model is very
+&#8220;simple&#8221;, hence it&#8217;s difficult to beat the OLS (we need small sample
+and large noise). Using a more complex or misspecified model this
+might not be the case.</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/example2_fig2.png" />
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="misspecification-and-the-bias-variance-dilemma">
+<h2>Misspecification and the bias-variance dilemma<a class="headerlink" href="#misspecification-and-the-bias-variance-dilemma" title="Permalink to this headline">¶</a></h2>
+<p>In the above examples we maintained the assumption of correctly
+specified models, i.e., the true feature of the data generating process
+lied within the action set <span class="math">\(\mathcal{A}\)</span>. In applications using
+nonexperimental data, however, it is more reasonable to assume that the
+action set contains only approximations of the true feature.</p>
+<p>Nothing in the analysis above prevents us from entertaining the
+possibility of misspecification. In these instances one can look at
+<span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span> as the best approximation of
+<span class="math">\(\gamma(P)\)</span> achievable by the model specification
+<span class="math">\(\mathcal{A}\)</span>. For example, even though the true regression
+function (conditional expectation) might not be linear, the exercise of
+estimating the <em>best linear approximation</em> of the regression function is
+well defined.</p>
+<p>In theory, one can investigate the approximation error emerging from a
+misspecified <span class="math">\(\mathcal{A}\)</span> via the loss function without
+mentioning the inference (finite sample) problem at all. In particular,
+the <strong>misspecification error</strong> can be defined as</p>
+<div class="math">
+\[\min_{a\in\mathcal{A}} \ L(P,a) - L(P, \gamma(P))\]</div>
+<p>This naturally leads to a dilemma regarding the &#8220;size&#8221; of the action
+space: with a richer <span class="math">\(\mathcal{A}\)</span>, in principle, we can get
+closer to the true feature by making the misspecification error small.
+Notice, however, that in practice, not knowing <span class="math">\(P\)</span> implies that we
+cannot solve the above optimization problem and obtain the best-in-class
+action. As we show in notebook2 {REF}, a possible way to proceed is to
+require the so called <em>consistency</em> property from our decision rule by
+which we can guarantee to get very close to
+<span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span> with <em>sufficiently large</em> samples,
+however, what &#8220;sufficently large&#8221; means will be determined by the size
+of our <span class="math">\(\mathcal{A}\)</span>. Larger action spaces will require larger
+samples to get sensible estimates for the best-in-class action. In fact,
+by using a &#8220;too large&#8221; <span class="math">\(\mathcal{A}\)</span> accompanied with a &#8220;too
+small&#8221; sample, our estimator&#8217;s performance can be so bad that
+misspecification concerns become secondary.</p>
+<p>In other words, finiteness of the sample gives rise to a trade-off
+between the severity of misspecifiation and the credibility of our
+estimates. To see this, decompose the deviation of the finite sample
+risk from the value of loss at the truth (excess risk) for a given
+decision rule <span class="math">\(d\)</span> and sample size <span class="math">\(n\)</span>:</p>
+<div class="math">
+\[R_n(P, d) - L\left(P, \gamma(P) \right) = \underbrace{R_n(P, d) - L\left(P, a^{*}_{L,P, \mathcal{A}}\right)}_{\text{estimation error}} + \underbrace{L\left(P, a^{*}_{L, P, \mathcal{A}}\right)- L\left(P, \gamma(P)\right)}_{\text{misspecification error}}\]</div>
+<p>While the estimation error stems from the fact that we do not know
+<span class="math">\(P\)</span>, so we have to use a finite sample to approximate the
+best-in-class action, misspecification error, not influenced by any
+random object, arises from the necessity of
+<span class="math">\(\mathcal{A}\subsetneq\mathcal{F}\)</span>.</p>
+<p>This trade-off resembles the bias-variance dilemma well-known from
+classical statistics. Statisticians often connect the estimation error
+with the decision rule&#8217;s variance, whereas the misspecification error is
+considered as the bias term. We will see in notebook3 {REF} that this
+interpretation is slightly misleading. Nonetheless, it is true that,
+similar to the bias-variance trade-off, manipulation of (the size of)
+<span class="math">\(\mathcal{A}\)</span> is the key device to address the
+estimation-misspecification error trade-off. The minimal excess risk can
+be reached by the action space where the following two forces are
+balanced {REF to figure in notebook3}:</p>
+<ul class="simple">
+<li>the estimation error (variance) is increasing in the size of
+<span class="math">\(\mathcal{A}\)</span>,</li>
+<li>the misspecification error (bias) is weakly decreasing in the size of
+<span class="math">\(\mathcal{A}\)</span>.</li>
+</ul>
+<p>In the next lecture {REF: notebook2}, we will give a more elaborate
+definition of what do we mean by the &#8220;size&#8221; of <span class="math">\(\mathcal{A}\)</span>.</p>
+<p><strong>A warning</strong></p>
+<p>The introduced notion of misspecification is a <em>statistical</em> one. From a
+modeller&#8217;s point of view, a natural question to ask is to what extent
+misspecification affects the economic interpretation of the parameters
+of a fitted statistical model. Intuitively, a necessary condition for
+the sensibility of economic interpretation is to have a correctly
+specified statistical model. Because different economic models can give
+rise to the same statistical model, this condition is by no means
+sufficient. From this angle, a misspecified statistical model can easily
+invalidate any kind of economic interpretation of estimated parameters.
+This issue is more subtle and it would require an extensive treatment
+that we cannot deliver here, but it is worth keeping in mind the list of
+very strong assumptions that we are (implicitly) using when we give
+well-defined meaning to our parameter estimates. An interesting
+discussion can be found in Chapter 4 of <a class="reference internal" href="#white-1994" id="id5">[White-1994]</a>.</p>
+<p>The code used for the simulations and generating the graphs can be found under the following <a class="reference external" href="https://github.com/QuantEcon/econometrics/blob/master/Notebook_01_wald/statistical_decision_functions_code.ipynb">link</a>.</p>
+<hr class="docutils" />
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<table class="docutils citation" frame="void" id="breiman-1969" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Breiman-1969]</a></td><td>Breiman, Leo (1969). Probability and Stochastic Processes: With a View Towards Applications. Houghton Mifflin.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="wald-1950" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[Wald-1950]</a></td><td>Wald, Abraham (1950). Statistical Decision Functions. John Wiley and Sons, New York.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="manski-1988" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[Manski-1988]</a></td><td>Manski, Charles (1988). Analog estimation in econometrics. Chapman and Hall, London.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="white-1994" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[White-1994]</td><td><em>(<a class="fn-backref" href="#id4">1</a>, <a class="fn-backref" href="#id5">2</a>)</em> White, Halbert (1994). Estimation, Inference and Specification Analysis (Econometric Society Monographs). Cambridge University Press.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Estimators as Statistical Decision Functions</a><ul>
+<li><a class="reference internal" href="#notation">Notation</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#stationarity-and-statistical-models">Stationarity and statistical models</a></li>
+<li><a class="reference internal" href="#dependence">Dependence</a></li>
+<li><a class="reference internal" href="#true-data-generating-process">True data generating process</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#primitives-of-the-problem">Primitives of the problem</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#features-and-the-best-in-class-action">Features and the best-in-class action</a></li>
+<li><a class="reference internal" href="#statistical-models-vs-specifications">Statistical models vs. specifications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-coin-tossing">Example - Coin tossing</a></li>
+<li><a class="reference internal" href="#example-linear-regression-function">Example - Linear regression function</a></li>
+<li><a class="reference internal" href="#statistical-decision-functions">Statistical Decision Functions</a><ul>
+<li><a class="reference internal" href="#example-cont-estimator-for-coin-tossing">Example (cont) - estimator for coin tossing</a></li>
+<li><a class="reference internal" href="#example-cont-estimator-for-linear-regression-function">Example (cont) - estimator for linear regression function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#induced-distributions-over-actions-and-losses">Induced Distributions over Actions and Losses</a><ul>
+<li><a class="reference internal" href="#evaluating-decision-functions">Evaluating Decision Functions</a></li>
+<li><a class="reference internal" href="#example-cont-induced-distributions-for-coin-tossing">Example (cont) - induced distributions for coin tossing</a></li>
+<li><a class="reference internal" href="#example-cont-induced-distributions-for-linear-regression">Example (cont) - induced distributions for linear regression</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#misspecification-and-the-bias-variance-dilemma">Misspecification and the bias-variance dilemma</a><ul>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to econometrics&#8217;s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Notebook_01_wald/statistical_decision_functions_text.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Daniel Csaba, Balint Szoke.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/Notebook_01_wald/statistical_decision_functions_text.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
