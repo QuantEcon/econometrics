@@ -1,0 +1,949 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Asymptotic analysis and consistency &#8212; econometrics 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="econometrics 0.1 documentation" href="../index.html" />
+    <link rel="prev" title="Estimators as Statistical Decision Functions" href="../Notebook_01_wald/statistical_decision_functions_text.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="asymptotic-analysis-and-consistency">
+<h1>Asymptotic analysis and consistency<a class="headerlink" href="#asymptotic-analysis-and-consistency" title="Permalink to this headline">¶</a></h1>
+<p><strong>Date: February 2017</strong></p>
+<p>In this notebook we discuss the asymptotic properties of decision rules.
+After a general introduction we restrict attention to empirical loss
+minimizing decision rules, establish sufficient conditions for
+consistency to hold and discuss the rate at which the convergence takes
+place.</p>
+<ul class="simple">
+<li>Consistency of a decision rule states that the corresponding
+empirical loss converges to the true loss in probability as the
+sample size grows to infinity.</li>
+<li>In the case of empirical loss minimization, consistency is tightly
+linked to the uniform law of large numbers that we present in detail.</li>
+<li>We introduce tail and concentration bounds to establish the uniform
+law of large numbers and analyze the (non-asymptotic) rate at which
+the convergence takes place.</li>
+</ul>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Knowing the true mechanism <span class="math">\(P\)</span>, while one faces a decision problem
+<span class="math">\((\mathcal{H},L,\mathcal{A})\)</span>, naturally leads to the best in
+class action <span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span> as the optimal action
+within the prespecified class <span class="math">\(\mathcal{A}\)</span>. Although in reality
+we do not know <span class="math">\(P\)</span>, it is illuminating to consider this case first
+as we naturally require that at least with a sufficiently large (in
+fact, infinite) sample, the true mechanism&#8212;from a statistical point of
+view&#8212;can be revealed. The property that guarantees this outcome is the
+ergodicity of the assumed statistical models.</p>
+<p>This argument suggests to use the best in class action,
+<span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span>, as the optimal large sample solution.
+In other words, from any sensible decision rule a minimal property to
+require is that as the sample size grows, the distribution of the
+decision rule converges to a degenerate distribution concentrated at the
+point <span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span>.</p>
+<p>As an example, consider again the MLE estimator in the coin tossing
+problem for which the above property is satisfied. The following figure
+represents how the different confidence bands associated with the
+induced action distribution evolve as the sample size goes to infinity.
+Apparently, for sufficiently large sample sizes, the confidence bands
+concentrate around the true value, which, due to the correct
+specification is equivalent to the best in class action.</p>
+<div class="figure">
+<img alt="" src="../_images/asymptotic_cointoss_consistency.png" />
+</div>
+<p>This property of the decision rule is called <strong>consistency</strong>. One of the
+main objectives of this notebook is to investigate the conditions under
+which it can be established.</p>
+<p>Given that asymptotically the true <span class="math">\(P\)</span> can be learned, a natural
+question to ask is why not to set <span class="math">\(\mathcal{A}\)</span> large enough so as
+to guarantee <span class="math">\(\gamma(P)\in\mathcal{A}\)</span>, i.e. a correctly specified
+model. We will see the sense in which requiring consisteny ties our
+hands in terms of the &#8220;size&#8221; of <span class="math">\(\mathcal{A}\)</span>.</p>
+<p>Although it is hard to provide generally applicable sufficient
+conditions for consistency, roughly speaking, we can identify two big
+classes of decision rules for which powerful results are available.</p>
+<ul class="simple">
+<li>Bayes decision rules</li>
+<li>Frequentist decision rules building on the empirical distribution
+<span class="math">\(P_n\)</span>, where</li>
+</ul>
+<div class="math">
+\[P_n(z) : = \frac{1}{n}\sum_{i=1}^{n} \mathbf{1}\{Z_i \leq z\}\]</div>
+<p>and <span class="math">\(\mathbf{1}\{ A \}\)</span> is the indicator function of the set
+<span class="math">\(A\)</span>.</p>
+<p>In this notebook we will focus exclusively on the latter approach
+considering decision rules that assign actions by minimizing the
+empirical analog of the population loss. Hence, the procedure is
+labelled by the name: <strong>empirical loss minimization</strong> or <strong>analog
+estimation</strong>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="consistency-of-decision-rules">
+<h2>Consistency of decision rules<a class="headerlink" href="#consistency-of-decision-rules" title="Permalink to this headline">¶</a></h2>
+<p>To start out our asymptotic inquiry, we first define consistency in a
+more precise manner than we did before. There are two, slightly
+different notions depending on the tractability and objectives of the
+decision problem at hand.</p>
+<ul class="simple">
+<li><strong>Consistency in terms of the loss function:</strong> a decision rule
+<span class="math">\(d: \mathcal{S} \mapsto \mathcal{A}\)</span> is consistent in terms of
+the loss function relative to <span class="math">\((\mathcal{H}, \mathcal{A})\)</span>, if
+for all <span class="math">\(P \in \mathcal{H}\)</span>,</li>
+</ul>
+<div class="math">
+\[L(P, d(Z^n)) \ \ \underset{n \to \infty}{\overset{\text{P}}{\rightarrow}} \ \ \inf_{a \in \mathcal{A}}L(P, a) = L\left(P, a^{*}_{L, P,\mathcal{A}}\right).\]</div>
+<ul>
+<li><p class="first"><strong>Consistency in terms of the action:</strong> a decision rule
+<span class="math">\(d: \mathcal{S} \mapsto \mathcal{A}\)</span> is consistent in terms of
+the action relative to <span class="math">\((\mathcal{H}, \mathcal{A})\)</span>, if for all
+<span class="math">\(P \in \mathcal{H}\)</span>,</p>
+<div class="math">
+\[m\left(d\left(Z^n\right), a^*_{L, P, \mathcal{A}}\right) \ \ \underset{n \to \infty}{\overset{\text{P}}{\rightarrow}} \ \ 0.\]</div>
+</li>
+</ul>
+<!---
+
+P\left\{z^{\infty} \big| \lim_{n \to \infty} m\left(d(z_n), a^*_{L, P, \mathcal{A}}\right) > \epsilon\right\} = 0 \quad \text{for} \quad \forall\epsilon>0,
+
+---><p>where <span class="math">\(m(\cdot, \cdot)\)</span> is a metric on the action space
+<span class="math">\(\mathcal{A}\)</span>. The necessary condition&#8212;in the case of analog
+estimators&#8212;for this notion of consistency is the identifiability of
+<span class="math">\(a^*_{L, P, \mathcal{A}}\)</span> that we define as follows:</p>
+<p><strong>Identification:</strong></p>
+<blockquote>
+<div><p><span class="math">\(a^*_{L, P, \mathcal{A}}\)</span> is identified relative to <span class="math">\((P, \mathcal{A})\)</span> if <span class="math">\(a^*_{L, P, \mathcal{A}}\)</span> is the unique minimizer of <span class="math">\(L(P, \cdot)\)</span> over <span class="math">\(\mathcal{A}\)</span>.</p>
+<p><span class="math">\(a^*_{L, P, \mathcal{A}}\)</span> is (uniformly) identified relative to <span class="math">\((\mathcal{H}, \mathcal{A})\)</span> if it is identified relative to <span class="math">\((P, \mathcal{A})\)</span> for all <span class="math">\(P\in\mathcal{H}\)</span>.</p>
+</div></blockquote>
+<p>Under identification, the two notions of consistency are equivalent. As
+the above definitions suggest, however, the former is more general to
+the extent that it also allows for partially identified statistical
+models. Unless otherwise noted, we will work with consistency in terms
+of the loss function and call it simply <em>consistency</em>.</p>
+<p>In the above definitions, the set of assumed statistical models
+<span class="math">\(\mathcal{H}\)</span> plays a key role: it outlines the set of
+distributions under which the particular notion of convergence is
+required. Ideally, we want convergence under the true distribution,
+however, because we do not know <span class="math">\(P\)</span>, the &#8220;robust&#8221; approach is to
+be as agnostic as possible regarding <span class="math">\(\mathcal{H}\)</span>. The central
+insight of statstical decision theory is to highlight that this approach
+is not limitless: one needs to find a balance between
+<span class="math">\(\mathcal{H}\)</span> and <span class="math">\(\mathcal{A}\)</span> to obtain decision rules
+with favorable properties.</p>
+<p>Consistency has strong implications for the risk functional in large
+samples: the degenerate limiting distribution of the decision rule
+implies that asymptotically the variability of the decision rule
+vanishes and so</p>
+<div class="math">
+\[R_{\infty}(P,d) := \lim_{n\to \infty} \ R_n(P, d) \overset{a.s.}{=} L\left(P, a^{*}_{L, P,\mathcal{A}}\right).\]</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="uniform-law-of-large-numbers">
+<h2>Uniform law of large numbers<a class="headerlink" href="#uniform-law-of-large-numbers" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned before, in this notebook we are focusing on decision rules
+arising from empirical loss minimization. The basic idea behind this
+approach is to utilize the consistency definitions directly, but instead
+of using the quantity <span class="math">\(L(P, a)\)</span> that we cannot actually evaluate,
+subsitute the empirical distribution into the loss function and work
+with the <strong>empricial loss</strong> <span class="math">\(L(P_n, a)\)</span> instead.</p>
+<p><strong>REMARK:</strong> The empirical loss is not defined, if <span class="math">\(P_n\)</span> is not in
+the domain of <span class="math">\(L\)</span>&#8212;as is the case, for example, with
+non-parametric density estimation. Then, one has to either extend the
+domain of <span class="math">\(L\)</span> or map <span class="math">\(P_n\)</span> to the original domain of the
+loss function <span class="math">\(L\)</span>. An excellent discussion can be found in <a class="reference internal" href="#manski-1988" id="id1">[Manski-1988]</a>
+.</p>
+<p>Given that the loss function is continuous in its first argument, the
+law of large numbers (LLN), accompanied with the continuous mapping
+theorem, implies</p>
+<div class="math">
+\[L(P_n, a) \ \ \underset{n \to \infty}{\overset{\text{P}}{\to}} \ \ L(P, a)\]</div>
+<p>that is, for a <em>fixed action</em> <span class="math">\(a\)</span>, the emprical loss converges in
+probability to the true loss as the sample size goes to infinity.
+Notice, however, that consistency</p>
+<ul class="simple">
+<li>is not a property of a given action, but a whole decision rule, more
+precisely, it is about the convergence of the sequence
+<span class="math">\(\{d(z^n)\}_{n\geq 1} \subseteq \mathcal{A}\)</span></li>
+<li>requires convergence to the <em>minimum</em> loss (within
+<span class="math">\(\mathcal{A}\)</span>) that we ought to take into account while
+generating decision rules</li>
+</ul>
+<p>In the spirit of the analogy principle, decision rules minimizing the
+<em>empirical loss</em> can be defined as follows</p>
+<div class="math">
+\[d(z^n) := \arg\min_{a\in\mathcal{A}} L(P_n, a), \quad\quad\quad (1)\]</div>
+<p>where the dependence on the sample is embodied by the empirical
+distribution <span class="math">\(P_n\)</span>. The heuristic idea is that because
+<span class="math">\(d(z^n)\)</span> minimizes <span class="math">\(L(P_n, \cdot)\)</span>, and <span class="math">\(P_n\)</span>
+converges to <span class="math">\(P\)</span>, then &#8220;ideally&#8221; <span class="math">\(d(z^n)\)</span> should go to
+<span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span>, the minimizer of <span class="math">\(L(P, a)\)</span>, as
+the sample size grows to infinity.</p>
+<p>What do we need to ensure this argument to hold? First, notice that the
+standard law of large numbers is inadequate for this purpose. In order
+to illustrate this, we turn now to a concept closely related to
+empirical loss minimization: <strong>generalization</strong>.</p>
+<p>Using the empirical loss as a substitute for the true loss while
+determining the decision rule, a critical question is how much error do
+we introduce with this approximation. The object of interest regarding
+this question is the following quantity defined for a given action
+<span class="math">\(a\)</span> and realization of the sample <span class="math">\(z^n\)</span></p>
+<div class="math">
+\[\xi(a, z^n) = \left| L(P_n, a) - L(P, a) \right|.\]</div>
+<p>We say that the action <span class="math">\(a\)</span> <em>generalizes well from a given sample</em>
+<span class="math">\(z^n\)</span>, if the corresponding <span class="math">\(\xi(a, z^n)\)</span> is small. Taking
+the absolute value is important: <span class="math">\(L(P_n, a)\)</span> can easily be smaller
+than <span class="math">\(L(P, a)\)</span> as it is in the case of overfitting.</p>
+<p>Due to <span class="math">\(P_n\)</span>&#8216;s dependence on the particular sample, however, the
+quantity <span class="math">\(\xi(a, \cdot)\)</span> is a random variable. It might be small
+for a given sample <span class="math">\(z^n\)</span>, but what we really need in order to
+justify the method of empricial loss minimization is that <span class="math">\(\xi\)</span> is
+small for &#8220;most samples&#8221;, or more precisely</p>
+<div class="math">
+\[P\left(z^n : \left| L(P_n, a) - L(P, a) \right| &gt; \delta \right) \quad \text{is small.}\]</div>
+<p>Since <span class="math">\(L\)</span> is continuous in its first argument and
+<span class="math">\(P_n \to P\)</span>, this so called <strong>tail probability</strong> converges to zero
+for any fixed <span class="math">\(a\in\mathcal{A}\)</span>. The figure below displays such
+tail probabilities for the MLE estimator in the coin tossing example
+(with quadratic loss) for different actions as functions of the sample
+size.</p>
+<p>One can see that even though the tail probabilities converge to
+<span class="math">\(0\)</span> for all <span class="math">\(a\in\mathcal{A}\)</span>, the <em>rate of convergence</em>
+depends on the particular <span class="math">\(a\)</span>. In other words,
+<span class="math">\(\forall \varepsilon&gt;0\)</span> and <span class="math">\(\forall a\in\mathcal{A}\)</span>, there
+is an <em>action dependent</em> minimum sample size
+<span class="math">\(N(a, \varepsilon, \delta)\)</span> (represented by the vertical solid
+lines) that we need in order to guarantee that the tail probability
+falls below <span class="math">\(\varepsilon\)</span>.</p>
+<div class="figure">
+<img alt="" src="../_images/asymptotic_cointoss_tail.png" />
+</div>
+<p>Suppose now that we have a decision rule and look at its induced
+sequence of actions <span class="math">\(\{a_n\}_{n\geq 1}\subset \mathcal{A}\)</span> for a
+fixed realization <span class="math">\(z^{\infty}\)</span>. Again, for consistency, we need
+the associated sequence of tail probabilities converging to zero for
+&#8220;most <span class="math">\(z^{\infty}\)</span>&#8221;.</p>
+<ul class="simple">
+<li>When the set <span class="math">\(\mathcal{A}\)</span> has finitely many elements, this is
+not a problem: we can simply define</li>
+</ul>
+<div class="math">
+\[N(\varepsilon, \delta) : = \max_{a\in\mathcal{A}} N(a, \varepsilon, \delta)\]</div>
+<p>and observe that for all <span class="math">\(n\geq N(\varepsilon, \delta)\)</span>, the tail
+probabilities are smaller than <span class="math">\(\varepsilon\)</span>, for all
+<span class="math">\(a\in \{a_n\}_{n\geq 1} \subseteq \mathcal{A}\)</span>.</p>
+<ul class="simple">
+<li>However, because the critical sample size
+<span class="math">\(N(a, \varepsilon, \delta)\)</span> depends on the action, if
+<span class="math">\(\mathcal{A}\)</span> is &#8220;too big&#8221;, it is possible that there is no
+<span class="math">\(n\)</span> so that <span class="math">\(n &gt; N(a_n, \varepsilon, \delta)\)</span>, hence
+<span class="math">\(L(P_n, a_n)\)</span> may never approach <span class="math">\(L(P, a_n)\)</span>.</li>
+</ul>
+<p>A possible approach to avoid this complication is to require the
+existence of an integer <span class="math">\(N(\varepsilon, \delta)\)</span> <em>independent of</em>
+<span class="math">\(a\)</span>, such that for all sample sizes larger than
+<span class="math">\(N(\epsilon, \delta)\)</span></p>
+<div class="math">
+\[\sup_{a \in\mathcal{A}} \left| L(P_n, a) - L(P, a) \right| \ \overset{\text{P}}{\to} \ 0.\]</div>
+<p>This notion is called the <strong>uniform law of large numbers</strong> referring to
+the fact that the convergence is guaranteed simultaneously for all
+actions in <span class="math">\(\mathcal{A}\)</span>.</p>
+<hr class="docutils" />
+<div class="section" id="a-special-case-plug-in-estimators">
+<h3>A special case &#8211; plug-in estimators<a class="headerlink" href="#a-special-case-plug-in-estimators" title="Permalink to this headline">¶</a></h3>
+<p>There are special cases where we do not need to worry about uniformity.
+When the true loss function has a minimizer
+<span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span> that admits a closed form in the sense
+that it can be expressed as a continuous function of <span class="math">\(P\)</span>, the
+empirical loss minimizer is simply a sample analog of
+<span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span>. Effectively, there is no need to
+explicitly minimize the emprical loss, so in spirit, it is as if we kept
+a particular action fixed. In these cases the standard LLN is sufficient
+to establish consistency.</p>
+<ul>
+<li><p class="first"><em>Sample mean:</em></p>
+<p>Consider the quadratic loss function with the feature
+<span class="math">\(\gamma(P) = E[Z]\)</span>, i.e. the loss is
+<span class="math">\(L(P,a) = E[(a - E[Z])^2]\)</span>. Evidently, the minimizer of this
+quantity is <span class="math">\(E[Z]\)</span>. Although we could proceed by minimizing the
+empricial loss to derive the decision rule, we do not need to do
+that, because we know up front that it is equal to the sample analog
+of <span class="math">\(E[Z]\)</span>. The decision rule is the plug-in estimator
+<span class="math">\(d(z^n) = \frac{1}{n}\sum_{i=1}^{n}z_i\)</span>.</p>
+</li>
+<li><p class="first"><em>OLS estimator:</em></p>
+<p>Suppose that <span class="math">\(Z=(Y, X)\)</span> and consider the quadratic loss
+<span class="math">\(L(P, a) = E[(Y-a)^2 | X]\)</span>, where <span class="math">\(E[\cdot | X]\)</span> is the
+expectation operator conditioned on <span class="math">\(X\)</span>. Assume that
+<span class="math">\((Y, X)\)</span> follows a multivariate normal distribution, then the
+minimizer of <span class="math">\(L\)</span> is given by
+<span class="math">\(a = E\left[(X'X)^{-1}\right]E[X'Y]\)</span>. Consequently, there is no
+need for explicit minimization, we can use the least squares
+estimator as a plug-in estimator for <span class="math">\(a\)</span>.</p>
+</li>
+</ul>
+<p>More generally, as the empirical loss minimizer is itself a functional,
+if the <span class="math">\(\min\)</span> functional can be shown to be continuous on the
+space of empirical loss functions, i.e. the functional</p>
+<div class="math">
+\[f : L(P_n, \cdot) \mapsto \mathbb{R}, \quad \text{s.t.}\quad\quad f(P_n) = \min_{a\in\mathcal{A}} \ L(P_n, a)\]</div>
+<p>is continuous, then an application of the continuous mapping theorem
+together with the Glivenko-Cantelli theorem (i.e.
+<span class="math">\(\lVert P_n - P \rVert_{\infty} \to 0\)</span>) would yield consistency.
+For reference, see <a class="reference internal" href="#vdvaart-2000" id="id2">[vdVaart-2000]</a>.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="uniform-law-of-large-numbers-and-consistency">
+<h2>Uniform law of large numbers and consistency<a class="headerlink" href="#uniform-law-of-large-numbers-and-consistency" title="Permalink to this headline">¶</a></h2>
+<p>In more general nonlinear models, however,
+<span class="math">\(a^{*}_{L, P, \mathcal{A}}\)</span> has no analytical form, so we cannot
+avoid minimizing the empirical loss in order to derive the decision
+rule. In these cases, guaranteeing the validity of uniform convergence
+becomes essential. In fact, it can be shown that consistency of any
+decision rule that we derive by minimizing some empirical loss function,
+is <em>equivalent with</em> the uniform LLN.</p>
+<p><strong>Theorem.</strong> <a class="reference internal" href="#vapnik-chervonenkis-1971" id="id3">[Vapnik-Chervonenkis-1971]</a>: Uniform
+convergence</p>
+<div class="math">
+\[\lim_{n\to \infty} P\left\{\sup_{a \in\mathcal{A}} \left| L(P_n, a) - L(P, a) \right| &lt; \varepsilon\right\}= 1\]</div>
+<p>for all <span class="math">\(\varepsilon &gt;0\)</span> is <em>necessary and sufficient</em> for
+consistency of decision rules arising from empirical loss minimization
+over <span class="math">\(\mathcal{A}\)</span>.</p>
+<p>Although this characterization of consistency is theoretically
+intriguing, it is not all that useful in practice unless we find
+easy-to-check conditions which ensure uniform convergence of empirical
+loss over a particular function class <span class="math">\(\mathcal{A}\)</span>. As a
+preparation to discuss these conditions, introduce first some notation</p>
+<p>Almost all loss functions used in practice can be cast in the following
+form. There exist</p>
+<ul class="simple">
+<li><span class="math">\(l : \mathcal{A}\times \mathbb{R}^d \mapsto \mathbb{R}^{m}\)</span> and</li>
+<li>a <em>continuous</em> <span class="math">\(r : \mathbb{R}^{m} \mapsto \mathbb{R}_+\)</span> such
+that</li>
+</ul>
+<div class="math">
+\[L(P, a) = r\left( \int_Z l(a, z)dP (z)\right).\]</div>
+<p>Continuity of <span class="math">\(r\)</span> implies that in order to establish consistency
+it is enough to investigate the properties of the limit</p>
+<div class="math">
+\[\sup_{a\in\mathcal{A}} \left| \int_Z l(a, z)dP_n (z) - \int_Z l(a, z)dP(z)\right|  \ \  \overset{\text{P}}{\to} \ \  0 .\]</div>
+<p>Formally, this requires that the class of functions
+<span class="math">\(\mathcal{L}_{\mathcal{A}}:= \left\{l(a, \cdot) : a \in \mathcal{A} \right\}\)</span>
+is a <strong>Glivenko-Cantelli class</strong> for <span class="math">\(P\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Definition (Glivenko-Cantelli class):</strong> Let <span class="math">\(\mathcal{G}\)</span> be a
+class of integrable real-valued functions of the random variable
+<span class="math">\(Z\)</span> having distribution <span class="math">\(P\)</span>. Consider the random variable</p>
+<div class="math">
+\[\Vert P_n - P \Vert_{\mathcal{G}} : = \sup_{g\in\mathcal{G}} \left| P_n g - Pg \right|\]</div>
+<p>We say that <span class="math">\(\mathcal{G}\)</span> is a Glivenko-Cantelli class for
+<span class="math">\(P\)</span>, if <span class="math">\(\Vert P_n - P \Vert_{\mathcal{G}}\)</span> converges to
+zero in probability as <span class="math">\(n\to\infty\)</span>.</p>
+<hr class="docutils" />
+<p>The usefulness of this formulation comes from the fact that it allows us
+to bring to bear powerful techniques from empirical process theory
+<a class="reference internal" href="#pollard-1984" id="id4">[Pollard-1984]</a>. This is because the random variable</p>
+<div class="math">
+\[\left| \int_Z l(a, z)dP_n (z) - \int_Z l(a, z)dP(z)\right|\]</div>
+<p>can be considered as an <strong>empirical process</strong> indexed by the function
+class <span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span>. For each action <span class="math">\(a\)</span>, let
+<span class="math">\(l_a:=l(a, \cdot)\)</span> and note that <span class="math">\(l_a\)</span> is a function of the
+random variable <span class="math">\(Z\)</span>. Using typical notation of the empirical
+process literature, we can rewrite the above absolute difference as</p>
+<div class="math">
+\[\left\{\left|P_n l_a - P l_a\right|\right\}_{l_a\in\mathcal{L}_{\mathcal{A}}}.\]</div>
+<p>Notice that <span class="math">\(P_n l_a\)</span> is a random variable because the empirical
+distribution is a function of the random sample, while <span class="math">\(Pl_a\)</span> is
+just the expectation of <span class="math">\(l_a\)</span> and so it is a non-random scalar.</p>
+<!---
+A useful decomposition highlights the importance of the uniform law of large numbers in the case of empirical loss minimization. We would like to know the difference between the true loss of our estimator and the true loss of the best in class action. For a given sample $z^n$ denote the analog estimate as $\hat{a} = d(z^n)$ and the best in class action as $a^*$.
+
+$$ Pl_{\hat{a}} - Pl_{a^*} = (Pl_{\hat{a}} - P_n l_{\hat{a}}) + (P_n l_{\hat{a}} - P_n l_{a^*})  + (P_n l_{a^*} - P l_{a^*}) $$
+
+The last term on the right hand side is governed by the Law of Large Numbers, the middle term is necessarily weakly positive by definition of the empirical loss minimizing decision rule, and the first term is governed by the Uniform Law of Large Numbers. Hence, if we want to control the excess risk -- the left hand side -- then we necessarily have to control the right hand side.
+---><div class="section" id="sufficient-conditions-for-ulln">
+<h3>Sufficient conditions for ULLN<a class="headerlink" href="#sufficient-conditions-for-ulln" title="Permalink to this headline">¶</a></h3>
+<p>Variables of the form <span class="math">\(\Vert P_n - P \Vert_{\mathcal{G}}\)</span> are
+ubiquitos in statistics and econometrics and there are well-known
+sufficient conditions that guarantee its convergence.</p>
+<p>For parametric estimation, probably the most widely used (at least in
+econometrics) sufficient condition includes the following three
+assumptions (or some form thereof). Suppose that the action space
+<span class="math">\(\mathcal{A}\)</span> is indexed by a finite dimensional vector
+<span class="math">\(\theta\in\Theta \subset \mathbb{R}^{p}\)</span>. If</p>
+<ul class="simple">
+<li><span class="math">\(\Theta\)</span> is <em>compact</em></li>
+<li><span class="math">\(l(\theta, z)\)</span> is a function such that <span class="math">\(l(\cdot, z)\)</span> is
+<em>continuous</em> on <span class="math">\(\Theta\)</span> with probability one</li>
+<li><span class="math">\(l(\theta, z)\)</span> is <em>dominated</em> by a function <span class="math">\(B(z)\)</span>, i.e.
+<span class="math">\(|l(\theta, z)|\leq B(z)\)</span> for all <span class="math">\(\theta\in\Theta\)</span>, such
+that <span class="math">\(\mathbb{E}[B(Z)]&lt;\infty\)</span></li>
+</ul>
+<p>then
+<span class="math">\(\mathcal{L}_{\mathcal{A}} := \left\{l(a, \cdot) : a \in \mathcal{A} \right\}\)</span>
+is a Glivenko-Cantelli class for <span class="math">\(P\)</span> and so the estimator that it
+represents is consistent. Among others, these assumptions are the bases
+for consistency of the (Quasi-)Maximum Likelihood <a class="reference internal" href="#white-1994" id="id5">[White-1994]</a> and the Generalized Method of Moments estimators
+<a class="reference internal" href="#hansen-1982" id="id6">[Hansen-1982]</a>.</p>
+<p>A somewhat different approach focuses on the &#8220;effective size&#8221; of the
+class <span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span> and frames sufficient conditions
+in terms of particular complexity measures such as the <em>Rademacher
+complexity</em>, <em>Vapnik-Chervonenkis dimension</em>, <em>covering/packing
+numbers</em>, etc. The idea is to find tail bounds for the probability that
+<span class="math">\(\Vert P_n - P \Vert_{\mathcal{L}_{\mathcal{A}}}\)</span> deviates
+substantially above the complexity of <span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span>.
+In the following section we present the main ideas behind the derivation
+of non-asymptotic tail bounds.</p>
+<p><strong>An interesting necessary condition:</strong> If
+<span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span> is a collection of indicator functions
+and the data generating process is assumed to be i.i.d., a <em>necessary</em>
+and sufficient condition for distribution free uniform convergence is
+that the Vapnik-Chervonenkis complexity of
+<span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span> is finite.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="non-asymptotic-bounds">
+<h2>Non-asymptotic bounds<a class="headerlink" href="#non-asymptotic-bounds" title="Permalink to this headline">¶</a></h2>
+<p>As we have seen above, one way to establish consistency for analog
+estimators is to require uniform convergence of the empirical loss to
+the true loss over the entire action space, i.e. guarantee that the
+uniform law of large numbers holds. This section presents an approach to
+the laws of large numbers (uniform or &#8220;standard&#8221;) building on a finite
+sample perspective.</p>
+<p>We study the concentration of centered averages around their means for
+different finite sample sizes. More generally, we want results of the
+form</p>
+<div class="math">
+\[P\left(z^n \ : \ \left|g(z^n) - E[g(z^n)]\right| \geq \delta_n\right) \leq \varepsilon\quad\text{with}\quad\delta_n \to 0\]</div>
+<p>OR</p>
+<div class="math">
+\[P\left( z^n \ : \ \left|g(z^n) - E[g(z^n)]\right| \geq \delta\right) \leq \varepsilon_n\quad\text{with}\quad\varepsilon_n \to 0\]</div>
+<p>Such results are known as <strong>concentration inequalities</strong>. Ensuring that
+the centered average goes to a degenerate distribution on its
+mean&#8212;&#8221;perfectly&#8221; concentrates around it&#8212;establishes the law of large
+numbers. Moreover, studying concentration and tail bounds has the
+advantage that we obtain approximate rates of convergence as a
+byproduct. These rates of convergence will give us information regarding
+the minimum sample size above which generalization from the empricial
+loss to the true loss is justified.</p>
+<p>First, we study how the concentration inequalities work for a single
+random variable. This is going to parallel the law of large numbers.
+Second, we study concentration inequalities applicable uniformly over a
+class of random variables, i.e. <em>uniform bounds</em> of the form</p>
+<div class="math">
+\[P\left(z^n \ : \ \sup_{g\in\mathcal{G}} \ \left|g(z^n) - E[g(z^n)]\right| \geq \delta_n\right) \leq \varepsilon\quad\text{with}\quad\delta_n \to 0\]</div>
+<p>over a class of functions <span class="math">\(\mathcal{G}\)</span>. This is going to parallel
+the uniform law of large numbers. For ease of notation we present the
+results for a general class of measurable functions
+<span class="math">\(g \in \mathcal{G}\)</span> &#8211; but remember that in almost all
+applications we will substitute it for
+<span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span>.</p>
+<p>This section builds on the material in <a class="reference internal" href="#wasserman-2016" id="id7">[Wasserman-2016]</a> and <a class="reference internal" href="#bousquet-2004" id="id8">[Bousquet-2004]</a>.</p>
+<!---
+Throughout this section we should keep in mind the characterization of consistency in the case of analog estimators. This was equivalent to uniform convergence which we repeat here
+
+$$ P\left( \sup_{a\in\mathcal{A}} \left| \int_Z l(a, z)dP_n (z) - \int_Z l(a, z)dP(z)\right| > \varepsilon \right) \quad  \underset{n \to \infty}{\to} \quad  0 \quad\quad \forall \varepsilon > 0. $$
+
+For each action the loss is a just a (measurable) function of the random variable $Z$, $l_a(Z):=l(a, Z)$.
+---><div class="section" id="markov-s-inequality">
+<h3>Markov&#8217;s inequality<a class="headerlink" href="#markov-s-inequality" title="Permalink to this headline">¶</a></h3>
+<p>Markov&#8217;s inequality states that for any non-negative scalar random
+variable <span class="math">\(Z\)</span> and <span class="math">\(t&gt;0\)</span> we have</p>
+<div class="math">
+\[P\{Z \geq t\}\leq \frac{\mathbb{E}[Z]}{t}.\]</div>
+<p>The idea behind this inequality is fairly simple and in fact it follows
+from the following obvious inequality</p>
+<div class="math">
+\[\mathbf{1}\{Z\geq t\}\leq \frac{Z}{t}\]</div>
+<p>illustrated by the figure below. Clearly, <em>for any probability measure</em>
+<span class="math">\(P\)</span> over <span class="math">\(Z\)</span> with a finite first moment Markov&#8217;s inequality
+can be established.</p>
+<div class="figure">
+<img alt="" src="../_images/asymptotic_markov_chebyshev.png" />
+</div>
+<p>It follows from Markov&#8217;s inequality that for any strictly monotonically
+increasing non-negative function <span class="math">\(\phi\)</span> and any random variable
+<span class="math">\(Z\)</span> (not necessarily non-negative) we have that</p>
+<div class="math">
+\[P\{Z \geq t\} = P\{\phi(Z) \geq \phi(t)\} \leq \frac{\mathbb{E}[\phi(Z)]}{\phi(t)}.\]</div>
+<p>Taking the centered random variable <span class="math">\(| Z - \mathbb{E}[Z]|\)</span> and
+<span class="math">\(\phi(x) = x^q\)</span> for some <span class="math">\(q&gt;0\)</span> leads to tail bounds
+expressed in terms of the moments of <span class="math">\(Z\)</span>.</p>
+<div class="math">
+\[P\{| Z - \mathbb{E}[Z]| \geq t\} \leq \frac{\mathbb{E}[| Z - \mathbb{E}[Z]|^q]}{t^q}.\]</div>
+<p>Note that for <span class="math">\(q = 2\)</span>, this form delivers the <strong>Chebyshev
+inequality</strong> (see the right panel of the Figure). This approach to
+bounding tail probabilities for a wide range of possible <span class="math">\(P\)</span> is
+quite general. Controlling higher order moments&#8211;restricting
+<span class="math">\(\mathcal{H}\)</span>, i.e. the range of probabilities to which the
+inequality holds&#8211;leads to (weakly) tighter bounds on the tail
+probabilities.</p>
+</div>
+<div class="section" id="chernoff-bounds">
+<h3>Chernoff bounds<a class="headerlink" href="#chernoff-bounds" title="Permalink to this headline">¶</a></h3>
+<p>A related idea is at the core of the so called Chernoff bound. For that
+one takes the transformation <span class="math">\(\phi(x) = e^{\lambda x}\)</span> applied to
+the centered random variable <span class="math">\((Z - \mathbb{E}[Z])\)</span> which yields</p>
+<div class="math">
+\[P\{(Z - \mathbb{E}[Z]) \geq t\} \leq \frac{\mathbb{E}\left[e^{\lambda(Z - \mathbb{E}[Z])}\right]}{e^{\lambda t}}.\]</div>
+<p>Minimizing the bound over <span class="math">\(\lambda\)</span> (provided the moments exist)
+would lead us to the Chernoff bound</p>
+<div class="math">
+\[\log P\{(Z - \mathbb{E}[Z]) \geq t\} \leq - \sup_{\lambda} \left\{\lambda t - \log \mathbb{E}\left[e^{\lambda(Z - \mathbb{E}[Z])}\right]\right\}.\]</div>
+<p>If the centered random variable is an iid sum of other random variables,
+the Chernoff bound gains additional structure.</p>
+</div>
+<div class="section" id="hoeffding-bounds">
+<h3>Hoeffding bounds<a class="headerlink" href="#hoeffding-bounds" title="Permalink to this headline">¶</a></h3>
+<p>Suppose first that the sample <span class="math">\(z^n\)</span> is generated by an iid process
+and recall that</p>
+<div class="math">
+\[P_n g - P g = \frac{1}{n}\sum_{i=1}^n g(Z_i) - \mathbb{E}[g(Z)] = \frac{1}{n}\sum_{i=1}^n \left(g(Z_i) - \mathbb{E}[g(Z)]\right).\]</div>
+<p>Bounding the tails via Chernoff&#8217;s method yields</p>
+<div class="math">
+\[P\left\{\frac{1}{n}\sum_{i=1}^n \left(g(Z_i) - \mathbb{E}[g(Z)]\right) \geq t\right\} \leq \frac{\mathbb{E}\left[e^{\lambda \frac{1}{n}\sum_{i=1}^n \left(g(Z_i) - \mathbb{E}[g(Z)]\right)}\right]}{e^{\lambda t}} = e^{-\lambda t} \prod_{i=1}^n \mathbb{E}\left[e^{\lambda \frac{1}{n}\left(g(Z_i) - \mathbb{E}[g(Z)] \right)} \right]\]</div>
+<p>where the equality follows from independece. Hence, the problem of
+deriving a tight bound boils down to bounding the moment generating
+function of</p>
+<div class="math">
+\[\frac{1}{n}\left(g(Z_i) - \mathbb{E}[g(Z)] \right).\]</div>
+<p>For obtaining bounds of moment generating functions, a particularly
+important class of random variables are the so called <strong>sub-Gaussian
+variables</strong>.</p>
+<p><strong>Definition.</strong> A random variable <span class="math">\(Z\)</span> is called sub-Gaussian if
+there is a positive number <span class="math">\(\sigma\)</span> such that for all
+<span class="math">\(\lambda \in \mathbb{R}\)</span></p>
+<div class="math">
+\[\mathbb{E}\left[e^{\lambda \left(Z - \mathbb{E}[Z] \right)} \right] \leq e^{\sigma^2\lambda^2/2}\]</div>
+<p><strong>REMARK:</strong>: A Guassian variable with variance <span class="math">\(\sigma^2\)</span> is
+sub-Gaussian with parameter <span class="math">\(\sigma\)</span>. There are other non-Guassian
+random variables which are sub-Gaussian &#8211; for example all bounded
+random variables.</p>
+<p>The property of sub-Gaussianity is preserved by linear operations, which
+leads to the following important result</p>
+<p><strong>Theorem.</strong> (Hoeffding) Let the variables <span class="math">\(g(Z_i)\)</span> be iid and
+sub-Gaussian with parameter <span class="math">\(\sigma\)</span>. Then, for all <span class="math">\(t&gt;0\)</span> we
+have that</p>
+<div class="math">
+\[P\left\{\left|\frac{1}{n}\sum_{i=1}^n g(Z_i) - \mathbb{E}[g(Z)]\right| \geq t\right\} \leq 2\exp\left\{-\frac{t^2 n}{2\sigma^2}\right\}.\]</div>
+<p>For a single random variable <span class="math">\(g(Z)\)</span>, we see how the Hoeffding
+inequality is at the core of the law of large numbers. As <span class="math">\(n\)</span> goes
+to infinity, the upper bound on the right goes to zero implying that the
+probability on the left must go to zero as well <em>for all</em> <span class="math">\(P\)</span> that
+makes <span class="math">\(g(Z)\)</span> sub-Gaussian. In fact, further inspection reveals
+that the upper bound also provides an exponential rate of convergence:
+<span class="math">\(t^2/(2\sigma^2)\)</span></p>
+<p>However, in order to talk about concentration properties of decision
+rules, <span class="math">\(d: \mathcal{S}\mapsto\mathcal{A}\)</span> we need bounds for tail
+probabilities applicable uniformly over the whole action space or
+alternatively, uniformly across <span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span>. This
+consideration leads us to uniform bounds.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="uniform-tail-and-concentration-bounds-for-classes-of-finite-cardinality">
+<h2>Uniform Tail and Concentration Bounds for classes of finite cardinality<a class="headerlink" href="#uniform-tail-and-concentration-bounds-for-classes-of-finite-cardinality" title="Permalink to this headline">¶</a></h2>
+<p>As a first simple example we consider uniform tail bounds over sets of
+finite cardinality. Let
+<span class="math">\(\mathcal{G} = \{g_j : j = 1, \ldots, J\}\)</span>. A conservative
+estimate of the uniform tail bound in this case is the union bound.</p>
+<p><strong>Corollary.</strong> (Hoeffding union bound) Let the variables
+<span class="math">\(\{g_j(Z_i): j=1,\ldots, J\}\)</span> be iid and sub-Gaussian with common
+parameter <span class="math">\(\sigma\)</span>. Then, for all <span class="math">\(t &gt; 0\)</span> we have</p>
+<div class="math">
+\[P\left\{\sup_{g\in\mathcal{G}}\left| \frac{1}{n}\sum_{i=1}^n g(Z_i) - \mathbb{E}[g(Z)]\right| \geq t \right\} \leq \sum_{j = 1}^{J} P\left\{\left|\frac{1}{n}\sum_{i=1}^n g_j(Z_i) - \mathbb{E}[g_j(Z)]\right| \geq t \right\} \leq J 2\exp\left\{-\frac{t^2 n}{2\sigma^2}\right\}.\]</div>
+<p>The difference between the uniform and individual Hoeffding bounds is
+just a scaling factor, <span class="math">\(J\)</span>. If there is only finitely many actions
+in <span class="math">\(\mathcal{A}\)</span>, then of course the function class
+<span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span> has finite cardinality. Our objective,
+however, is to extend the above analysis to action spaces with infinite
+cardinality. To this end, we need to find a better &#8220;measure&#8221; of the size
+of a function space than its cardinality. Next, we introduce one such
+complexity measure which proves to be extremely useful in the case of
+characterizing tail bounds for analog estimators.</p>
+</div>
+<div class="section" id="uniform-tail-bounds-for-classes-of-infinite-cardinality-rademacher-complexity">
+<h2>Uniform tail bounds for classes of infinite cardinality - Rademacher complexity<a class="headerlink" href="#uniform-tail-bounds-for-classes-of-infinite-cardinality-rademacher-complexity" title="Permalink to this headline">¶</a></h2>
+<p>In order to work with sets of infinitely many functions we would like to
+capture the size of these infinite sets for the purpose of statistical
+analysis. One such measure of statistical size is the Rademacher
+complexity of a class of real-valued functions.</p>
+<p>For a given realization of a sample, <span class="math">\(z^n\)</span>, of size <span class="math">\(n\)</span>
+consider the the set of vectors</p>
+<div class="math">
+\[\mathcal{G}(z^n) := \left\{ (g(z_1), \ldots, g(z_n)) \in \mathbb{R}^n \mid g \in \mathcal{G} \right\}.\]</div>
+<p>This embodies the number of ways one can label points of a sample using
+functions in the class <span class="math">\(\mathcal{G}\)</span>. It is often called the
+projection of the function class <span class="math">\(\mathcal{G}\)</span> to the sample
+<span class="math">\(z^n\)</span>. The <strong>empirical Rademacher complexity of</strong>
+<span class="math">\(\mathcal{G}\)</span> for fixed <span class="math">\(z^n\)</span> is defined as</p>
+<div class="math">
+\[\mathsf{R} \left(\mathcal{G}(z^n) \right) := \mathbb{E}_{\epsilon}\left[\sup_{g\in \mathcal{G}}\Big| \frac{1}{n}\sum_{i=1}^n \epsilon_i g(z_i) \Big| \right],\]</div>
+<p>where the expectation is taken with respect to the iid <strong>Rademacher
+random variables</strong>, <span class="math">\(\epsilon_i\)</span> which take value in
+<span class="math">\(\{-1, 1\}\)</span> with equal probability.</p>
+<p>The <strong>Rademacher complexity of</strong> <span class="math">\(\mathcal{L}\)</span> for sample size
+<span class="math">\(n\)</span> is then defined as</p>
+<div class="math">
+\[\mathsf{R}\left(\mathcal{G}, n\right) := \mathbb{E}_{Z^n} \Big[\mathsf{R}\left(\mathcal{G}(z^n) \right)\Big].\]</div>
+<p>where the expectations is taken with respect to the sample. Rademacher
+complexity has an intuitive interpretation. It is the average (across
+samples) of the maximum correlations between the vectors
+<span class="math">\(\big(g(z_1), \ldots, g(z_n)\big)\)</span> and the pure noise vector
+<span class="math">\(\big(\epsilon_1, \ldots, \epsilon_n\big)_{z^n}\)</span>. The function
+class <span class="math">\(\mathcal{G}\)</span> is too &#8220;large&#8221; (complex) for statistical
+purposes, if we can always choose a function, <span class="math">\(g\in\mathcal{G}\)</span>
+that has high correlation with a randomly drawn noise vector, that is,
+when the corresponding Rademacher complexity does not go to zero as the
+sample size grows to infinity.</p>
+<div class="section" id="illustration-of-rademacher-complexity">
+<h3>Illustration of Rademacher complexity<a class="headerlink" href="#illustration-of-rademacher-complexity" title="Permalink to this headline">¶</a></h3>
+<p>In the following we consider two examples. Although both examples use a
+function class that can be parametrized by a <em>single</em> free parameter, we
+will see that one of them has drastically smaller Rademacher complexity
+than the other.</p>
+<p><strong>Coin tossing example revisited</strong></p>
+<p>Consider again the coin tossing example with the quadratic loss function
+discussed before. In this case <span class="math">\(Z^n\)</span> is an iid sample from a
+Binomial distribution parametrized with <span class="math">\(\theta\in[0, 1]\)</span>. The
+class of functions is given by the quadratic class</p>
+<div class="math">
+\[\mathcal{L}_{\mathcal{A}} := \{l(a, \cdot) : l(a, z) = (z - a)^2, \ \  a \in [0, 1]\subseteq \mathbb{R}\}.\]</div>
+<p>The following figure depicts the empricial Rademacher complexity
+<span class="math">\(\mathsf{R} \left(\mathcal{L}_{\mathcal{A}}(z^n) \right)\)</span> along
+alternative sample paths (on the left) and the Rademacher complexity
+<span class="math">\(\mathsf{R}\left(\mathcal{L}_{\mathcal{A}}, n\right)\)</span> for
+different sample sizes (on the right).</p>
+<ul class="simple">
+<li>Clearly, both
+<span class="math">\(\mathsf{R} \left(\mathcal{L}_{\mathcal{A}}(z^n) \right)\)</span> and
+<span class="math">\(\mathsf{R}\left(\mathcal{L}_{\mathcal{A}}, n\right)\)</span> converge
+to zero as the sample size grows to infinity.</li>
+<li>Rademacher complexity is nearly indistinguishable from Empirical
+Rademacher complexity and in fact, the latter does not show much
+variation across the different samples <span class="math">\(z^n\)</span> (several lines lie
+on top of each other). This suggests that in the simple example of
+coin tossing, the different ensemble samples (with more than 300 data
+points) encode very similar information about the complexity of the
+function class used in the estimation.</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/asymptotic_rademacher_cointoss.png" />
+</div>
+<p><strong>Sinusoid classification</strong></p>
+<p>Consider next a classification problem, where the observable is
+<span class="math">\(Z=(Y, X)\)</span> and assume that the binary random variable
+<span class="math">\(Y\)</span>&#8211;taking values from <span class="math">\(\{-1, 1\}\)</span>&#8211;depends on the
+covariate <span class="math">\(X\)</span> in some way. Suppose that a statistician uses the
+following classifiers to cature this dependence</p>
+<div class="math">
+\[\mathcal{L}_{\mathcal{A}} := \Big\{ \mathbb{1}\{\sin(ax) \geq 0\} - \mathbb{1}\{\sin(ax) &lt; 0\} : a \in \mathbb{R}_+ \Big\}.\]</div>
+<p>That is, the classifier boundary is given by sine functions,
+<span class="math">\(\sin(aX)\)</span>, parametrized by the frequency <span class="math">\(a\)</span>. For a given
+<span class="math">\(a\)</span>, one can determine the range of covariate values for which
+this classifier assigns the value <span class="math">\(1\)</span> or <span class="math">\(-1\)</span>. As a result,
+choosing <span class="math">\(a\in\mathcal{A}\)</span> is equivalent with choosing particular
+subsets of <span class="math">\(X\)</span>. To determine the optimal <span class="math">\(a\)</span> we use the
+<span class="math">\(0/1\)</span> loss.</p>
+<p>The following figure represents the empirical loss minimizing
+classifiers for two random samples (depicted by the red dots) with
+different sizes. In order to have a closed form solution for the optimal
+classifier we are selecting the sample at convenient points. This is
+without loss of generality and useful for illustrative purposes. The
+shaded area indicates the ranges of <span class="math">\(X\)</span>, where the classifier
+assigns <span class="math">\(1\)</span> or <span class="math">\(-1\)</span>.</p>
+<ul class="simple">
+<li>As we can see, by choosing a sufficiently high frequency <span class="math">\(a\)</span> we
+can always find a curve which classifies the data perfectly, i.e. the
+in-sample predicitions are always &#8220;correct&#8221;.</li>
+<li>For better illustration, consider the empirical Rademacher complexity
+associated with the sample, <span class="math">\(z^n\)</span>, depicted by the red dots.
+Since <span class="math">\(\mathcal{L}_{\mathcal{A}}\)</span> is always able to perfectly
+separate the sample, the (empirical) Rademacher complexity always
+takes its maximum value (one) irrespective of the sample size.</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/asymptotic_rademacher_sinusoid.png" />
+</div>
+<p>Consequently, for statistical purposes the family of sine curves is too
+complex. This example highlights that for general non-linear functions
+the number of free parameters&#8212;here only one&#8212;does not correspond to
+the complexity of the function class&#8212;which is infinity.</p>
+</div>
+<div class="section" id="uniform-bounds-using-the-rademacher-complexity">
+<h3>Uniform bounds using the Rademacher complexity<a class="headerlink" href="#uniform-bounds-using-the-rademacher-complexity" title="Permalink to this headline">¶</a></h3>
+<p>With the introduced concepts we are now capable to present an important
+concentration inequality for classes of infinite cardinality.</p>
+<p><strong>Theorem:</strong> For uniformly bounded functions
+<span class="math">\(\lvert g \rvert_{\infty} &lt; B, \ \ \forall g \in\mathcal{G}\)</span> and
+for each <span class="math">\(\eta&gt;0\)</span> we have that</p>
+<div class="math">
+\[P \Big\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq  2R_n(\mathcal{G}) + \eta \Big\} \leq 2 \exp\Big\{- \frac{2 n \eta^2}{B^2} \Big\}. \quad\quad\quad(*)\]</div>
+<p>and for the empirical Rademacher complexity</p>
+<div class="math">
+\[P\Big\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq 2 R\left(\mathcal{G}(Z^n)\right) + \eta \Big\} \leq 2 \exp\Big\{-\frac{n \eta^2}{4 B^2} \Big\}. \quad\quad\quad(**)\]</div>
+<p>It is apparent from the above inequalities that the tightness of the
+finite sample uniform bounds will be (partly) determined by the
+Rademacher complexity. The change in Rademacher complexity as the sample
+size grows will determine the (non-asymptotic) rate of convergence.
+Hence, if <span class="math">\(R_n(\mathcal{G}) = o(1)\)</span> then
+<span class="math">\(\Vert P_n - P \Vert_{\mathcal{G}} \to 0\)</span> or put it differently,
+<span class="math">\(\mathcal{G}\)</span> is a Glivenko-Cantelli class.</p>
+<p>Notice that the second bound in <span class="math">\((**)\)</span> is data dependent in the
+sense that it includes only variables that in principle, we can
+determine without knowing the true probability distribution.</p>
+<div class="section" id="illustration-of-the-tail-bounds-in-the-coin-tossing-example">
+<h4>Illustration of the tail bounds in the coin tossing example<a class="headerlink" href="#illustration-of-the-tail-bounds-in-the-coin-tossing-example" title="Permalink to this headline">¶</a></h4>
+<p>An alternative way to express the uniform bounds is to specify a fixed
+tail probability <span class="math">\(\varepsilon\)</span> and use the change of variable
+<span class="math">\(\varepsilon = 2 \exp\left(- \frac{2 n \eta^2}{B^2}\right)\)</span> to
+obtain</p>
+<div class="math">
+\[P \left\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq  2R_n(\mathcal{G}) + \sqrt{\frac{B^2}{2n}\log\left(\frac{2}{\varepsilon}\right)} \right\} \leq \varepsilon.\]</div>
+<p>This formulation of the bound is useful because it makes transparent the
+sense in which it is uniform over the action space <span class="math">\(\mathcal{A}\)</span>.
+Similarly, for fixed action <span class="math">\(a\)</span>, we can compute the sequence
+<span class="math">\(\{\delta_n(a)\}_{n\geq 1}\)</span> that makes the following expression
+true for all <span class="math">\(n\)</span></p>
+<div class="math">
+\[P \left\{ \left| L(P_n, a) - L(P, a)\right| \geq  \delta_n(a) \right\} \leq \varepsilon.\]</div>
+<p>Note that conceptually this is the same exercise that we did for tail
+probabilities above. The difference is that while there we fixed
+<span class="math">\(\delta_n=\delta\)</span> for all <span class="math">\(n\)</span> and treated
+<span class="math">\(\varepsilon\)</span> (tail probability) as sample size dependent, here,
+we are switching the roles and investigating the implied
+<span class="math">\(n\)</span>-dependent bounds for fixed tail probability
+<span class="math">\(\varepsilon\)</span>.</p>
+<p>The left panel of the following figure compares the uniform bound
+derived from Rademacher complexity along with the
+<span class="math">\(\{\delta_n(a)\}\)</span> sequences for different actions <span class="math">\(a\)</span> in the
+coin-tossing example.</p>
+<ul class="simple">
+<li>The bound expressed in terms of Rademacher complexity clearly
+dominates the absolute difference between the empirical and true loss
+for all actions.</li>
+<li>We can see the sense in which the tail bound represents a
+<em>worst-case</em> viewpoint: by bounding the <em>supremum</em> of the difference
+between the empirical and true loss, one can be sure that
+generalization works uniformly well over the action space, but the
+bound is loose for most actions.</li>
+</ul>
+<div class="figure">
+<img alt="" src="../_images/rademacher_tail_bound.png" />
+</div>
+<p>Calculation of the Rademacher complexity in <span class="math">\((*)\)</span> requires the
+knowledge of the true distribution. In this sense, inequality
+<span class="math">\((**)\)</span> provides a practically more useful bound. As we have seen
+above, this inequality incorporates the Empirical Rademacher complexity
+and uses a looser scaling factor in the upper bound. On the other hand,
+this bound is <em>agnostic</em> in the sense that it is applicable for any true
+distribution <span class="math">\(\theta\in[0,1]\)</span>, i.e. for any statistical model in
+<span class="math">\(\mathcal{H}\)</span>. The right panel of the above figure demonstrates
+this fact.</p>
+<ul class="simple">
+<li>For fixed <span class="math">\(a\)</span>, different <span class="math">\(\theta\)</span> distributions induce
+different tail probabilities. The bound constructed from the
+Empirical Rademacher complexity works uniformly for all of such
+alternative true probabilities.</li>
+<li>One might consider this bound as a result of a <em>worst-case</em> analysis
+taking into account both the action space <span class="math">\(\mathcal{A}\)</span> and the
+class of statistical models <span class="math">\(\mathcal{H}\)</span>.</li>
+</ul>
+</div>
+<div class="section" id="bounding-expectations">
+<h4>Bounding expectations<a class="headerlink" href="#bounding-expectations" title="Permalink to this headline">¶</a></h4>
+<p>Related strongly to the above tail bounds, one can also bound the
+<em>expectation</em> of the supremum of an empirical process using Rademacher
+complexity. This is often called <strong>symmetrization inequality</strong>.</p>
+<p><strong>Theorem:</strong> For any class of <span class="math">\(P\)</span>-integrable functon class
+<span class="math">\(\mathcal{G}\)</span>, we have that</p>
+<div class="math">
+\[\mathbb{E}_{Z^n}\Big[\Vert P_n - P \Vert_{\mathcal{G}} \Big] \leq 2R_n(\mathcal{G}) = 2 \mathbb{E}_{Z^n}\Big[R\left(\mathcal{G}(Z^n)\right)\Big].\]</div>
+<p>Unfortunately, computing the Rademacher complexity directly is only
+feasible in special cases (see one example below). There are various
+techniques however, which give bounds on the Rademacher complexity. For
+different classes of functions different techniques prove to be useful,
+so one usually proceeds on a case-by-case basis. The most common ways of
+bounding the Rademacher complexity are via the <strong>Vapnik-Chervonenkis
+dimension</strong> for binary functions and via <strong>metric entropy</strong> for bounded
+real valued functions.</p>
+<hr class="docutils" />
+<p>The code for the simulations and producing the graphs ican be found
+<a class="reference external" href="https://github.com/QuantEcon/econometrics/blob/master/Notebook_02_asymptotics/asymptotic_analysis_code.ipynb">here</a>.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<table class="docutils citation" frame="void" id="bousquet-2004" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[Bousquet-2004]</a></td><td>Bousquet, O., Boucheron, S., &amp; Lugosi, G. (2004). Introduction to statistical learning theory. In Advanced lectures on machine learning (pp. 169-207). Springer Berlin Heidelberg.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="vapnik-chervonenkis-1971" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[Vapnik-Chervonenkis-1971]</a></td><td>Chervonenkis, A. and Vapnik, V. (1971). Theory of uniform convergence of frequencies of events to their probabilities and problems of search for an optimal solution from empirical data. Automation and Remote Control, 32, 207-217.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="hansen-1982" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[Hansen-1982]</a></td><td>Hansen, L. P. (1982). Large sample properties of generalized method of moments estimators. Econometrica: Journal of the Econometric Society, 1029-1054.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="manski-1988" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Manski-1988]</a></td><td>Manski, Charles (1988). Analog estimation in econometrics. Chapman and Hall, London.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pollard-1984" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[Pollard-1984]</a></td><td>Pollard, David (1984). Convergence of Stochastic Processes. Springer-Verlag.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="vdvaart-2000" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[vdVaart-2000]</a></td><td>Van der Vaart, A. W. (2000). Asymptotic statistics (Vol. 3). Cambridge University Press.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="wasserman-2016" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[Wasserman-2016]</a></td><td>Wasserman, Larry (2016). Lecture notes for Statistical Machine Learning at CMU. <a class="reference external" href="http://www.stat.cmu.edu/~larry/=sml/">Link</a></td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="white-1994" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[White-1994]</a></td><td>White, Halbert (1994). Estimation, Inference and Specification Analysis (Econometric Society Monographs). Cambridge University Press.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Asymptotic analysis and consistency</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#consistency-of-decision-rules">Consistency of decision rules</a></li>
+<li><a class="reference internal" href="#uniform-law-of-large-numbers">Uniform law of large numbers</a><ul>
+<li><a class="reference internal" href="#a-special-case-plug-in-estimators">A special case &#8211; plug-in estimators</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uniform-law-of-large-numbers-and-consistency">Uniform law of large numbers and consistency</a><ul>
+<li><a class="reference internal" href="#sufficient-conditions-for-ulln">Sufficient conditions for ULLN</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#non-asymptotic-bounds">Non-asymptotic bounds</a><ul>
+<li><a class="reference internal" href="#markov-s-inequality">Markov&#8217;s inequality</a></li>
+<li><a class="reference internal" href="#chernoff-bounds">Chernoff bounds</a></li>
+<li><a class="reference internal" href="#hoeffding-bounds">Hoeffding bounds</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uniform-tail-and-concentration-bounds-for-classes-of-finite-cardinality">Uniform Tail and Concentration Bounds for classes of finite cardinality</a></li>
+<li><a class="reference internal" href="#uniform-tail-bounds-for-classes-of-infinite-cardinality-rademacher-complexity">Uniform tail bounds for classes of infinite cardinality - Rademacher complexity</a><ul>
+<li><a class="reference internal" href="#illustration-of-rademacher-complexity">Illustration of Rademacher complexity</a></li>
+<li><a class="reference internal" href="#uniform-bounds-using-the-rademacher-complexity">Uniform bounds using the Rademacher complexity</a><ul>
+<li><a class="reference internal" href="#illustration-of-the-tail-bounds-in-the-coin-tossing-example">Illustration of the tail bounds in the coin tossing example</a></li>
+<li><a class="reference internal" href="#bounding-expectations">Bounding expectations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../Notebook_01_wald/statistical_decision_functions_text.html" title="previous chapter">Estimators as Statistical Decision Functions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Notebook_02_asymptotics/asymptotic_analysis_text.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Daniel Csaba, Balint Szoke.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/Notebook_02_asymptotics/asymptotic_analysis_text.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
