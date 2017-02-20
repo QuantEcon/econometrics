@@ -779,11 +779,11 @@ concentration inequality for classes of infinite cardinality.
 :math:`\lvert g \rvert_{\infty} < B, \ \ \forall g \in\mathcal{G}` and
 for each :math:`\eta>0` we have that
 
-.. math::  P \Big\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq  2R_n(\mathcal{G}) + \eta \Big\} \leq 2 \exp\Big\{- \frac{2 n \eta^2}{B^2} \Big\}. \quad\quad\quad(*)
+.. math::  P \Big\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq  2\mathsf{R}\left(\mathcal{G}, n\right) + \eta \Big\} \leq 2 \exp\Big\{- \frac{2 n \eta^2}{B^2} \Big\}. \quad\quad\quad(*)
 
 and for the empirical Rademacher complexity
 
-.. math::  P\Big\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq 2 R\left(\mathcal{G}(Z^n)\right) + \eta \Big\} \leq 2 \exp\Big\{-\frac{n \eta^2}{4 B^2} \Big\}. \quad\quad\quad(**) 
+.. math::  P\Big\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq 2 \mathsf{R} \left(\mathcal{G}(z^n) \right) + \eta \Big\} \leq 2 \exp\Big\{-\frac{n \eta^2}{4 B^2} \Big\}. \quad\quad\quad(**) 
 
 It is apparent from the above inequalities that the tightness of the
 finite sample uniform bounds will be (partly) determined by the
@@ -805,7 +805,7 @@ tail probability :math:`\varepsilon` and use the change of variable
 :math:`\varepsilon = 2 \exp\left(- \frac{2 n \eta^2}{B^2}\right)` to
 obtain
 
-.. math::  P \left\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq  2R_n(\mathcal{G}) + \sqrt{\frac{B^2}{2n}\log\left(\frac{2}{\varepsilon}\right)} \right\} \leq \varepsilon. 
+.. math::  P \left\{ \Vert P_n - P \Vert_{\mathcal{G}} \geq  2\mathsf{R}\left(\mathcal{G}, n\right) + \sqrt{\frac{B^2}{2n}\log\left(\frac{2}{\varepsilon}\right)} \right\} \leq \varepsilon. 
 
 This formulation of the bound is useful because it makes transparent the
 sense in which it is uniform over the action space :math:`\mathcal{A}`.
@@ -868,7 +868,7 @@ complexity. This is often called **symmetrization inequality**.
 **Theorem:** For any class of :math:`P`-integrable functon class
 :math:`\mathcal{G}`, we have that
 
-.. math:: \mathbb{E}_{Z^n}\Big[\Vert P_n - P \Vert_{\mathcal{G}} \Big] \leq 2R_n(\mathcal{G}) = 2 \mathbb{E}_{Z^n}\Big[R\left(\mathcal{G}(Z^n)\right)\Big]. 
+.. math:: \mathbb{E}_{Z^n}\Big[\Vert P_n - P \Vert_{\mathcal{G}} \Big] \leq 2\mathsf{R}\left(\mathcal{G}, n\right) = 2 \mathbb{E}_{Z^n}\Big[\mathsf{R} \left(\mathcal{G}(z^n) \right)\Big]. 
 
 Unfortunately, computing the Rademacher complexity directly is only
 feasible in special cases (see one example below). There are various

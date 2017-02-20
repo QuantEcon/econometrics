@@ -1,0 +1,1204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Coping with finite samples &mdash; econometrics 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="econometrics 0.1 documentation" href="../index.html" />
+    <link rel="prev" title="Asymptotic analysis and consistency" href="../Notebook_02_asymptotics/asymptotic_analysis_text.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="coping-with-finite-samples">
+<h1>Coping with finite samples<a class="headerlink" href="#coping-with-finite-samples" title="Permalink to this headline">¶</a></h1>
+<p><strong>February 2017</strong></p>
+<div class="section" id="from-asymptotics-to-finite-samples">
+<h2>From asymptotics to finite samples<a class="headerlink" href="#from-asymptotics-to-finite-samples" title="Permalink to this headline">¶</a></h2>
+<p>In notebook {reference asymptotics} we took an asymptotic approach by
+focusing on the behavior of the decision rule under the assumption that
+the sample size is &#8220;almost infinity&#8221;. We identified consistency and
+fast rate of convergence as desirable features that any reasonable
+decision rule should satisfy.</p>
+<p>We drew the crucial conclustion that both consistency and the rate of
+convergence are driven by the <em>complexity</em> of the composite function
+class <span class="math">\(\mathcal{L}_{\mathcal A}\)</span>. In particular, we have seen that
+finiteness of model complexity is enough to ensure consistency and given
+consistency the magnitude of complexity is inversly related to the
+decision rule&#8217;s rate of convergence: the lower the complexity, the
+faster the rate of convergence.</p>
+<p>This notebook explores the implications of taking the finiteness of the
+sample size seriously. We investigate the additional issues arising
+relative to the asymptotic case and outline some approaches meant to
+tackle these.</p>
+</div>
+<div class="section" id="decompositions-of-the-risk-functional">
+<h2>Decompositions of the risk functional<a class="headerlink" href="#decompositions-of-the-risk-functional" title="Permalink to this headline">¶</a></h2>
+<p>A consistent decision rule <span class="math">\(d\)</span> satisfies
+<span class="math">\(L(P, d(z^n)) \overset{P}{\to} L(P, a^*_{L, P, \mathcal{A}})\)</span>,
+so&#8211;by definition&#8211;the resulting loss functional has a degenerate
+asymptotic distribution centered around the loss of the best-in-class
+action. One might call this value &#8220;asymptotic risk&#8221;. Being dependent on
+the action space <span class="math">\(\mathcal A\)</span>, however, this asymptotic risk is
+not necessarily zero. The global minimum of the loss function relates to
+the true feature of the DGP that we denoted by
+<span class="math">\(\gamma(P)=a^*_{L, P, \mathcal{F}}\)</span>, with <span class="math">\(\mathcal{F}\)</span>
+being the set of all admissible actions.</p>
+<p>The central objects of finite sample analysis concern how the finite
+risk deviates from these two &#8220;asymptotic&#8221; values:</p>
+<ul class="simple">
+<li>The deviation from the best-in-class loss is called <strong>estimation
+error</strong>:</li>
+</ul>
+<div class="math">
+\[\mathcal E_d(P, \mathcal A, n) := R_n(P, d) - L\left(P, a^{*}_{L, P, \mathcal{A}}\right)\]</div>
+<ul class="simple">
+<li>The deviation from the global minimum is the so called <strong>excess
+risk</strong>:</li>
+</ul>
+<div class="math">
+\[\mathcal{ER}_d(P, n) :=  R_n(P, d) - L\left(P, a^*_{L, P, \mathcal{F}} \right)\]</div>
+<div class="section" id="estimation-misspecification-decomposition">
+<h3>Estimation-misspecification decomposition<a class="headerlink" href="#estimation-misspecification-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>Naturally, the two objects are closely connected. In fact, decomposing
+the excess risk using the estimation error highlights one of the most
+important tensions underlying finite sample inference problems.</p>
+<div class="math">
+\[\begin{split}R_n(P, d) - L\left(P, a^*_{L, P, \mathcal{F}}  \right) =  \underbrace{R_n(P, d) - L\left(P, a^{*}_{L, P, \mathcal{A}}\right)}_{\substack{\text{estimation error} \\ \text{random}}} + \underbrace{L\left(P, a^{*}_{L, P, \mathcal{A}}\right)- L\left(P, a^*_{L, P, \mathcal{F}}  \right)}_{\substack{\text{misspecification error} \\ \text{deterministic}}}.\end{split}\]</div>
+<p>As we noted earlier the <strong>misspecification error</strong> is stemming from the
+fact that the true feature might lie outside of the action space.
+Intuitively, as we enlarge the action space <span class="math">\(\mathcal{A}\)</span>, the
+misspecification error gets weakly smaller, while the estimation error
+gets weakly larger. An ideal decision rule balances this trade-off.</p>
+</div>
+<div class="section" id="bias-volatility-misspecification-decomposition">
+<h3>Bias-volatility-misspecification decomposition<a class="headerlink" href="#bias-volatility-misspecification-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>To clarify why the estimation error might increase in the size of the
+action space, we study a slightly finer decomposition of excess risk
+bringing the &#8220;standard&#8221; bias-variance trade-off to bear. The starting
+point of this decomposition is the observation that by assigning members
+of <span class="math">\(\mathcal A\)</span> to <em>random</em> samples <span class="math">\(z^n\)</span> the decision rule
+<span class="math">\(d\)</span> effectively induces a random variable on the action space.
+Having said that, for each sample size <span class="math">\(n\)</span>, we can define the
+<em>mean action</em> <span class="math">\(\bar d_n\)</span> by taking the expected value of
+<span class="math">\(d(z^n)\in\mathcal A\)</span> across the different ensemble samples:</p>
+<div class="math">
+\[\bar d_n = \int_{Z^n} d(z^n) \mathrm{d}P(z^n).\]</div>
+<p>Notice that the mean action need not be in the decision problem&#8217;s action
+space <span class="math">\(\mathcal A\)</span>. Nonetheless, we can evaluate the loss at
+<span class="math">\(\bar d_n\)</span> and use this value to decompose the excess risk&#8217;s
+estimation error component</p>
+<div class="math">
+\[R_n(P, d) - L\left(P, a^*_{L, P, \mathcal{F}} \right) = \underbrace{R_n\left(P, d\right) - L\left(P, \bar d_n \right)}_{\text{volatility}} + \underbrace{L\left(P, \bar{d_n}\right) - L\left(P, a^{*}_{L,P,  \mathcal{A}}\right)}_{\text{bias}} + \underbrace{L\left(P, a^{*}_{L, P, \mathcal{A}}\right)- L\left(P,a^*_{L, P, \mathcal{F}}  \right)}_{\text{misspecification}}\]</div>
+<p>The only term that depends on the particular sample is the first one,
+hence the name volatility. We prefer to view this term as a measure of
+&#8220;instability&#8221; of the decision rule. It captures how sensitive is the
+chosen action to small variations in the realized sample. Given this
+interpretation, it is relatively straightforward to see the volatility
+term&#8217;s close connection with Rademacher complexity. Remember, the
+Rademacher complexity of a function class essentially captures the
+maximal pairwise correlation between elements of the class and
+independent random noise. Large Rademacher complexity implies that the
+function class can fit any random noise and hence we expect the chosen
+element to be highly volatile.</p>
+<p>Since the bias and misspecification terms are deterministic, it might be
+tempting to pull them together and define a &#8220;total bias&#8221; component as is
+typically done in the statistical learning literature <a class="reference internal" href="#abu-mostafa-2012" id="id1">[Abu-Mostafa-2012]</a>. Notice, however, that there is a key
+difference between these two terms. While the bias term depends on the
+sample size <span class="math">\(n\)</span>, the misspecification term remains constant given
+that the action space <span class="math">\(\mathcal{A}\)</span> is kept fixed. In fact, we
+know from our analysis in lecture {asymptotic lecture} that</p>
+<ul class="simple">
+<li>If the decision rule <span class="math">\(d\)</span> is consistent relative to
+<span class="math">\((\mathcal{H}, \mathcal{A})\)</span>, the <em>bias</em> converges to zero as
+<span class="math">\(n\)</span> goes to infinty.</li>
+<li>If the decision rule <span class="math">\(d\)</span> is consistent relative to
+<span class="math">\((\mathcal{H}, \mathcal{A})\)</span>, the <em>volatility</em> converges to
+zero as <span class="math">\(n\)</span> goes to infinty.</li>
+</ul>
+<p>Later on in this notebook, we will see that nothing prevents the
+statistician to flexibly adjust the range of a decision rule &#8211; that is
+the action space, <span class="math">\(\mathcal{A}\)</span>, where it can take values &#8211; with
+the quality and abundance of data. This way one can mitigate the
+drawbacks of high volatility in small samples while also reduce the
+misspecification error as the sample size grows and volatility becomes
+less of an issue.</p>
+<div class="section" id="illustration-of-the-bias-volatility-misspecification-decomposition">
+<h4>Illustration of the bias-volatility-misspecification decomposition<a class="headerlink" href="#illustration-of-the-bias-volatility-misspecification-decomposition" title="Permalink to this headline">¶</a></h4>
+<p><strong>1. Quadratic loss</strong></p>
+<p>The elements of the problem are</p>
+<ul class="simple">
+<li><em>Observable:</em> <span class="math">\(Z = (Y,X)\)</span></li>
+<li><em>Loss function:</em> <span class="math">\(L(P, a) = \int_Z (y - a(x))^2 \mathrm{d}P(z)\)</span></li>
+<li><em>Admissible space:</em>
+<span class="math">\(\mathcal{F}\equiv \{ a: x \mapsto y \ | \ a \ \text{is measurable}\}\)</span></li>
+<li><em>True feature:</em>
+<span class="math">\(\gamma(P) = \mathbb{E}_P[Y|X] = \inf_{a\in \mathcal{F}} \ L(P, a)\)</span></li>
+</ul>
+<p>Correspondingly, the minimal loss can be written as</p>
+<div class="math">
+\[L(P, a^*_{P, \mathcal{F}}) = \int_Z \underbrace{(y - \mathbb{E}_P[Y|X](x))^2}_{=\sigma^2_x \ \ \text{(noise)}} \mathrm{d}P(z) = \mathbb{E}_P[\sigma^2_x].\]</div>
+<p>The loss evaluated at the best-in-class action,
+<span class="math">\(a^*_{P, \mathcal{A}}(x)= \inf_{a\in\mathcal{A}} \ L(P, a)\)</span>, is</p>
+<div class="math">
+\[L\left(P, a^*_{P, \mathcal{A}}\right) = \mathbb{E}_P[\sigma^2_x] + \int_Z \underbrace{\left[\mathbb{E}_P[Y|X](x) - a^*_{P, \mathcal{A}}(x)\right]^2}_{= \text{misspecification}^2_x} \mathrm{d}P(z) = L(P,a^*_{P, \mathcal{F}}) + \mathbb{E}_P\left[\text{misspecification}^2_x\right]\]</div>
+<p>and the loss evaluated at the average action
+<span class="math">\(\bar d_n(x) := \int_{Z^n} a_{z^n}(x) \mathrm{d}P(z^n)\)</span> is</p>
+<div class="math">
+\[L\left(P, \bar d_n\right) = L\left(P, a^*_{P, \mathcal{A}}\right)  + \int_Z \underbrace{\left[a^*_{P, \mathcal{A}}(x) - \bar d_n(x)\right]^2}_{= \text{bias}_x^2} \mathrm{d}P(z) = L\left(P, a^*_{P, \mathcal{A}}\right)  + \mathbb{E}_P\left[ \text{bias}_x^2 \right]\]</div>
+<p>The volatility term is simply</p>
+<div class="math">
+\[R_n(P, d) - L(P, \bar d_n) = \int_Z \left[\int_{Z^n} \left(a_{z^n}(x) - \bar d_n(x)\mathbf{1}(z^n)\right)^2\mathrm{d}P(z^n)\right]\mathrm{d}P(z)  = \mathbb{E}_P\left[\text{volatility}_x\right].\]</div>
+<p>Therefore, the excess risk of a decision rule <span class="math">\(d\)</span> under the
+quadratic loss is</p>
+<div class="math">
+\[R_n(P, d) - L(P, a^*_{P, \mathcal{F}}) = \mathbb{E}_P\left[\text{misspecification}^2_x\right] + \mathbb{E}_P\left[\text{bias}_x^2\right] + \mathbb{E}_P\left[\text{volatility}_x\right].\]</div>
+<p><strong>2. Relative entropy loss</strong></p>
+<p>The elements of the problem are</p>
+<ul class="simple">
+<li><em>Observable:</em> <span class="math">\(Z \sim P\)</span>, where <span class="math">\(P\)</span> has the density
+<span class="math">\(p\)</span></li>
+<li><em>Loss function:</em>
+<span class="math">\(L(P, a) = \int_Z p(z)\log \frac{p}{a}(z) \mathrm{d}z\)</span></li>
+<li><em>Admissible space:</em> distributions on <span class="math">\(Z\)</span> for which density
+exists. Denote these densities by <span class="math">\(a(z)\)</span></li>
+<li><em>True feature:</em> <span class="math">\(\gamma(P) = p(z)\)</span></li>
+</ul>
+<p>Then the minimal loss is zero and it is reached by <span class="math">\(a(z)=p(z)\)</span>,
+i.e. <span class="math">\(L(P, a^*_{P, \mathcal{F}})=0\)</span>.</p>
+<p>The loss evaluated at the best-in-class action
+<span class="math">\(a^*_{P, \mathcal{A}}(z)= \inf_{a\in\mathcal{A}} \ L(P, a)\)</span>, is</p>
+<div class="math">
+\[L\left(P, a^*_{P, \mathcal{A}}\right) = \int_Z \underbrace{\log\left(\frac{p}{a^*_{P, \mathcal{A}}}\right)(z)}_{= \text{misspecification}_z} \mathrm{d}P(z) = \mathbb{E}_P\left[\text{misspecification}_z\right]\]</div>
+<p>and the loss evaluated at the average action
+<span class="math">\(\bar d_n(z) := \int_{Z^n} a_{z^n}(z) \mathrm{d}P(z^n)\)</span> is</p>
+<div class="math">
+\[L\left(P, \bar d_n\right) = L\left(P, a^*_{P, \mathcal{A}}\right)  + \int_Z \underbrace{\log\left(\frac{a^*_{P, \mathcal{A}}}{\bar d_n}\right)(z)}_{= \text{bias}_z}\mathrm{d}P(z) = L\left(P, a^*_{P, \mathcal{A}}\right) + \mathbb{E}_P\left[\text{bias}_z\right].\]</div>
+<p>Note that in this case the higher order moments of the decision rule are
+not zeros. We might approximate the volatility of the decision rule with
+the second-order term of a Taylor expansion (see the appendix), but
+relative entropy loss allows to use an alternative (exact) measure for
+the variation in <span class="math">\(d\)</span>, the so called <strong>Theil&#8217;s second entropy</strong>
+<a class="reference internal" href="#theil-1967" id="id2">[Theil-1967]</a>, which captures all higher order moments
+of <span class="math">\(d\)</span>. We can derive it by writing</p>
+<div class="math">
+\[R_n(P, d) - L(P, \bar d_n) = \mathbb{E}_P\left[\int_{Z^n} \log \left(\frac{p}{d(z^n)}\right)(z)\mathrm{d}P(z^n)\right]  - \mathbb{E}_P\left[\log\left(\frac{p}{\bar d_n}\right)(z)\right] = \mathbb{E}_P\left[ \underbrace{\left(\log \bar d_n - \mathbb{E}_{Z^n}[\log d(z^n)]\right)(z)}_{= \nu(d)_z}\right].\]</div>
+<p>The volatility term indeed captures the variability of <span class="math">\(d(z^n)\)</span>
+(as the sample varies). For example, <span class="math">\(\mathbb{V}[d(z^n)]=0\)</span>
+implies <span class="math">\(\nu(d) = 0\)</span>. Furthermore, note that Theil&#8217;s second
+entropy measure of an arbitrary (integrable) random variable <span class="math">\(Y\)</span>
+is</p>
+<div class="math">
+\[\nu(Y) := \log \mathbb{E}Y - \mathbb{E}\log Y\]</div>
+<p>This measure was utilized by <a class="reference internal" href="#alvarezjermann-2005" id="id3">[AlvarezJermann-2005]</a> and <a class="reference internal" href="#backus-2014" id="id4">[Backus-2014]</a> in
+the asset pricing literature. Essentially, it can be considered as a
+generalization of variance or more precisely, both variance and
+<span class="math">\(\nu\)</span> are special cases of the general measure of volatiliy</p>
+<div class="math">
+\[f(\mathbb{E}Y) - \mathbb{E}f(Y), \quad\quad\text{where}\quad f'' &lt; 0 .\]</div>
+<p>The measure <span class="math">\(\nu\)</span> is obtained by setting <span class="math">\(f(y) = \log(y)\)</span>,
+while the variance follows from <span class="math">\(f(y)=-y^2\)</span>.</p>
+<p>Therefore, the excess risk of a decision rule <span class="math">\(d\)</span> under the
+relative entropy loss is</p>
+<div class="math">
+\[R_n(P, d) - L(P, a^*_{P, \mathcal{F}}) = \mathbb{E}_P\left[\text{misspecification}_z\right] + \mathbb{E}_P\left[\text{bias}_z\right] + \mathbb{E}_P\left[\nu(d)_z\right].\]</div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="classical-approach-the-analogy-principle">
+<h2>Classical approach &#8211; the analogy principle<a class="headerlink" href="#classical-approach-the-analogy-principle" title="Permalink to this headline">¶</a></h2>
+<p>In econometrics, classical approaches to estimation build heavily on the
+empirical loss minimization principle, or as they often put it the
+<em>analogy principle</em>. The underlying justification behind this
+approach&#8211;that for simplicity we will call <em>classical</em>&#8211;is the <em>belief</em>
+that the decision rule&#8217;s induced finite sample distributions converge so
+fast (with the sample size) that we can approximate them well with their
+limiting distribution. For example, in lecture {asymptotic}, while
+discussing the implied finite sample distributions of the MLE estimator
+in the coin tossing example, we saw that the estimators distribution did
+not change significantly after the sample size of 1,000. It has been
+stressed several times before, this property of the decision rule
+depends crucially on the complexity of the composite function class
+<span class="math">\(\mathcal L_{\mathcal A}\)</span>.</p>
+<p><strong>Remark:</strong> Notice that in general there is no formal justification for
+setting the finite sample distribution of the decision rule equal to the
+limiting distribution. Typically, more accurate estimates can be
+obtained via simulations, like Monte Carlo or bootstrap. We should add
+in fairness that researchers of the classical approach often extend
+their analysis with such techniques in order to assess the accuracy of
+the large sample approximations.</p>
+<!---
+Traditionally, the classical approach does not take into account the particular sample at hand while determining the decision problem's action space $\mathcal A$. In fact, since it relies almost exclusively on large sample approximations, it would not make much sense to do so. Later, when we turn to more modern approaches, we will see that this feature of the classical approach can cause serious troubles.
+---><p>In this notebook we denote the decision rules obtained by empirical loss
+minimazation for a sample size <span class="math">\(n\)</span> as</p>
+<div class="math">
+\[d^C(z^{n}):=\min_{a\in\mathcal A} \ L(P_n,a).\]</div>
+<hr class="docutils" />
+<p>Some well-known examples are</p>
+<ul class="simple">
+<li><strong>Non-linear Least Squares estimator:</strong> In the case of regression
+function estimation, we can take</li>
+</ul>
+<div class="math">
+\[\begin{split}\begin{align*}
+&amp;\mathcal A \subset \mathcal{F} = Y^X \quad\quad \text{and}\quad\quad L(P, \mu) = \int_{(Y,X)} (y - \mu(x))^2P(\mathrm{d}(y,x))\quad\quad\text{then} \\
+&amp;\hspace{25mm}\widehat{\mu}^C(z^n) = \text{arg}\inf\limits_{\mu \in \mathcal{A}}\hspace{2mm}  \frac{1}{n}\sum_{t=1}^n (y_t - \mu(x_t))^2
+\end{align*}\end{split}\]</div>
+<ul class="simple">
+<li><strong>Maximum Likelihood Estimator:</strong> In the case of density function
+estimation, we can take</li>
+</ul>
+<div class="math">
+\[\begin{split}\begin{align*}
+&amp;\mathcal A \subset \mathcal{F} = \left\{f: Z \mapsto \mathbb{R}_+ : \int_Z f(z)\mathrm{d}z =  1 \right\}\quad\quad \text{and}\quad\quad L(p, f) = \int_{Z} p(z)\log \frac{p}{f}(z) \mathrm{d}z\quad\quad\text{then} \\
+&amp;\hspace{35mm}\widehat{f}^C(z^{n}) = \text{arg}\inf\limits_{f \in \mathcal{A}}\hspace{2mm} - \frac{1}{n}\sum_{t=1}^n \log f(z_t) + \underbrace{H(p)}_{\text{entropy of }p}
+\end{align*}\end{split}\]</div>
+<ul class="simple">
+<li><strong>GMM estimator:</strong> Having a set of moment restrictions and a positive
+semi-definite <span class="math">\(W\)</span>, we can take</li>
+</ul>
+<div class="math">
+\[\begin{split}\begin{align*}
+&amp;\mathcal{A} = \{g(\cdot; \theta) : \theta \in \Theta\}\quad\quad \text{and}\quad\quad L(P, \theta) = \left[\int g(z; \theta)\mathrm{d}P(z)\right]' W \left[\int g(z; \theta)\mathrm{d}P(z)\right] \quad\quad\text{then} \\
+&amp;\hspace{35mm}\widehat{\theta}_{W}(z^n) = \text{arg}\inf\limits_{\theta \in \mathcal{A}}\hspace{2mm} \left[\frac{1}{n}\sum_{t=1}^n g(z_t; \theta)\right]' W \left[\frac{1}{n}\sum_{t=1}^n g(z_t; \theta)\right]
+\end{align*}\end{split}\]</div>
+<hr class="docutils" />
+<p>We demonstrate key features of the classical approach by looking at the
+specific example of vector autoregressions. This class of statistical
+models, popularized in econometrics by <a class="reference internal" href="#sims-1980" id="id5">[Sims-1980]</a>, are
+extremely widely used tools in applied research. Although the simplicity
+of linear models (due to their relatively low complexity) tends to mask
+the generality of some of our findings, we believe this example is a
+useful benchmark and provides sufficient intuition about the behaviour
+of other (more complex) classical estimators.</p>
+<div class="section" id="var-example">
+<h3>VAR example<a class="headerlink" href="#var-example" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math">\(Z_t\)</span> denote an <span class="math">\(m\)</span>-dimensional vector containing the
+values that the <span class="math">\(m\)</span> observable variables take at period <span class="math">\(t\)</span>.
+Suppose that the statistician faces the following statistical decision
+problem:</p>
+<ul class="simple">
+<li>The assumed statistical models <span class="math">\(\mathcal H\)</span> are given by the
+class of ergodic covariance stationary processes over
+<span class="math">\(Z^{\infty}\)</span>.</li>
+<li>The decision is based on the sample <span class="math">\(Z^{n}=\{Z_t\}_{t=1}^n\)</span>
+coming from observing <span class="math">\(Z_t\)</span> for <span class="math">\(n+k\)</span> time periods and
+conditioning on the first <span class="math">\(k\)</span> elements</li>
+<li>The action space <span class="math">\(\mathcal{A}_k\subset \mathcal H\)</span> is equal to
+the set of <span class="math">\(k\)</span>-th order Gaussian vector autoregressions with</li>
+</ul>
+<div class="math">
+\[\begin{split}\begin{align*}
+&amp;\hspace{3cm}Z_{t} = \mathbf{\mu} + \mathbf{A}_1Z_{t-1} + \mathbf{A}_2Z_{t-2} + \dots + \mathbf{A}_k Z_{t-k} + \varepsilon_{t}\quad\quad \varepsilon_{t}\sim \mathcal{N}(\mathbf{0}, \mathbf{\Sigma})\quad \forall t\in\mathbb Z \\
+&amp;\text{parameterized by }\quad\theta:= (\alpha, \sigma) \quad\quad\text{where}\quad \Pi := \left[\mu, \mathbf{A}_1, \dots, \mathbf{A}_k\right]',\quad \alpha: = \text{vec}\left(\Pi\right) \quad \text{and}\quad \sigma:= \text{vec}\left(\mathbf{\Sigma}\right)\quad\quad
+\end{align*}\end{split}\]</div>
+<ul class="simple">
+<li>The loss function is relative entropy with the (conditional)
+log-likelihood function</li>
+</ul>
+<div class="math">
+\[\begin{split}\begin{align*}
+\log q_n(z^n \mid z_0, \dots, z_{-l+1}; \theta) &amp; = -\frac{n}{2}\log(2\pi) + \frac{n}{2}\log\left|\mathbf{\Sigma}^{-1}\right| - \frac{1}{2}\sum_{t=1}^{n} \left(Z_{t} - \Pi' \tilde{Z}_{t}\right)'\Sigma^{-1}\left(Z_{t} - \Pi' \tilde{Z}_{t}\right) \\
+\text{where}&amp;\quad \tilde{Z}_t:=\left[1, Z'_{t-1}, \dots, Z'_{t-k}\right]'
+\end{align*}\end{split}\]</div>
+<p><strong>REMARK:</strong> It turns out that <em>for linear models</em>, model complexity is
+closely related to the number of parameters used to define them.
+<a class="reference internal" href="#mcdonald-2012" id="id6">[McDonald-2012]</a> shows (see Corollary 6.4.) that the
+class of VAR models with <span class="math">\(k\)</span> lags and <span class="math">\(m\)</span> time series has
+Vapnik-Chernovenkis (VC) dimension <span class="math">\(km + 1\)</span>. VC dimension is an
+alternative measure of complexity connected with Rademacher complexity.
+In other words, when <span class="math">\(m\)</span> (or <span class="math">\(k\)</span>) is large, VAR models are
+prone to overparametrization, or as <a class="reference internal" href="#sims-1980" id="id7">[Sims-1980]</a> puts it
+they tend to be &#8220;profligately (as opposed to parsimoniously)
+parametrized&#8221;.</p>
+<p>We are targeting the log density function of the data generating
+mechanism with the assumption that it is</p>
+<div class="math">
+\[\gamma(P_0) = \log p_0(z^n \mid z_0, \dots, z_{-l+1}) \in\mathcal{A}.\]</div>
+<p>That is, for lag length <span class="math">\(k\geq l\)</span>, the misspecifcation error is
+zero. We are working with a laboratory model where we know the truth and
+generating syntetic samples for the analysis that follows. In order to
+assign &#8220;realistic&#8221; values to the true <span class="math">\(\theta_0\)</span>, we use estimates
+of a three-variate VAR fitted to quarterly US real GDP, real consumption
+and real investment data over the period from <span class="math">\(1959\)</span> to
+<span class="math">\(2009\)</span> using the dataset accessible through the
+<a class="reference external" href="http://statsmodels.sourceforge.net/devel/vector_ar.html">StatsModels</a>
+database. See {REF notebook}.</p>
+<p>For any prespecified lag length <span class="math">\(k\)</span>, the decision rules are given
+by the maximum likelihood estimates</p>
+<div class="math">
+\[\widehat{\Pi}^C(z^n) = \left[\sum_{t=1}^n \tilde{z}_t\tilde{z}'_t\right]^{-1}\left[\sum_{t=1}^n \tilde{z}_tz'_t\right] \quad\text{and}\quad \widehat{\Sigma}^C(z^n) = \frac{1}{n}\sum_{t=1}^{n} \left[z_{t} - \widehat{\Pi}'\tilde{z}_{t}\right]\left[z_{t} - \widehat{\Pi}'\tilde{z}_{t}\right]',\]</div>
+<p>with corresponding <span class="math">\(\widehat{\alpha}^C(z^n)\)</span>,
+<span class="math">\(\widehat{\sigma}^C(z^n)\)</span> and <span class="math">\(\widehat{\theta}^C(z^n)\)</span>.</p>
+<p>It is the distribution induced by the decision rule
+<span class="math">\(\widehat{\alpha}^C(z^n)\)</span> on the action space <span class="math">\(\mathcal A_k\)</span>
+that interests us for inference. In particular, we would like to know
+how sensitive is the chosen action to the particular sample realization.
+Controlling the true mechanism, we can get a very good sense about this
+variation by using Monte Carlo methods. More precisely,</p>
+<ul class="simple">
+<li>simulate <span class="math">\(R\)</span> alternative ensemble samples <span class="math">\(z_r^n\)</span>,
+<span class="math">\(r=\{1, \dots, R\}\)</span> from the true data generating mechanism
+VAR<span class="math">\((l)\)</span></li>
+<li>fit a VAR<span class="math">\((k)\)</span> model on each sample <span class="math">\(z_r^n\)</span> to obtain
+estimates <span class="math">\(\widehat{\alpha}^C_r\)</span>, for <span class="math">\(r=\{1, \dots, R\}\)</span></li>
+<li>take the standard deviation of the estimates (over different
+<span class="math">\(r\)</span>s) as the true volatility of
+<span class="math">\(\widehat{\alpha}^C(z^n)\)</span></li>
+</ul>
+<div class="math">
+\[s_n\left(\widehat{\alpha}^C\right) = \sqrt{\frac{1}{R}\sum_{r=1}^{R}\left(\widehat{\alpha}^C_r - \frac{1}{R}\sum_{i=1}^R\widehat{\alpha}^C_i\right)^2}\]</div>
+<p><strong>REMARK:</strong> Notice that the thus calculated &#8220;true volatility&#8221; in fact
+provides the (parametric) bootstrap standard errors for the original
+parameter estimates that we obtained with real data.</p>
+<p>In the following figure, green (thin) lines represent alternative
+samples that could have been generated by the true model. The used
+sample is represented by the blue line. The horizontal green solid lines
+denote the stationary means of <span class="math">\(Z_t\)</span>, the dashed lines are mean
+<span class="math">\(\pm 2\)</span> stationary standard deviations.</p>
+<div class="figure">
+<img alt="" src="../_images/alternative_samples.png" />
+</div>
+<div class="section" id="consistency">
+<h4>Consistency<a class="headerlink" href="#consistency" title="Permalink to this headline">¶</a></h4>
+<p>In practice, we can use only one sample (blue line). Nevertheless, from
+ergodicity we know that if this sample is sufficiently large, then the
+resulting sample statistics will provide good approximations to the
+population counterparts. The decision rules at hand are plug-in
+estimators, because their population versions are expressible as
+analytic functions of the true moments of <span class="math">\(Z\)</span>. Consequently,
+straightforward LLN argument implies that both
+<span class="math">\(\widehat{\alpha}^C(z^n)\)</span> and <span class="math">\(\widehat{\Sigma}^C(z^n)\)</span> are
+consistent.</p>
+<p>(Note that here&#8211;in line with the classical literature&#8211;we deal with
+convergence in the action space instead of convergence in the loss
+space.)</p>
+</div>
+<div class="section" id="asymptotic-standard-errors">
+<h4>Asymptotic standard errors<a class="headerlink" href="#asymptotic-standard-errors" title="Permalink to this headline">¶</a></h4>
+<p>However, consistency does not inform us about the variability of
+<span class="math">\(\widehat{\alpha}^C(z^n)\)</span>. For that purpose the classical approach
+brings to bear another powerful limit theorem: Central Limit Theory
+(CLT). Under quite general regularity conditions (e.g. that all fourth
+moments of <span class="math">\(Z^{\infty}\)</span> are finite), one can show that</p>
+<div class="math">
+\[\sqrt{n}\left(\widehat{\alpha}^C(z^n) - \alpha\right) \overset{d}{\to} \mathcal{N}\left(0, \mathbf{\Sigma} \otimes  E[\tilde z_t\tilde z'_t]^{-1}\right)\quad\quad\text{as}\quad n\to \infty.\]</div>
+<p>In other words, although the variation of the decision rule vanishes
+asymptotically, if we multiply it by the scaling factor
+<span class="math">\(\sqrt{n}\)</span>, the estimate <span class="math">\(\widehat{\alpha}^C(z^n)\)</span> will go
+to <span class="math">\(\alpha\)</span> just at the rate so that a non-degenerate asymptotic
+variation of <span class="math">\(\sqrt{n}\widehat{\alpha}^C(z^n)\)</span> is guaranteed. This
+result is useful, because knowing</p>
+<ol class="arabic simple">
+<li>the asymptotic distribution: in this case normal</li>
+<li>the asymptotic rate of convergence: in this case <span class="math">\(\sqrt{n}\)</span></li>
+</ol>
+<p>allows us to approximate the variation stemming from the finiteness of
+the sample by using the asymptotic distribution and &#8220;scaling it back&#8221; by
+the asymptotic rate. This steps can be summarized as</p>
+<div class="math">
+\[\widehat{\alpha}^C(z^n) \approx \mathcal{N}\left(\alpha, \ AS_n\right)\quad\quad\text{where}\quad\quad AS_n := \frac{\mathbf{\Sigma} \otimes E[\tilde z_t\tilde z'_t]^{-1}}{n}\]</div>
+<p>is the asymptotic covariance matrix of the decision rule
+<span class="math">\(\widehat{\alpha}^C\)</span>. One drawback of this argument, however, is
+that in practice we don&#8217;t know the asymptotic covariance matrix, it
+needs to be infered somehow form the sample <span class="math">\(z^n\)</span>. (Notice that
+<span class="math">\(AS_n\)</span> does not depend on the sample, only on the sample size
+<span class="math">\(n\)</span>.) One natural estimator is the sample analog of the asymptotic
+covariance matrix, however, it is worth mentioning that there is no
+clear reason why not to use another consistent estimator. By plugging in
+an estimator for <span class="math">\(AS_n\)</span> at this step, we are inevitably
+introducing an extra source of error on top of that <span class="math">\(\sqrt{n}\)</span> is
+only an asymptotic rate of convergence not necessarily equal to the true
+(finite sample) rate. Using the sample analog leads us to the so called
+<strong>approximate asymptotic standard error</strong>:</p>
+<div class="math">
+\[\widehat{AS}_n\left(\hat{\alpha}^C, z^n\right) := \sqrt{\frac{1}{n}\sum_{t=1}^{n} \left[z_{t} - \widehat{\Pi}'\tilde{z}_{t}\right]\left[z_{t} - \widehat{\Pi}'\tilde{z}_{t}\right]' \otimes \left[\sum_{t=1}^{n}\tilde z_t\tilde z'_t\right]^{-1}} \approx \sqrt{AS_n} \approx s_n\left(\widehat{\alpha}^C\right)\]</div>
+<p>To get a sense of how well the true <span class="math">\(AS_n\)</span> and approximate
+asymptotic standard error <span class="math">\(\widehat{AS}_n\)</span> really approximate the
+true <span class="math">\(s_n\)</span>, the following figure reports their relative values:</p>
+<ul class="simple">
+<li>the ratio between the true and the approximate asymptotic standard
+errors (black)</li>
+<li>the ratio between the true and the asymptotic standard errors (green)</li>
+</ul>
+<p>for alternative lag specifications when the true model has <span class="math">\(l=3\)</span>
+and the sample size is <span class="math">\(n=100\)</span>.</p>
+<div class="figure">
+<img alt="" src="../_images/relative_se1.png" />
+</div>
+<p>This figure forcefully reiterates our earlier insight that complexity of
+the composite function class <span class="math">\(\mathcal L_{\mathcal{A}}\)</span>
+(positively) affects the critical sample size above which large sample
+approximations work well. The higher the complexity of the model
+class&#8211;measured in terms of lag length&#8211;the worse the asymptotic
+standard error in capturing the decision rule&#8217;s finite sample variation.
+In particular, using <span class="math">\(\widehat{AS}_n\)</span>, we tend to draw overly
+optimistic conclusions about the estimator&#8217;s variation and for a given
+sample size this mistake is getting worse with the increase in model
+complexity.</p>
+</div>
+<div class="section" id="adjusting-for-complexity">
+<h4>Adjusting for complexity<a class="headerlink" href="#adjusting-for-complexity" title="Permalink to this headline">¶</a></h4>
+<p>Taking a closer look at the estimation error that the ignorance of the
+true asymptotic covariance matrix implies, one can realize that the
+<span class="math">\(n^{-1/2}\)</span> adjustment in fact &#8220;amplifies&#8221; that error in small
+samples. We can write the approximate asymptotic standard error as</p>
+<div class="math">
+\[\widehat{AS}_n\left(\hat{\alpha}^C, z^n\right) = \frac{n\widehat{\Sigma}(z^n) \otimes \left[\sum_{t=1}^{n}\tilde z_t\tilde z'_t\right]^{-1} - \mathbf{\Sigma} \otimes E[\tilde z_t\tilde z'_t]^{-1}}{n} + \frac{\mathbf{\Sigma} \otimes E[\tilde z_t\tilde z'_t]^{-1}}{n}\]</div>
+<p>With small <span class="math">\(n\)</span>, the first term is multiplied by a relatively large
+number. This suggests that by acknowledging the existence of estimation
+error (first term), we might be able to adjust the scaling factor
+<span class="math">\(n^{-1/2}\)</span> in a way to reduce this error. Moreover, because the
+severity of the error hinges on model complexity (see the figure above),
+it makes sense to use <span class="math">\(\tilde k:=1+km\)</span>, i.e. the
+Vapnik-Chervonenkis dimension of the fitted VAR model, as an adjustment
+factor. Influential papers in the classical literature <a class="reference internal" href="#sims-1980" id="id8">[Sims-1980]</a> often recommend to use
+<span class="math">\(\left(n-\tilde k\right)^{-1/2}\)</span>, instead of <span class="math">\(n^{-1/2}\)</span> as a
+scaling factor in order to &#8220;take into account the small-sample bias&#8221;.
+Clearly, an &#8220;alternative&#8221; interpretation of the augmented scaling factor
+is to adjust the approximate asymptotic standard error for model
+complexity.</p>
+<div class="math">
+\[\widehat{AS}^{adj}_n\left(\hat{\alpha}^C, z^n\right) = \frac{n\widehat{\Sigma}(z^n) \otimes \left[\sum_{t=1}^{n}\tilde z_t\tilde z'_t\right]^{-1} - \mathbf{\Sigma} \otimes E[\tilde z_t\tilde z'_t]^{-1}}{n- \tilde k} + \frac{n}{n - \tilde k}\left(\frac{\mathbf{\Sigma} \otimes E[\tilde z_t\tilde z'_t]^{-1}}{n}\right)\]</div>
+<p>Notice the subtle appearence of the ubiquitous bias-variance trade-off
+in this expression. While the <span class="math">\(\tilde k\)</span>-adjustment is likely to
+reduce the variation in the first term, it introduces bias for the
+second term&#8211;which, of course, itself is just an approximation to the
+true <span class="math">\(s_n\left(\widehat{\alpha}^C\right)\)</span>.</p>
+<p>Indeed, as the following figure illustrates, the adjustment moves the
+estimates in the &#8220;right&#8221; direction.</p>
+<div class="figure">
+<img alt="" src="../_images/relative_se2.png" />
+</div>
+<p><strong>TODO</strong> Misspecification? White robust correction</p>
+</div>
+</div>
+<div class="section" id="efficiency">
+<h3>Efficiency<a class="headerlink" href="#efficiency" title="Permalink to this headline">¶</a></h3>
+<p>As the previous sections demonstrate, an estimator&#8217;s asymptotic
+covariance matrix depends crucially on the action space (and loss
+function) that the statistician entertains. This provides basis to rank
+decision rules by invoking the criterion of <em>asymptotic efficiency</em>:
+find the smallest possible asymptotic covariance matrix <span class="math">\(AS_n(d)\)</span>
+relative to some well-defined class of estimators.</p>
+<ul class="simple">
+<li>The famous Cramer-Rao bound provides a lower bound for the asymptotic
+covariance matrices of unbiased estimatrors. The correctly specified
+maximum likelihood estimator reaches this bound.</li>
+<li>By choosing the weighting matrix <span class="math">\(W^*\)</span> appropriately, GMM
+estimators can be rendered efficient, i.e. it can be shown that
+<span class="math">\(W^*\)</span> leads to the lowest asymptotic covariance matrix whithin
+the class of GMM estimators with <span class="math">\(W\geq 0\)</span>.</li>
+</ul>
+<p>Of course, this type of &#8220;minimization&#8221; of asymptotic covariance matrices
+does not necessarily imply small finite sample variance of the decision
+rule. The estimation-misspecification error decomposition helps
+understanding the inherent trade-off.</p>
+<p>Since the finite sample variance estimator <span class="math">\(\widehat{AS}_n\)</span> can be
+linked with the volatility term of the estimation error, it might be
+tempting to view the quest for asymptotic efficiency as a device to
+minimize the estimaton error of the decision rule. Notice, however, that
+this method does not take into account the possible <em>trade-off</em> between
+the different moments of the decision rule. Instead, the classical
+approach often restricts attention to unbiased estimators and looks for
+the minimum variance estimator <em>among this class</em> (efficiency).
+Nevertheless, the unbiasedness is gauged only relative to
+the&#8212;restricted&#8212;range of the decision rule <span class="math">\(\mathcal{A}\)</span>. Even
+if the decision rule is unbiased we still have misspecification error.
+It seems difficult to defend the merits of an unbiased but misspecified
+decision rule with large variance relative to a misspecified decision
+rule with some bias and smaller variance. &#8220;Clever&#8221; estimators, like the
+complexity-adjusted analog estimator of the asymptotic covariance matrix
+above, trade-off bias/misspecification and variance flexibly taking into
+consideration the available sample size and the complexity of the
+estimation problem at hand.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="from-sample-to-population">
+<h3>From sample to population<a class="headerlink" href="#from-sample-to-population" title="Permalink to this headline">¶</a></h3>
+<p>The VAR example discussed above reveals the drawbacks of using
+asymptotic theory to approximate a decision rule&#8217;s finite sample
+performance. A potential measure of discrepancy between the finite
+sample and asymptotic behavior is the <strong>estimation error</strong>, which we
+defined earlier as</p>
+<div class="math">
+\[\mathcal{E}_d(P, \mathcal{A}, n) := R_n(P, d) - \inf_{a\in\mathcal{A}} \ L(P, a).\]</div>
+<p>While the risk <span class="math">\(R_n(P, d)\)</span> captures the performance of <span class="math">\(d\)</span>
+in samples of size <span class="math">\(n\)</span>, <span class="math">\(L(P, a^*_{P, L, \mathcal{A}})\)</span>
+essentially encodes its asymptotic properties and from the consistency
+of <span class="math">\(d\)</span> it follows that</p>
+<div class="math">
+\[\lim_{n\to \infty} \ \mathcal{E}_d(P, \mathcal{A}, n) \overset{P}{=} 0.\]</div>
+<p>In other words, even if <span class="math">\(d\)</span> is consistent relative to
+<span class="math">\((\mathcal{A}, \mathcal{H})\)</span>, its finite sample behavior still
+hinges on the range of <span class="math">\(d\)</span>, i.e. the action space
+<span class="math">\(\mathcal{A}\)</span>. Evidently, consistency implies that the estimation
+error is not an issue in large samples, but without specifying the
+sample size that counts large, this statement is mostly empty. The
+notion of <em>large sample</em> is not absolute, it is always relative to the
+complexity of the function class that we entertain.</p>
+<p>Recall that the estimation error originates from the fact that we do not
+know <span class="math">\(P\)</span>, instead we have to use the information in the (finite)
+sample to approximate the &#8216;best&#8217; action in <span class="math">\(\mathcal{A}\)</span>.
+Intuitively, the smaller the estimation error the better this
+approximation. Given a decision rule and a finite sample at hand we
+would like to know how close the empirical loss and the true loss are.
+Making sure that these two quantities are close to each other ensures
+that the empirical loss is informative about the true loss. This
+property is usually referred to as <strong>generalization</strong>.</p>
+</div>
+<div class="section" id="generalization">
+<h3>Generalization<a class="headerlink" href="#generalization" title="Permalink to this headline">¶</a></h3>
+<p>Following <a class="reference internal" href="#luxburgsholkopf-2011" id="id9">[LuxburgSholkopf-2011]</a> for a fixed
+finite sample <span class="math">\(z^n\)</span>, we say that an assigned action
+<span class="math">\(d(z^n)\in \mathcal{A}\)</span> <em>generalizes well</em>, if the quantity</p>
+<div class="math">
+\[\left|L(P, d(z^n)) - L(P_n, d(z^n))\right|\quad \text{is small}.\]</div>
+<p>Note that this property does <em>not</em> require that the empricial loss is
+itself small, which is the objective function of the classical ELM
+approach. It only requires that the empirical loss is close to the true
+loss.</p>
+<p>This sheds some light on what can go wrong with the ELM approach in
+finite samples. In practice, one of the worst situations is
+<strong>overfitting</strong>, that is, when the empirical loss is much smaller than
+the true loss, hence our assessment of the quality of
+<span class="math">\(d(z^n)\in\mathcal{A}\)</span> might be overly optimistic.</p>
+<p><strong>Roadmap</strong></p>
+<p>Note that the generalization property depends on the particular
+realization of the sample. The realized sample determines the chosen
+action, <span class="math">\(d(z^n)\in\mathcal{A}\)</span>, and the empirical distribution,
+<span class="math">\(P_n\)</span>. In order to give statements regarding the generalization
+property that extends to more than one paritcular realization of the
+sample the following steps are taken:</p>
+<ul class="simple">
+<li>In order to resolve the uncertainty about the chosen action,
+<span class="math">\(d(z^n)\)</span>, consider all the actions that are in the range of the
+decision rule, <span class="math">\(\mathcal{A}\)</span>.</li>
+<li>In order to resolve the uncertainty about the empirical distribution
+either<ul>
+<li>take expectations or</li>
+<li>characterize where the random variable concentrates via tail
+bounds.<ul>
+<li>These are essentially equivalent.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Give statements which apply uniformly for data generating processes
+in a given class, <span class="math">\(P\in\mathcal{H}\)</span>.</li>
+</ul>
+<div class="section" id="resolving-variation-across-actions">
+<h4>Resolving variation across actions<a class="headerlink" href="#resolving-variation-across-actions" title="Permalink to this headline">¶</a></h4>
+<p>Extending the generalization property to all actions in the range of
+<span class="math">\(d\)</span>, <span class="math">\(a \in\mathcal{A}\)</span>, leads to the notion of
+<strong>generalization error</strong>, defined as</p>
+<div class="math">
+\[\Delta(P, z^n, \mathcal{A}) := \sup_{a\in\mathcal{A}} \ \left|L(P, a) - L(P_n, a)\right|.\]</div>
+<p>When the loss functional takes the form
+<span class="math">\(L(P, a) = \int l(a, z)\mathrm{d}P(z)\)</span> then the generalization
+error is the supremum of a scaled empirical process indexed by the
+function class <span class="math">\(\mathcal{L}_\mathcal{A}\)</span>. The finite sample
+techniques discussed in {reference asymptotic notebook} prove to be
+useful to characterize the behavior of
+<span class="math">\(\Delta(P, z^n, \mathcal{A})\)</span>.</p>
+</div>
+<div class="section" id="resolving-uncertainty-about-the-empirical-distribution">
+<h4>Resolving uncertainty about the empirical distribution<a class="headerlink" href="#resolving-uncertainty-about-the-empirical-distribution" title="Permalink to this headline">¶</a></h4>
+<p><strong>Tail bounds</strong></p>
+<p>To draw uniform inference about the generalization properties of
+<span class="math">\(d\)</span>, we can use probabilistic tail bounds for
+<span class="math">\(\Delta(P, z^n, \mathcal{A})\)</span>. One of the key defining element of
+the tail bounds is the complexity of the class
+<span class="math">\(\mathcal{L}_\mathcal{A}\)</span>.</p>
+<p>We can apply {last theorem asymptotic notebook} in the current setting.
+For uniformly bounded functions
+<span class="math">\(\lvert l_a \rvert_{\infty} &lt; B \ \forall l_a \in\mathcal{L}_\mathcal{A}\)</span>
+for each <span class="math">\(\delta&gt;0\)</span> we have that</p>
+<div class="math">
+\[P \Big\{ \Vert P_n - P \Vert_{\mathcal{L}_\mathcal{A}} \geq  2\mathsf{R}\left(\mathcal{L}_{\mathcal{A}}, n\right)  + \delta \Big\} \leq 2 \exp\Big\{- \frac{n \delta^2}{2 B^2} \Big\}.\]</div>
+<p><strong>Average generalization error</strong></p>
+<p>A somewhat less ambitious approach is to focus on the average
+generalization error, i.e.</p>
+<div class="math">
+\[\mathbb{E}_{Z^n}\left[ \Delta(P, z^n)\right] = \int_{Z^n} \sup_{a\in\mathcal{A}} \ \left|L(P, a) - L(P_n, a)\right| \mathrm{d}P(z^n).\]</div>
+<p>Naturally, by bounding the tail probabilities of <span class="math">\(\Delta\)</span> we
+control the mean as well. In fact ,with some technical care&#8212;using a
+symmetrization argument&#8212;one can bound the expectation of the
+generalization error using the Rademacher complexity of the class
+<span class="math">\(\mathcal{L}_\mathcal{A}\)</span>,</p>
+<div class="math">
+\[\mathbb{E}_{Z^n}\left[ \Delta(P, z^n)\right]\leq 2\mathbb{E}_{Z^n} \left[ \mathsf{R}\left(\mathcal{L}_{\mathcal{A}}(Z^n)\right) \right].\]</div>
+<p>This inequality follows from a symmetrization argument discussed at the
+end of {notebook 02}.</p>
+<p>Unfortunately, the Rademacher complexity still depends on the unknown
+distribution <span class="math">\(P\)</span> governing the iid sampling. There are many
+different ways to bound the Rademacher complexity&#8212;and together the
+expectation of the supremum of the empirical process.</p>
+<p>The important message is that in order to control the generalization
+property of the decision rule we need to limit the Rademacher complexity
+of <span class="math">\(\mathcal{L}_\mathcal{A}\)</span>, which is the relevant measure of the
+function class for the purposes of statistical inference.</p>
+</div>
+</div>
+<div class="section" id="estimation-error-and-generalization">
+<h3>Estimation error and generalization<a class="headerlink" href="#estimation-error-and-generalization" title="Permalink to this headline">¶</a></h3>
+<p>It turns out that the average generalization error of the ELM decision
+rule <span class="math">\(d^C\)</span> is tightly linked to its estimation error.</p>
+<div class="math">
+\[\mathcal{E}_{d^C}(P, \mathcal{A}, n) =  \mathbb{E}_{Z^n}\Big[ L(P, d^C(z^n)) - L(P, a^*_{\mathcal{A}}) \Big]\]</div>
+<p>Now, consider the following decomposition of the estimation error</p>
+<div class="math">
+\[\begin{split}\begin{align*}
+\mathcal{E}_{d^C}(P, \mathcal{A}, n) = &amp; \mathbb{E}_{Z^n}\Big[ L(P, d^C(z^n)) - L(P_n, d^C(z^n))\Big] \\
++ &amp; \underbrace{\mathbb{E}_{Z^n}\Big[ L(P_n, d^C(z^n)) - L(P_n, a^*_{\mathcal{A}}) \Big]}_{\leq 0} + \underbrace{\mathbb{E}_{Z^n}\Big[L(P_n,  a^*_{\mathcal{A}}) - L(P,a^*_{\mathcal{A}}) \Big]}_{= 0}\quad\quad  (1)
+\end{align*}\end{split}\]</div>
+<ul class="simple">
+<li>The second term on the RHS is nonpositive, because the decision rule
+is based on ELM, so <span class="math">\(L(P_n, d(z^n)) \ \leq \ L(P_n, a)\)</span> for all
+<span class="math">\(a\in\mathcal{A}\)</span>.</li>
+<li>The last term disappears when we take the expectation, as we assumed
+that <span class="math">\(L\)</span> is linear in its first argument.</li>
+</ul>
+<p>Hence, we have the following chain of ineqaulities</p>
+<div class="math">
+\[\mathcal{E}_{d^C}(P, \mathcal{A}, n) \leq \mathbb{E}_{Z^n}\Big[ L(P, d^C(z^n)) - L(P_n, d^C(z^n))\Big] \leq \mathbb{E}_{Z^n}\Big[\sup_{a\in\mathcal{A}}\{L(P, a) - L(P_n, a)\} \Big].\]</div>
+<p>The last term is equivalent to the above introduced average
+generalization &#8212; technically the expectation of the sup-norm of an
+empirical process. We can use the techniques discussed in the {notebook}
+to upper bound its value through notions of complexity.</p>
+<p>This suggests that by seeking good generalization performance of the ELM
+estimator the statistician can efficiently control the estimation error
+as well, thus making sure that the asymptotic analysis provides a
+relatively good approximation to the finite sample properties of
+<span class="math">\(d^C\)</span>.</p>
+<p>It is easy to see that one could always make the estimation error and
+generalization error zero by choosing a constant decision rule &#8211; that
+is, one which range is a singleton and hence assigns the same action to
+each possible realization of the sample. However, that decision rule
+would ignore all the information that is available in the data &#8211; the
+source of information for statistical inference. The approach of
+statistical learning theory attempts to balance this trade-off.</p>
+</div>
+</div>
+<div class="section" id="statistical-learning-theory-controlling-complexity">
+<h2>Statistical Learning Theory &#8211; controlling complexity<a class="headerlink" href="#statistical-learning-theory-controlling-complexity" title="Permalink to this headline">¶</a></h2>
+<p>One criticism of the classical approach outlined in section {last
+section} is that it does not deal with the generalization problem
+arising in finite samples. Statistical learning theory takes a somewhat
+different approach and attempts to balance good generalization and low
+estimation error with small misspecification error.</p>
+<p>Again, the objective is to minimize the excess risk of the decision
+rule. As seen earlier the estimation-misspecification error
+decomposition highlights one of the main dilemmas the statistician is
+facing</p>
+<div class="math">
+\[\begin{split}\underbrace{R_n(P, d) - L\left(P, a^{*}_{L, P, \mathcal{F}} \right)}_{\text{excess risk}} =  \underbrace{R_n(P, d) - L\left(P, a^{*}_{L, P, \mathcal{A}}\right)}_{\substack{\text{estimation error} \\ \text{random}}} + \underbrace{L\left(P, a^{*}_{L, P, \mathcal{A}}\right)- L\left(P, a^{*}_{L, P, \mathcal{F}} \right)}_{\substack{\text{misspecification error} \\ \text{deterministic}}}.\end{split}\]</div>
+<ul class="simple">
+<li>The misspecification error captures the idea that the true feature of
+the DGP does not lie in the range of the decision rule, hence there
+is an inherent error due to this misspecification. Correspondingly,
+ceteris paribus enlarging the action space &#8211; the range of the
+decision rule &#8211; the misspecification error gets smaller. As
+<span class="math">\(\mathcal{A}\)</span> approaches <span class="math">\(\mathcal{F}\)</span> the
+misspecification error vanishes.</li>
+<li>However, the range of the decision rule also plays a key role in the
+size of the estimation error and its ability to generalize. The
+non-asymptotic tail bounds teach us that in order to achieve low
+estimation error and good generalization the complexity of the class
+<span class="math">\(\mathcal{L}_\mathcal{A}\)</span> has to be small. The complexity is
+weakly increasing in the action space, <span class="math">\(\mathcal{A}\)</span>.</li>
+</ul>
+<p>The above trade-off&#8212;inherent in all statistical inference
+problems&#8212;can be visualized on the following graph.</p>
+<div class="figure">
+<img alt="" src="../_images/decomp.png" />
+</div>
+<p>In terms of the action space of the decision rule,</p>
+<ul class="simple">
+<li>whenever the gain from smaller misspecification error exceeds the
+loss from greater estimation error one should increase the action
+space, there is <strong>underfitting</strong>.</li>
+<li>whenever the gain from smaller estimation error exceeds the loss from
+greater misspecification error one should decrease the action space,
+there is <strong>overfitting</strong>.</li>
+</ul>
+<p>An ideal decision rule traces the minimum of the U shaped excess risk.
+By controlling the range of the decision rule, the action space
+<span class="math">\(\mathcal{A}\)</span>, the approach of statistical learning theory can
+balance the trade-off between the estimation error and the
+misspecification error.</p>
+<div class="section" id="controlling-excess-risk-through-the-action-space">
+<h3>Controlling excess risk through the action space<a class="headerlink" href="#controlling-excess-risk-through-the-action-space" title="Permalink to this headline">¶</a></h3>
+<p>Based on the previous discussion on how the size of the action space
+affects both estimation and misspecification errors the modern
+approaches to statistical inference explicitly control for complexity
+through the decision rule&#8217;s action space.</p>
+<p>When the class of all admissible actions, <span class="math">\(\mathcal{F}\)</span>, is too
+large for statistical inference the typical approach is to a priori
+specify a nested sequence of action spaces
+<span class="math">\(\{\mathcal{A}_k \}_{k \in \mathcal{K}}\)</span> whose union is equal to
+<span class="math">\(\mathcal{F}\)</span>. That is
+<span class="math">\(\mathcal{A}_k \subseteq \mathcal{A}_{k'}\)</span> whenever
+<span class="math">\(k\leq k'\)</span> and <span class="math">\(\cup_{k}\mathcal{A}_k = \mathcal{F}\)</span>. The
+problem of choosing an action space from this sequence is called <em>model
+selection</em>. Formally, we would like to find the class which minimizes
+the excess risk &#8211; balancing the estimation and misspecification errors</p>
+<div class="math">
+\[\min_{k\in\mathcal{K}}\Big\{ R_n(P, d_k) - L\left(P, a^{*}_{L, P, \mathcal{F}} \right) \Big\} =  \min_{k\in\mathcal{K}}\Big\{R_n(P, d_k) - L\left(P, a^{*}_{L, P, \mathcal{A}_k}\right) + L\left(P, a^{*}_{L, P, \mathcal{A}_k}\right)- L\left(P, a^{*}_{L, P, \mathcal{F}} \right) \Big\}\]</div>
+<p>where <span class="math">\(d_k\)</span> denotes the empirical loss minimizing decision rule
+whose range is <span class="math">\(\mathcal{A}_k\)</span>.</p>
+<p>The intuitive idea behind the approach &#8211; often referred to as
+<em>structural risk minimization</em> or <em>methods of sieves</em> &#8211; is that one
+should select action spaces inducing small complexity in smaller sample
+sizes where the estimation error is more severe and as the sample size
+grows select larger action spaces which ensures shrinking
+misspecification error at least asymptotically.</p>
+<p>This approach, of course, nests the classical frequentist one by setting
+<span class="math">\(\mathcal{A}_k = \mathcal{A}\subseteq \mathcal{F}\)</span>,
+<span class="math">\(\forall k\in \mathcal{K}\)</span>.</p>
+<p>In this sense, we can think of the corresponding decision rule &#8211;
+<span class="math">\(d^{SLT}\)</span> &#8211; in terms of an indexed collection of action spaces
+and a rule of selecting an element for each sample. Often, the selection
+criterion is <em>data-dependent</em> as distribution-free upper bounds on the
+complexity are usually too conservative.</p>
+<p>Arguably, one of the most common and popular way of executing this
+agenda is through penalization methods.</p>
+</div>
+<div class="section" id="penalized-empirical-loss-minimization">
+<h3>Penalized empirical loss minimization<a class="headerlink" href="#penalized-empirical-loss-minimization" title="Permalink to this headline">¶</a></h3>
+<p>Penalized empirical loss minimiziation has several forms, our aim here
+is to highlight the conceptual similarities. In general, for each
+potential sample one can consider the constrained optimization problem
+of the following form</p>
+<div class="math">
+\[d^{SLT}(z^n) :=  \arg \min_{a \in \mathcal{A}_{k^*}} \ L(P_n, a)\]</div>
+<div class="math">
+\[\text{where} \quad k^* := \arg \inf_{k\in\mathcal{K}} \left\{ \min_{a \in \mathcal{A}_k} \ L(P_n, a) + \Phi(\mathcal{A}_k) \right\}.\]</div>
+<p><span class="math">\(\Phi\)</span> is a cost function penalizing the complexity of each
+<span class="math">\(\mathcal{A}_k\)</span>. It is an assignment</p>
+<div class="math">
+\[\Phi : \{\mathcal{A}_k\}_{k\in\mathcal{K}} \mapsto \mathbb{R}.\]</div>
+<p>There are two logically distinct steps in this procedure.</p>
+<ol class="arabic simple">
+<li>The &#8220;inner loop&#8221; is the <em>empirical loss minimization</em> problem picking
+an action within a given model.</li>
+<li>The &#8220;outer loop&#8221; is the <em>model selection</em> problem specifying the
+action space.</li>
+</ol>
+<p>The model selection problem in the classical approach is &#8220;degenerate&#8221;.
+We can nest the classical decision rule corresponding to
+<span class="math">\(\mathcal{A}\)</span> in the current framework as a special case of
+<span class="math">\(\Phi\)</span> which</p>
+<ul class="simple">
+<li>assigns zero to a prespecified element, <span class="math">\(\mathcal{A}\)</span></li>
+<li>and assigns infinity to every other element in the sequence,
+<span class="math">\(\{\mathcal{A}_k\}_{k\in\mathcal{K}} \setminus \mathcal{A}\)</span>.</li>
+</ul>
+<p>Intuitively, for a given realization of the sample, the overall level of
+the cost function <span class="math">\(\Phi\)</span> over its domain captures how much
+emphasis we put on the estimation error versus the misspecification
+error.</p>
+<ul class="simple">
+<li>If the overall value level of the cost is low then the decision rule
+will likely pick an action from a large class for which the
+misspecification is less of an issue.</li>
+<li>If the overall value level of the cost is high then the decision rule
+will likely pick an action from a small class for which the
+estimation error is typically not so severe.</li>
+</ul>
+<p>It is important to note that both the sequence of action spaces and the
+shape of the penalty term represents the statistician&#8217;s prior knowledge
+about the problem. They have a very similar role to that of the prior
+distribution in Bayesian inference.</p>
+<div class="section" id="operationalizing-the-cost-function">
+<h4>Operationalizing the cost function <span class="math">\(\Phi\)</span><a class="headerlink" href="#operationalizing-the-cost-function" title="Permalink to this headline">¶</a></h4>
+<p>Most often, the general penalty term is not written for a class of
+actions but a single action. This will help us in rewriting the
+constraint of the optimization problem. Define
+<span class="math">\(\phi : \mathcal{F} \mapsto \mathbb{R}\)</span></p>
+<div class="math">
+\[\phi(a) := \inf_{k}\{\Phi(\mathcal{A}_k) : a \in \mathcal{A}_k\}.\]</div>
+<p>We like to think of this definition as a projection of the action space
+to the prespecified sequence of actions. Thus, the complexity penalty of
+a single action corresponds to the complexity penalty of the first set
+of actions in the sequence which contains the action in question.
+Accordingly, we can characterize the action sets through the function
+<span class="math">\(\phi\)</span>,</p>
+<div class="math">
+\[\mathcal{A}_k \equiv \{a : \phi(a) \leq \Phi(\mathcal{A}_k)\}.\]</div>
+<p>Frequently, the penalty term is defined through a norm in a reproducing
+kernel Hilbert space (RKHS). Connections between these norms and
+complexity measures are well-known in the literature. Having a penalty
+term for each action we can recast the empirical loss minimization
+problem as an unconstrained optimization problem over all actions,
+<span class="math">\(\mathcal{F}\)</span>, via the method of Lagrange multipliers,</p>
+<div class="math">
+\[d^{SLT}(z^n; \lambda) := \arg \min_{a\in\mathcal{F}} \ L(P_n, a) + \lambda (\phi(a) - \Phi(\mathcal{A}_k)).\]</div>
+<p>The Lagrange multiplier <span class="math">\(\lambda\)</span> is corresponding to the
+constraint <span class="math">\(\phi(a) \leq \Phi(\mathcal{A}_k)\)</span>. By changing the
+Lagrange multiplier we can effectively control the &#8220;complexity radius&#8221;
+of the constraint. In these cases <span class="math">\(\lambda\)</span> is called the <em>tuning
+parameter</em> and it is the main tool in the model selection problem.</p>
+</div>
+<div class="section" id="model-selection-via-cross-validation">
+<h4>Model selection via cross-validation<a class="headerlink" href="#model-selection-via-cross-validation" title="Permalink to this headline">¶</a></h4>
+<p>As noted before selecting <span class="math">\(\lambda\)</span> effectively corresponds to
+selecting a model &#8211; how much complexity is the statisticion willing to
+tolerate while trying to fit the data. We can treat it as a <em>taste
+parameter</em> which describes the preferences of the decision maker (the
+statistician in our case).</p>
+<p>In practice however, as theoretical bounds on the complexity &#8211; and
+hence the penalty term &#8211; are often too conservative, a popular way of
+setting the tuning parameter and hence selecting a model is through
+cross-validation. In this sense, the penalty term/cost function is
+data-dependent, <span class="math">\(\Phi(\mathcal{A}_k, z^n)\)</span>.</p>
+<p>The simplistic underlying idea is to get a direct estimate of the
+selected action&#8217;s performance through an independent sample &#8211;
+information which is not used in the fitting phase. There is still a lot
+of structure on the penalty term, however we wish to specify it&#8217;s
+overall level empirically and not theoretically.</p>
+<p>Splitting the original sample randomly into two parts we have an
+&#8220;in-sample&#8221; used for fitting and an &#8220;out-of-sample&#8221; used for testing.
+Denote these by <span class="math">\(z^n = (z^n_{in}, z^n_{out})\)</span> and the
+corresponding empirical measures as <span class="math">\(P_{in}\)</span> and <span class="math">\(P_{out}\)</span>.
+A simplified version of cross-validation takes the following empirical
+approach to model selection</p>
+<div class="math">
+\[\lambda^* := \arg \inf_{\lambda} L\Big( P_{out},\ d^{SLT}(z^n_{in}; \lambda) \Big).\]</div>
+<p>That is, loop over the values of <span class="math">\(\lambda\)</span> and</p>
+<ol class="arabic">
+<li><p class="first">for each value of <span class="math">\(\lambda\)</span> pick an action based on the
+training sample</p>
+<div class="math">
+\[d^{SLT}(z^n_{in}; \lambda)\]</div>
+</li>
+<li><p class="first">evaluate the performance of the selected action on the testing sample</p>
+<div class="math">
+\[L\Big( P_{out},\ d^{SLT}(z^n_{in}; \lambda) \Big)\]</div>
+</li>
+<li><p class="first">choose the value of <span class="math">\(\lambda\)</span> for which the performance is best</p>
+</li>
+<li><p class="first">finally, pick an action for the selected <span class="math">\(\lambda\)</span> based on the
+whole sample,</p>
+<div class="math">
+\[d^{SLT}(z^n; \lambda^*).\]</div>
+</li>
+</ol>
+<p>By choosing a certain specification of the defined components many of
+the well known machine learning techniques can be treated simultaneously
+in a common framework. The lasso and ridge regressions, support vector
+machines or regularization networks can all be treated in the
+above-defined setting.</p>
+</div>
+</div>
+<div class="section" id="example-ols-vs-ridge">
+<h3>Example &#8211; OLS vs. Ridge<a class="headerlink" href="#example-ols-vs-ridge" title="Permalink to this headline">¶</a></h3>
+<p>We illustrate the idea of penalized empirical loss minimization and
+model selection through a simple simulation of OLS regression and Ridge
+regression for the same data set.</p>
+<p>Assume that <span class="math">\(Z = (Y, X_1, X_2)\)</span> and we would like to estimate the
+regression funciton predicting <span class="math">\(Y\)</span> as a function of
+<span class="math">\((X_1, X_2)\)</span>. The true regression function, <span class="math">\(\mu\)</span>, is
+non-linear including a constant, level, quadratic and interaction terms.</p>
+<p>Tha following graph shows the individual marginal effects of the
+variables fixing other variables at their means.</p>
+<div class="figure">
+<img alt="" src="../_images/finite_marg_effect.png" />
+</div>
+<p>We observe a random sample of size 100.</p>
+<p>Suppose that we consider a model containing all level, quadratic and
+interaction terms of the two covariates as we suspect ahead that the
+relationship is non-linear&#8212;hence we are in a correctly sepcified
+framework. The action space is relatively &#8220;complex&#8221; and hence it is
+prone to fit any noise present in the data.</p>
+<p>Define the non-linear feature mapping including all level, quadratic and
+interaction terms together with a constant unit vector as
+<span class="math">\(K(\mathbf{X})\)</span>.</p>
+<p>The classical approach would be</p>
+<div class="math">
+\[d^C(z^n) = \arg\min_{\beta} \sum_{i=1}^n \left(y_i - \langle \beta, K(x_i)\rangle\right)^2.\]</div>
+<p>The Ridge approach &#8211; a special case of the SLT approach &#8211; for a given
+tuning parameter <span class="math">\(\lambda\)</span> would be</p>
+<div class="math">
+\[d^{SLT}(z^n; \lambda) = \arg\min_{\beta} \sum_{i=1}^n \left(y_i - \langle \beta, K(x_i)\rangle\right)^2 + \lVert\beta \rVert_2^2.\]</div>
+<p>Knowing the true DGP we can simulate the true excess loss of the actions
+picked by the different decision rules. We vary the tuning parameter of
+the Ridge regression to trace out the model space and the corresponding
+decision rules&#8217; performance.</p>
+<div class="figure">
+<img alt="" src="../_images/finite_ridge_tuning.png" />
+</div>
+<p>As seen on the figure slightly shrinking the coefficients towards zero
+helps to reduce the variance of the decision rule and improve
+out-of-sample prediction. Ridge regression is equivalent to OLS when we
+set the tuning parameter to zero and effectively cancel the penalty
+term. For small values of <span class="math">\(\lambda\)</span> we reduce overfitting the
+noise and hence smaller excess loss for the picked action relative to
+OLS. However, for larger values the penalty term prevents us to pick up
+the general characteristics of the data and the model underfits the
+sample resulting in higher excess risk than that of the OLS.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="alvarezjermann-2005" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[AlvarezJermann-2005]</a></td><td>Alvarez, Fernando &amp; Jermann, Urban J. 2005. Using Asset Prices to Measure the Persistence of the Marginal Utility of Wealth. Econometrica, Econometric Society, vol. 73(6), pages 1977-2016, November.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="abu-mostafa-2012" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Abu-Mostafa-2012]</a></td><td>Abu-Mostafa, Y. S., Magdon-Ismail, M., &amp; Lin, H. T. (2012). Learning from data (Vol. 4). New York, NY, USA.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="backus-2014" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[Backus-2014]</a></td><td>Backus, David &amp; Chernov, Mikhail &amp; Zin, Stanley. 2014. Sources of Entropy in Representative Agent Models. Journal of Finance, American Finance Association, vol. 69(1), pages 51-99, 02.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="luxburgsholkopf-2011" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[LuxburgSholkopf-2011]</a></td><td>Luxburg, U. von and Schölkopf, B. 2011. Statistical Learning Theory: Models, Concepts, and Results. In: D. Gabbay, S. Hartmann and J. Woods (Eds). Handbook of the History of Logic, vol 10, pp. 751-706.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="mcdonald-2012" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[McDonald-2012]</a></td><td>McDonald, Daniel J. (2012). Thesis: Generalization error bounds for state-space models. <a class="reference external" href="http://pages.iu.edu/~dajmcdon/research/dissertation/thesis.pdf">Link</a></td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="sims-1980" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Sims-1980]</td><td><em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id7">2</a>, <a class="fn-backref" href="#id8">3</a>)</em> Sims, C. A. (1980). Macroeconomics and reality. Econometrica: Journal of the Econometric Society, 1-48.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="theil-1967" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[Theil-1967]</a></td><td>Theil, H. (1967). Economics and information theory. Amsterdam: North-Holland.</td></tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p>The code for the simulations and generating the graphs can be found <a class="reference external" href="https://github.com/QuantEcon/econometrics/blob/master/Notebook_03_finite/finite_code.ipynb">here</a>.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="appendices">
+<h1>Appendices<a class="headerlink" href="#appendices" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="a-taylor-expansion-of-the-risk-functional">
+<h2>(A) Taylor-expansion of the risk functional<a class="headerlink" href="#a-taylor-expansion-of-the-risk-functional" title="Permalink to this headline">¶</a></h2>
+<p>Remember that the risk of a decision rule <span class="math">\(d\)</span> is given by the
+following expression.</p>
+<div class="math">
+\[R_n(P, d) := \int\limits_{Z^n} L(P, d(z^n)) \ \mathrm{d} P(z^n)\]</div>
+<p>Consider the Taylor expansion of this functional with respect to the
+decision rule around a particular <span class="math">\(d\)</span>. For any alternative
+decision rule <span class="math">\(\tilde{d}\)</span>, we can define the difference</p>
+<div class="math">
+\[\tilde{d} - d := \lambda \eta(z^n)\quad \quad \text{where}\quad \eta: \mathcal{S} \mapsto \mathcal{A}, \quad \lambda\in\mathbb{R}_+\]</div>
+<p>and then the second-order Taylor expansion of the risk functional around
+<span class="math">\(d\)</span> is</p>
+<div class="math">
+\[R_n\left(P, \tilde{d}\right) = R_n\left(P, d \right) + \int_{Z^n} \frac{\partial L(P, d(z^n))}{\partial a}\lambda\eta(z^n)\mathrm{d} P(z^n) + \int_{Z^n} \frac{\partial^2 L(P, d(z^n))}{\partial a^2}\frac{\lambda^2\eta(z^n)^2}{2}\mathrm{d} P(z^n) + O(\lambda^{3})\]</div>
+<p>where we use the notion of Gateaux differential (generalization of
+directional derivate) to obtain the marginal change in the loss function
+as the abstract <span class="math">\(a\)</span> changes.</p>
+<p>An important reference point of any decision rule <span class="math">\(d\)</span> is the
+expected action that it provides for a given sample size <span class="math">\(n\)</span>,</p>
+<div class="math">
+\[\bar{d}_n := \int_{Z^n} d(z^n)\ \mathrm{d}P(z^n)\]</div>
+<p>which does not necessarily belong to <span class="math">\(\mathcal{A}\)</span>. In what
+follows, we imagine a decision rule <span class="math">\(\bar{d}_n\mathbf{1}(z^n)\)</span>
+that assigns the value <span class="math">\(\bar{d}_n\)</span> to all sample realization
+<span class="math">\(z^n\)</span> and use the Taylor approximation around this hypothetical
+decision rule to approximate the risk of <span class="math">\(d\)</span>. In this case,
+<span class="math">\(d - \bar{d}_n\mathbf{1} := \lambda \eta(z^n)\)</span> and</p>
+<div class="math">
+\[R_n\left(P, d\right) = L\left(P, \bar d_n \right) + \int_{Z^n} \frac{\partial^2 L(P, \bar d_n)}{\partial a^2}\frac{(d - \bar{d}_n\mathbf{1})^2}{2}\mathrm{d} P(z^n) + O(\lambda^{3})\]</div>
+<p>where the first-order term vanishes because the partial &#8211; evaluated at
+<span class="math">\(\bar d_n\mathbf{1}\)</span> &#8211; is a constant and
+<span class="math">\(\int_{Z^n}(d - \bar d_n\mathbf{1}) \mathrm{d}P = 0\)</span>. Note that in
+this expression the second-order term encodes the theoretical variation
+of the action that <span class="math">\(d\)</span> assigns to random samples of size
+<span class="math">\(n\)</span>. The regular variance formula is altered by (one half of) the
+second derivative of the loss function (evaluated at <span class="math">\(\bar d_n\)</span>),
+representing the role of the loss functions&#8217;s curvature in determining
+the decision rule&#8217;s volatility. As a result, a reasonable measure for
+the decision rule&#8217;s volatility can be defined as
+<span class="math">\(R_n\left(P, d\right) - L\left(P, \bar d_n \right)\)</span>.</p>
+</div>
+<div class="section" id="b-bias-variance-misspecification-decomposition-of-gmm">
+<h2>(B) Bias-variance-misspecification decomposition of GMM<a class="headerlink" href="#b-bias-variance-misspecification-decomposition-of-gmm" title="Permalink to this headline">¶</a></h2>
+<p>The elements of the problem are</p>
+<ul class="simple">
+<li><em>Observable:</em> <span class="math">\(Z \sim P\)</span>, with given moment conditions
+<span class="math">\(g: Z \times \mathbb{R}^{p+m} \mapsto \mathbb{R}^m\)</span></li>
+<li><em>Action space:</em> <span class="math">\(\mathcal{A} = \Theta \subseteq \mathbb{R}^p\)</span></li>
+<li><em>Admissible space:</em>
+<span class="math">\(\mathcal{F} = \Theta'\equiv \Theta \times \mathbb{R}^m\)</span>, so
+that we can always set the expectation of <span class="math">\(g\)</span> equal to zero by
+means of the <span class="math">\(m\)</span> auxiliary parameters.</li>
+<li><em>Loss function:</em>
+<span class="math">\(L(P, a) = \left(\int_Z g(z, a) \mathrm{d}P(z)\right)'W\left(\int_Z g(z, a) \mathrm{d}P(z)\right)\)</span></li>
+</ul>
+<p>Then the minimal loss is zero (by construction), i.e.
+<span class="math">\(L(P, a^{*}_{P, \mathcal{F}}) = 0\)</span>.</p>
+<p>The loss evaluated at the best-in-class action
+<span class="math">\(a^*_{P, \mathcal{A}} = \inf_{a\in\mathcal{A}} \ L(P, a)\)</span>, is</p>
+<div class="math">
+\[L\left(P, a^*_{P, \mathcal{A}}\right) = \mathbb{E}_P\left[ g\left(z, a^{*}_{P, \mathcal{A}}\right) \right]' W \mathbb{E}_P\left[ g\left(z, a^{*}_{P, \mathcal{A}}\right) \right] = \text{misspecification}\]</div>
+<p>For the bias term we substract this quantity from the loss evaluated at
+the average action
+<span class="math">\(\bar d_n(z) := \int_{Z^n} a_{z^n} \mathrm{d}P(z^n)\)</span></p>
+<div class="math">
+\[L\left(P, \bar d_n\right) - L\left(P, a^*_{P, \mathcal{A}}\right) = \mathbb{E}_P\left[ g\left(z, \bar d_n \right) \right]' W \mathbb{E}_P\left[ g\left(z, \bar d_n \right) \right]  - \mathbb{E}_P\left[ g\left(z, a^{*}_{P, \mathcal{A}}\right) \right]' W \mathbb{E}_P\left[ g\left(z, a^{*}_{P, \mathcal{A}}\right) \right]  = \text{bias}\]</div>
+<p>We approximate the volatility term with the second-order term of the
+Taylor expansion. For simplicity, make use of the following notation</p>
+<div class="math">
+\[D(a) := \mathbb{E}_P\left[ \frac{\partial g(z, a)}{\partial a}\right] \in \mathbb{R}^{m\times p} \quad\quad H(a) := \mathbb{E}_P\left[ \frac{\partial^2 g(z, a)}{\partial a^2}\right] \in \mathbb{R}^{p\times p\times m}\]</div>
+<p>and so</p>
+<div class="math">
+\[\frac{\partial L(P, a)}{\partial a} = 2 D(a)' W \mathbb{E}_P\left[ g(z, a)\right]\in \mathbb{R}^{p} \quad \quad \frac{\partial^2 L(P, a)}{\partial a^2} = 2 H(a) W \mathbb{E}_P\left[ g(z, a)\right] + 2 D(a)' W D(a) \in \mathbb{R}^{p\times p}\]</div>
+<p>implying the approximation</p>
+<div class="math">
+\[R_n(P, d) - L(P, \bar d_n)\approx \int_{Z^n} (d(z^n) - \bar d_n \mathbf{1}(z^n))'\left[ \underbrace{H(\bar d_n) W  g(z, \bar d_n)}_{\to 0 \ \text{as} \ n\to \infty} + D(\bar d_n)' W D(\bar d_n)\right](d(z^n) - \bar d_n \mathbf{1}(z^n)) \mathrm{d}P(z^n)\]</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Coping with finite samples</a><ul>
+<li><a class="reference internal" href="#from-asymptotics-to-finite-samples">From asymptotics to finite samples</a></li>
+<li><a class="reference internal" href="#decompositions-of-the-risk-functional">Decompositions of the risk functional</a><ul>
+<li><a class="reference internal" href="#estimation-misspecification-decomposition">Estimation-misspecification decomposition</a></li>
+<li><a class="reference internal" href="#bias-volatility-misspecification-decomposition">Bias-volatility-misspecification decomposition</a><ul>
+<li><a class="reference internal" href="#illustration-of-the-bias-volatility-misspecification-decomposition">Illustration of the bias-volatility-misspecification decomposition</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classical-approach-the-analogy-principle">Classical approach &#8211; the analogy principle</a><ul>
+<li><a class="reference internal" href="#var-example">VAR example</a><ul>
+<li><a class="reference internal" href="#consistency">Consistency</a></li>
+<li><a class="reference internal" href="#asymptotic-standard-errors">Asymptotic standard errors</a></li>
+<li><a class="reference internal" href="#adjusting-for-complexity">Adjusting for complexity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#efficiency">Efficiency</a></li>
+<li><a class="reference internal" href="#from-sample-to-population">From sample to population</a></li>
+<li><a class="reference internal" href="#generalization">Generalization</a><ul>
+<li><a class="reference internal" href="#resolving-variation-across-actions">Resolving variation across actions</a></li>
+<li><a class="reference internal" href="#resolving-uncertainty-about-the-empirical-distribution">Resolving uncertainty about the empirical distribution</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#estimation-error-and-generalization">Estimation error and generalization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#statistical-learning-theory-controlling-complexity">Statistical Learning Theory &#8211; controlling complexity</a><ul>
+<li><a class="reference internal" href="#controlling-excess-risk-through-the-action-space">Controlling excess risk through the action space</a></li>
+<li><a class="reference internal" href="#penalized-empirical-loss-minimization">Penalized empirical loss minimization</a><ul>
+<li><a class="reference internal" href="#operationalizing-the-cost-function">Operationalizing the cost function <span class="math">\(\Phi\)</span></a></li>
+<li><a class="reference internal" href="#model-selection-via-cross-validation">Model selection via cross-validation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-ols-vs-ridge">Example &#8211; OLS vs. Ridge</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#appendices">Appendices</a><ul>
+<li><a class="reference internal" href="#a-taylor-expansion-of-the-risk-functional">(A) Taylor-expansion of the risk functional</a></li>
+<li><a class="reference internal" href="#b-bias-variance-misspecification-decomposition-of-gmm">(B) Bias-variance-misspecification decomposition of GMM</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../Notebook_02_asymptotics/asymptotic_analysis_text.html" title="previous chapter">Asymptotic analysis and consistency</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Notebook_03_finite/finite_text.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Daniel Csaba, Balint Szoke.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/Notebook_03_finite/finite_text.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
