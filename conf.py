@@ -118,6 +118,7 @@ html_theme = 'alabaster'
 # documentation.
 html_theme_options = {
     'page_width' : '1260px',
+    'body_text_align' : 'justify',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.

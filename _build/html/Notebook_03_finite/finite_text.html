@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Coping with finite samples &mdash; econometrics 0.1 documentation</title>
+    <title>Coping with Finite Samples &#8212; econometrics 0.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -17,17 +17,20 @@
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="econometrics 0.1 documentation" href="../index.html" />
-    <link rel="prev" title="Asymptotic analysis and consistency" href="../Notebook_02_asymptotics/asymptotic_analysis_text.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Asymptotic Analysis and Consistency" href="../Notebook_02_asymptotics/asymptotic_analysis_text.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -41,7 +44,7 @@
           <div class="body" role="main">
             
   <div class="section" id="coping-with-finite-samples">
-<h1>Coping with finite samples<a class="headerlink" href="#coping-with-finite-samples" title="Permalink to this headline">¶</a></h1>
+<h1>Coping with Finite Samples<a class="headerlink" href="#coping-with-finite-samples" title="Permalink to this headline">¶</a></h1>
 <p><strong>February 2017</strong></p>
 <div class="section" id="from-asymptotics-to-finite-samples">
 <h2>From asymptotics to finite samples<a class="headerlink" href="#from-asymptotics-to-finite-samples" title="Permalink to this headline">¶</a></h2>
@@ -741,8 +744,8 @@ weakly increasing in the action space, <span class="math">\(\mathcal{A}\)</span>
 </ul>
 <p>The above trade-off&#8212;inherent in all statistical inference
 problems&#8212;can be visualized on the following graph.</p>
-<div class="figure">
-<img alt="" src="../_images/decomp.png" />
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/decomp.png"><img alt="../_images/decomp.png" src="../_images/decomp.png" style="width: 740px; height: 400px;" /></a>
 </div>
 <p>In terms of the action space of the decision rule,</p>
 <ul class="simple">
@@ -956,8 +959,8 @@ tuning parameter <span class="math">\(\lambda\)</span> would be</p>
 picked by the different decision rules. We vary the tuning parameter of
 the Ridge regression to trace out the model space and the corresponding
 decision rules&#8217; performance.</p>
-<div class="figure">
-<img alt="" src="../_images/finite_ridge_tuning.png" />
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/finite_ridge_tuning.png"><img alt="../_images/finite_ridge_tuning.png" src="../_images/finite_ridge_tuning.png" style="width: 600px; height: 400px;" /></a>
 </div>
 <p>As seen on the figure slightly shrinking the coefficients towards zero
 helps to reduce the variance of the decision rule and improve
@@ -1110,7 +1113,7 @@ Taylor expansion. For simplicity, make use of the following notation</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Coping with finite samples</a><ul>
+<li><a class="reference internal" href="#">Coping with Finite Samples</a><ul>
 <li><a class="reference internal" href="#from-asymptotics-to-finite-samples">From asymptotics to finite samples</a></li>
 <li><a class="reference internal" href="#decompositions-of-the-risk-functional">Decompositions of the risk functional</a><ul>
 <li><a class="reference internal" href="#estimation-misspecification-decomposition">Estimation-misspecification decomposition</a></li>
@@ -1160,22 +1163,22 @@ Taylor expansion. For simplicity, make use of the following notation</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../Notebook_02_asymptotics/asymptotic_analysis_text.html" title="previous chapter">Asymptotic analysis and consistency</a></li>
+      <li>Previous: <a href="../Notebook_02_asymptotics/asymptotic_analysis_text.html" title="previous chapter">Asymptotic Analysis and Consistency</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/Notebook_03_finite/finite_text.txt"
+      <li><a href="../_sources/Notebook_03_finite/finite_text.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1189,11 +1192,11 @@ Taylor expansion. For simplicity, make use of the following notation</p>
       &copy;2016, Daniel Csaba, Balint Szoke.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="../_sources/Notebook_03_finite/finite_text.txt"
+      <a href="../_sources/Notebook_03_finite/finite_text.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

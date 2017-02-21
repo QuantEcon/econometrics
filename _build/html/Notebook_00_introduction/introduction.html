@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Econometrics &amp; Statistics for QuantEcon &#8212; econometrics 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Estimators as Statistical Decision Functions" href="../Notebook_01_wald/statistical_decision_functions_text.html" />
+    <link rel="prev" title="Welcome to econometrics’s documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="econometrics-statistics-for-quantecon">
+<h1>Econometrics &amp; Statistics for QuantEcon<a class="headerlink" href="#econometrics-statistics-for-quantecon" title="Permalink to this headline">¶</a></h1>
+<p><strong>February 2017</strong></p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The aim of the notebooks is to present concepts and techniques common in
+modern statistical analysis to an audience familiar with econometrics.
+Along the way we attempt to provide examples of estimation problems
+well-known in econometrics to illuminate the introduced concepts.</p>
+</div>
+<div class="section" id="notebook-01-estimators-as-statistical-decision-functions">
+<h2>Notebook-01 &#8211; Estimators as Statistical Decision Functions<a class="headerlink" href="#notebook-01-estimators-as-statistical-decision-functions" title="Permalink to this headline">¶</a></h2>
+<p>Notebook-01 presents the key objects and concepts of econometrics and
+statistics within the framework of statistical decision theory. We find
+the framework useful for organizing our thoughts and comparing different
+approaches to similar statistical problems thus highlighting the key
+differences and similarities. We do not take the framework as a starting
+point strictly defining optimality.</p>
+<p>The introduced framework lets us separate assumptions into three major
+groups.</p>
+<blockquote>
+<div><p>Assumptions on <strong>statistical models</strong> describing the data generating
+process. Typically, we these assumption serve as an anchor defining
+a class of distirbutions relative to which we would like to
+establish certain properties. An estimator can be consistent or
+unbiased relative to one set of distributions but not relative to
+another.</p>
+<p>Assumptions on the <strong>action space</strong> restrict the set from which we
+allow a decision rule to take values from. As we will see, one of
+the key tools to control for certain statistical properties of
+decision rules is through controlling the action space.</p>
+<p>Assumptions on the <strong>loss function</strong> define which aspect of the data
+generating process we are targeting and the specify the manner in
+which we punish different approximations to this feature.</p>
+</div></blockquote>
+<p>Notebook-01 then presents statistical decision rules and characterizes
+them through the distributions they induce on the action space and the
+reals through the loss function. We set the <strong>risk</strong> of a decision rule
+as the benchmark for comparison.</p>
+<p>Finally, with the introduced concepts we discuss the important
+<strong>estimation error-misspecification error</strong> decomposition of decision
+rules.</p>
+</div>
+<div class="section" id="notebook-02-asymptotic-analysis-and-consistency">
+<h2>Notebook-02 &#8211; Asymptotic Analysis and Consistency<a class="headerlink" href="#notebook-02-asymptotic-analysis-and-consistency" title="Permalink to this headline">¶</a></h2>
+<p>Notebook-02 takes an asymptotic approach to analyze decision rules. We
+discuss conditions under which <strong>consistency</strong> holds and see what are
+determinants of the <strong>rate of convergence</strong>.</p>
+<p>For this end Notebook-02 covers the basics of <strong>concentration
+inequalities</strong>. We make connections between these inequalities and
+measures of complexity with a special emphasis on empirical processes.
+We introduce the concept of <strong>Rademacher-complexity</strong> and
+Vapnik-Chervonenkis dimension to capture the size of a function class
+for the purpose of statistical inference.</p>
+<p>As it turns out the introduced concepts provide deep insights about the
+asymptotic behavior of decision rules. Both consistency and the rate of
+convergence crucially depends on the complexity of the action space.</p>
+</div>
+<div class="section" id="notebook-03-coping-with-finite-samples">
+<h2>Notebook-03 &#8211; Coping with Finite Samples<a class="headerlink" href="#notebook-03-coping-with-finite-samples" title="Permalink to this headline">¶</a></h2>
+<p>Notebook-03 explores the issues arising from dealing with finite samples
+relative to an asymptotic approximation. We further decompose the risk
+into <strong>bias</strong>, <strong>volatility</strong> and <strong>misspecification</strong> terms.</p>
+<p>We discuss <strong>generalization</strong> properties of decision rules and their
+connection to the estimation error. We apply the <strong>non-asymptotic tail
+bounds</strong> covered in Notebook-02 to get a grasp on the finite sample
+performance of decision rules.</p>
+<p>The notebook discusses two approaches to estimation and the
+corresponding philosphies underlying them. One is a frequentist approach
+labelled as <strong>classical</strong> which is more common in the econometrics
+literature. The other which we label as the approach of <strong>statistical
+learning theory</strong> underlies many of the techniques common in modern
+statistics.</p>
+</div>
+<div class="section" id="notebook-04-the-bayesian-approach-to-be-added">
+<h2>Notebook-04 &#8211; The Bayesian Approach (to be added)<a class="headerlink" href="#notebook-04-the-bayesian-approach-to-be-added" title="Permalink to this headline">¶</a></h2>
+<p>Notebook-04 would introduce the Bayesian approach to statistical
+inference. Tentative sections:</p>
+<ul class="simple">
+<li>Conditions for consistency with sepcial focus on the complexity of
+the prior.</li>
+<li>Rate of convergence through capacity control on the prior</li>
+<li>Implications of misspecification</li>
+<li>Interpretation as a regularization technique</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Econometrics &amp; Statistics for QuantEcon</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#notebook-01-estimators-as-statistical-decision-functions">Notebook-01 &#8211; Estimators as Statistical Decision Functions</a></li>
+<li><a class="reference internal" href="#notebook-02-asymptotic-analysis-and-consistency">Notebook-02 &#8211; Asymptotic Analysis and Consistency</a></li>
+<li><a class="reference internal" href="#notebook-03-coping-with-finite-samples">Notebook-03 &#8211; Coping with Finite Samples</a></li>
+<li><a class="reference internal" href="#notebook-04-the-bayesian-approach-to-be-added">Notebook-04 &#8211; The Bayesian Approach (to be added)</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to econometrics&#8217;s documentation!</a></li>
+      <li>Next: <a href="../Notebook_01_wald/statistical_decision_functions_text.html" title="next chapter">Estimators as Statistical Decision Functions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Notebook_00_introduction/introduction.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Daniel Csaba, Balint Szoke.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/Notebook_00_introduction/introduction.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
