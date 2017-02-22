@@ -905,6 +905,10 @@ very strong assumptions that we are (implicitly) using when we give
 well-defined meaning to our parameter estimates. An interesting
 discussion can be found in Chapter 4 of [White-1994]_.
 
+
+--------------
+
+
 The code used for the simulations and generating the graphs can be found under the following link_.
 
 .. _link: https://github.com/QuantEcon/econometrics/blob/master/Notebook_01_wald/statistical_decision_functions_code.ipynb
