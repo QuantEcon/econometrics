@@ -725,7 +725,7 @@ functionals.
    estimator does not exist and so the Bayes estimator always wins in
    terms of realative entropy. The secret of :math:`d_{bayes}` is to
    shrink the effective action space.
--  **Dependence on :math:`\theta_0:`** Comparing the decision rules in
+-  **Dependence on:** :math:`\theta_0` Comparing the decision rules in
    terms of the quadratic loss reveals that the true :math:`\theta_0` is
    a critical factor. It determines the size of the bias (hence the
    risk) of the Bayes estimator. Since :math:`\theta_0` is unknown, this
