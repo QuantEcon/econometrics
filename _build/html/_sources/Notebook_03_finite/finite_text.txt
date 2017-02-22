@@ -1,5 +1,5 @@
 
-Coping with finite samples
+Coping with Finite Samples
 ==========================
 
 **February 2017**
@@ -13,7 +13,7 @@ the sample size is "almost infinity". We identified consistency and
 fast rate of convergence as desirable features that any reasonable
 decision rule should satisfy.
 
-We drew the crucial conclustion that both consistency and the rate of
+We drew the crucial conclusion that both consistency and the rate of
 convergence are driven by the *complexity* of the composite function
 class :math:`\mathcal{L}_{\mathcal A}`. In particular, we have seen that
 finiteness of model complexity is enough to ensure consistency and given
@@ -232,14 +232,14 @@ approach--that for simplicity we will call *classical*--is the *belief*
 that the decision rule's induced finite sample distributions converge so
 fast (with the sample size) that we can approximate them well with their
 limiting distribution. For example, in lecture {asymptotic}, while
-discussing the implied finite sample distributions of the MLE estimator
-in the coin tossing example, we saw that the estimators distribution did
+discussing the induced action distribution of the MLE estimator
+in the coin tossing example, we saw that the estimator's distribution did
 not change significantly after the sample size of 1,000. It has been
 stressed several times before, this property of the decision rule
 depends crucially on the complexity of the composite function class
 :math:`\mathcal L_{\mathcal A}`.
 
-**Remark:** Notice that in general there is no formal justification for
+**REMARK:** Notice that in general there is no formal justification for
 setting the finite sample distribution of the decision rule equal to the
 limiting distribution. Typically, more accurate estimates can be
 obtained via simulations, like Monte Carlo or bootstrap. We should add
@@ -299,8 +299,8 @@ Some well-known examples are
 
 We demonstrate key features of the classical approach by looking at the
 specific example of vector autoregressions. This class of statistical
-models, popularized in econometrics by [Sims-1980]_, are
-extremely widely used tools in applied research. Although the simplicity
+models, popularized in econometrics by [Sims-1980]_, is an
+extremely widely used tool in applied research. Although the simplicity
 of linear models (due to their relatively low complexity) tends to mask
 the generality of some of our findings, we believe this example is a
 useful benchmark and provides sufficient intuition about the behaviour
@@ -310,7 +310,7 @@ VAR example
 ~~~~~~~~~~~
 
 Let :math:`Z_t` denote an :math:`m`-dimensional vector containing the
-values that the :math:`m` observable variables take at period :math:`t`.
+values that the :math:`m` observables take at period :math:`t`.
 Suppose that the statistician faces the following statistical decision
 problem:
 
@@ -605,9 +605,9 @@ complexity of the function class that we entertain.
 
 Recall that the estimation error originates from the fact that we do not
 know :math:`P`, instead we have to use the information in the (finite)
-sample to approximate the 'best' action in :math:`\mathcal{A}`.
+sample to approximate the best action in :math:`\mathcal{A}`.
 Intuitively, the smaller the estimation error the better this
-approximation. Given a decision rule and a finite sample at hand we
+approximation. Given a decision rule and a finite sample at hand, we
 would like to know how close the empirical loss and the true loss are.
 Making sure that these two quantities are close to each other ensures
 that the empirical loss is informative about the true loss. This
@@ -639,8 +639,8 @@ Note that the generalization property depends on the particular
 realization of the sample. The realized sample determines the chosen
 action, :math:`d(z^n)\in\mathcal{A}`, and the empirical distribution,
 :math:`P_n`. In order to give statements regarding the generalization
-property that extends to more than one paritcular realization of the
-sample the following steps are taken:
+property that extends to more than one realization of the
+sample, the following steps are taken:
 
 -  In order to resolve the uncertainty about the chosen action,
    :math:`d(z^n)`, consider all the actions that are in the range of the
@@ -687,8 +687,7 @@ the tail bounds is the complexity of the class
 
 We can apply {last theorem asymptotic notebook} in the current setting.
 For uniformly bounded functions
-:math:`\lvert l_a \rvert_{\infty} < B \ \forall l_a \in\mathcal{L}_\mathcal{A}`
-for each :math:`\delta>0` we have that
+:math:`\lvert l_a \rvert_{\infty} < B, \ \forall l_a \in\mathcal{L}_\mathcal{A}`, :math:`\forall \delta>0` we have that
 
 .. math::  P \Big\{ \Vert P_n - P \Vert_{\mathcal{L}_\mathcal{A}} \geq  2\mathsf{R}\left(\mathcal{L}_{\mathcal{A}}, n\right)  + \delta \Big\} \leq 2 \exp\Big\{- \frac{n \delta^2}{2 B^2} \Big\}. 
 
@@ -700,15 +699,15 @@ generalization error, i.e.
 .. math:: \mathbb{E}_{Z^n}\left[ \Delta(P, z^n)\right] = \int_{Z^n} \sup_{a\in\mathcal{A}} \ \left|L(P, a) - L(P_n, a)\right| \mathrm{d}P(z^n).
 
 Naturally, by bounding the tail probabilities of :math:`\Delta` we
-control the mean as well. In fact ,with some technical care---using a
-symmetrization argument---one can bound the expectation of the
+control the mean as well. In fact, with some technical care---using a
+*symmetrization* argument---one can bound the expectation of the
 generalization error using the Rademacher complexity of the class
 :math:`\mathcal{L}_\mathcal{A}`,
 
 .. math:: \mathbb{E}_{Z^n}\left[ \Delta(P, z^n)\right]\leq 2\mathbb{E}_{Z^n} \left[ \mathsf{R}\left(\mathcal{L}_{\mathcal{A}}(Z^n)\right) \right].
 
 This inequality follows from a symmetrization argument discussed at the
-end of {notebook 02}.
+end of {notebook 02}. **TODO:** Elaborate on symmetrization in Notebook-02.
 
 Unfortunately, the Rademacher complexity still depends on the unknown
 distribution :math:`P` governing the iid sampling. There are many
@@ -794,7 +793,7 @@ facing
 -  However, the range of the decision rule also plays a key role in the
    size of the estimation error and its ability to generalize. The
    non-asymptotic tail bounds teach us that in order to achieve low
-   estimation error and good generalization the complexity of the class
+   estimation error and good generalization, the complexity of the class
    :math:`\mathcal{L}_\mathcal{A}` has to be small. The complexity is
    weakly increasing in the action space, :math:`\mathcal{A}`.
 
@@ -802,7 +801,9 @@ The above trade-off---inherent in all statistical inference
 problems---can be visualized on the following graph.
 
 .. figure:: ./decomp.png
-   :alt: 
+   :align: center
+   :height: 400 px
+   :width: 740 px
 
 In terms of the action space of the decision rule,
 
@@ -815,7 +816,7 @@ In terms of the action space of the decision rule,
 
 An ideal decision rule traces the minimum of the U shaped excess risk.
 By controlling the range of the decision rule, the action space
-:math:`\mathcal{A}`, the approach of statistical learning theory can
+:math:`\mathcal{A}`, the approach of statistical learning theory seeks to
 balance the trade-off between the estimation error and the
 misspecification error.
 
@@ -883,9 +884,9 @@ of the following form
 There are two logically distinct steps in this procedure.
 
 1. The "inner loop" is the *empirical loss minimization* problem picking
-   an action within a given model.
+   an action within a given model :math:`\mathcal{A}_k`.
 2. The "outer loop" is the *model selection* problem specifying the
-   action space.
+   action space by choosing :math:`k^*`.
 
 The model selection problem in the classical approach is "degenerate".
 We can nest the classical decision rule corresponding to
@@ -895,6 +896,8 @@ We can nest the classical decision rule corresponding to
 -  assigns zero to a prespecified element, :math:`\mathcal{A}`
 -  and assigns infinity to every other element in the sequence,
    :math:`\{\mathcal{A}_k\}_{k\in\mathcal{K}} \setminus \mathcal{A}`.
+
+**TODO:** asymptotic penalization methods: Akaike, BIC, etc.
 
 Intuitively, for a given realization of the sample, the overall level of
 the cost function :math:`\Phi` over its domain captures how much
@@ -951,7 +954,7 @@ Model selection via cross-validation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As noted before selecting :math:`\lambda` effectively corresponds to
-selecting a model -- how much complexity is the statisticion willing to
+selecting a model -- how much complexity is the statistician willing to
 tolerate while trying to fit the data. We can treat it as a *taste
 parameter* which describes the preferences of the decision maker (the
 statistician in our case).
@@ -1022,7 +1025,7 @@ We observe a random sample of size 100.
 
 Suppose that we consider a model containing all level, quadratic and
 interaction terms of the two covariates as we suspect ahead that the
-relationship is non-linear---hence we are in a correctly sepcified
+relationship is non-linear---hence we are in a correctly specified
 framework. The action space is relatively "complex" and hence it is
 prone to fit any noise present in the data.
 
@@ -1037,7 +1040,7 @@ The classical approach would be
 The Ridge approach -- a special case of the SLT approach -- for a given
 tuning parameter :math:`\lambda` would be
 
-.. math:: d^{SLT}(z^n; \lambda) = \arg\min_{\beta} \sum_{i=1}^n \left(y_i - \langle \beta, K(x_i)\rangle\right)^2 + \lVert\beta \rVert_2^2.
+.. math:: d^{SLT}(z^n; \lambda) = \arg\min_{\beta} \sum_{i=1}^n \left(y_i - \langle \beta, K(x_i)\rangle\right)^2 + \lambda \lVert\beta \rVert_2^2.
 
 Knowing the true DGP we can simulate the true excess loss of the actions
 picked by the different decision rules. We vary the tuning parameter of
@@ -1045,7 +1048,11 @@ the Ridge regression to trace out the model space and the corresponding
 decision rules' performance.
 
 .. figure:: ./finite_ridge_tuning.png
-   :alt: 
+   :align: center
+   :height: 400 px
+   :width: 600 px
+
+
 
 As seen on the figure slightly shrinking the coefficients towards zero
 helps to reduce the variance of the decision rule and improve
@@ -1053,9 +1060,13 @@ out-of-sample prediction. Ridge regression is equivalent to OLS when we
 set the tuning parameter to zero and effectively cancel the penalty
 term. For small values of :math:`\lambda` we reduce overfitting the
 noise and hence smaller excess loss for the picked action relative to
-OLS. However, for larger values the penalty term prevents us to pick up
+OLS. However, for larger values the penalty term prevents us from picking up
 the general characteristics of the data and the model underfits the
 sample resulting in higher excess risk than that of the OLS.
+
+--------------
+
+The code for the simulations and generating the graphs can be found `here <https://github.com/QuantEcon/econometrics/blob/master/Notebook_03_finite/finite_code.ipynb>`__.
 
 --------------
 
@@ -1078,9 +1089,6 @@ References
 
 --------------
 
-The code for the simulations and generating the graphs can be found `here <https://github.com/QuantEcon/econometrics/blob/master/Notebook_03_finite/finite_code.ipynb>`__.
-
---------------
 
 Appendices
 ==========

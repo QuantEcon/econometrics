@@ -17,16 +17,14 @@
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="econometrics 0.1 documentation" href="../index.html" />
     <link rel="prev" title="Asymptotic Analysis and Consistency" href="../Notebook_02_asymptotics/asymptotic_analysis_text.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -53,7 +51,7 @@ focusing on the behavior of the decision rule under the assumption that
 the sample size is &#8220;almost infinity&#8221;. We identified consistency and
 fast rate of convergence as desirable features that any reasonable
 decision rule should satisfy.</p>
-<p>We drew the crucial conclustion that both consistency and the rate of
+<p>We drew the crucial conclusion that both consistency and the rate of
 convergence are driven by the <em>complexity</em> of the composite function
 class <span class="math">\(\mathcal{L}_{\mathcal A}\)</span>. In particular, we have seen that
 finiteness of model complexity is enough to ensure consistency and given
@@ -248,13 +246,13 @@ approach&#8211;that for simplicity we will call <em>classical</em>&#8211;is the 
 that the decision rule&#8217;s induced finite sample distributions converge so
 fast (with the sample size) that we can approximate them well with their
 limiting distribution. For example, in lecture {asymptotic}, while
-discussing the implied finite sample distributions of the MLE estimator
-in the coin tossing example, we saw that the estimators distribution did
+discussing the induced action distribution of the MLE estimator
+in the coin tossing example, we saw that the estimator&#8217;s distribution did
 not change significantly after the sample size of 1,000. It has been
 stressed several times before, this property of the decision rule
 depends crucially on the complexity of the composite function class
 <span class="math">\(\mathcal L_{\mathcal A}\)</span>.</p>
-<p><strong>Remark:</strong> Notice that in general there is no formal justification for
+<p><strong>REMARK:</strong> Notice that in general there is no formal justification for
 setting the finite sample distribution of the decision rule equal to the
 limiting distribution. Typically, more accurate estimates can be
 obtained via simulations, like Monte Carlo or bootstrap. We should add
@@ -299,8 +297,8 @@ semi-definite <span class="math">\(W\)</span>, we can take</li>
 <hr class="docutils" />
 <p>We demonstrate key features of the classical approach by looking at the
 specific example of vector autoregressions. This class of statistical
-models, popularized in econometrics by <a class="reference internal" href="#sims-1980" id="id5">[Sims-1980]</a>, are
-extremely widely used tools in applied research. Although the simplicity
+models, popularized in econometrics by <a class="reference internal" href="#sims-1980" id="id5">[Sims-1980]</a>, is an
+extremely widely used tool in applied research. Although the simplicity
 of linear models (due to their relatively low complexity) tends to mask
 the generality of some of our findings, we believe this example is a
 useful benchmark and provides sufficient intuition about the behaviour
@@ -308,7 +306,7 @@ of other (more complex) classical estimators.</p>
 <div class="section" id="var-example">
 <h3>VAR example<a class="headerlink" href="#var-example" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math">\(Z_t\)</span> denote an <span class="math">\(m\)</span>-dimensional vector containing the
-values that the <span class="math">\(m\)</span> observable variables take at period <span class="math">\(t\)</span>.
+values that the <span class="math">\(m\)</span> observables take at period <span class="math">\(t\)</span>.
 Suppose that the statistician faces the following statistical decision
 problem:</p>
 <ul class="simple">
@@ -573,9 +571,9 @@ notion of <em>large sample</em> is not absolute, it is always relative to the
 complexity of the function class that we entertain.</p>
 <p>Recall that the estimation error originates from the fact that we do not
 know <span class="math">\(P\)</span>, instead we have to use the information in the (finite)
-sample to approximate the &#8216;best&#8217; action in <span class="math">\(\mathcal{A}\)</span>.
+sample to approximate the best action in <span class="math">\(\mathcal{A}\)</span>.
 Intuitively, the smaller the estimation error the better this
-approximation. Given a decision rule and a finite sample at hand we
+approximation. Given a decision rule and a finite sample at hand, we
 would like to know how close the empirical loss and the true loss are.
 Making sure that these two quantities are close to each other ensures
 that the empirical loss is informative about the true loss. This
@@ -602,8 +600,8 @@ the true loss, hence our assessment of the quality of
 realization of the sample. The realized sample determines the chosen
 action, <span class="math">\(d(z^n)\in\mathcal{A}\)</span>, and the empirical distribution,
 <span class="math">\(P_n\)</span>. In order to give statements regarding the generalization
-property that extends to more than one paritcular realization of the
-sample the following steps are taken:</p>
+property that extends to more than one realization of the
+sample, the following steps are taken:</p>
 <ul class="simple">
 <li>In order to resolve the uncertainty about the chosen action,
 <span class="math">\(d(z^n)\)</span>, consider all the actions that are in the range of the
@@ -646,8 +644,7 @@ the tail bounds is the complexity of the class
 <span class="math">\(\mathcal{L}_\mathcal{A}\)</span>.</p>
 <p>We can apply {last theorem asymptotic notebook} in the current setting.
 For uniformly bounded functions
-<span class="math">\(\lvert l_a \rvert_{\infty} &lt; B \ \forall l_a \in\mathcal{L}_\mathcal{A}\)</span>
-for each <span class="math">\(\delta&gt;0\)</span> we have that</p>
+<span class="math">\(\lvert l_a \rvert_{\infty} &lt; B, \ \forall l_a \in\mathcal{L}_\mathcal{A}\)</span>, <span class="math">\(\forall \delta&gt;0\)</span> we have that</p>
 <div class="math">
 \[P \Big\{ \Vert P_n - P \Vert_{\mathcal{L}_\mathcal{A}} \geq  2\mathsf{R}\left(\mathcal{L}_{\mathcal{A}}, n\right)  + \delta \Big\} \leq 2 \exp\Big\{- \frac{n \delta^2}{2 B^2} \Big\}.\]</div>
 <p><strong>Average generalization error</strong></p>
@@ -656,14 +653,14 @@ generalization error, i.e.</p>
 <div class="math">
 \[\mathbb{E}_{Z^n}\left[ \Delta(P, z^n)\right] = \int_{Z^n} \sup_{a\in\mathcal{A}} \ \left|L(P, a) - L(P_n, a)\right| \mathrm{d}P(z^n).\]</div>
 <p>Naturally, by bounding the tail probabilities of <span class="math">\(\Delta\)</span> we
-control the mean as well. In fact ,with some technical care&#8212;using a
-symmetrization argument&#8212;one can bound the expectation of the
+control the mean as well. In fact, with some technical care&#8212;using a
+<em>symmetrization</em> argument&#8212;one can bound the expectation of the
 generalization error using the Rademacher complexity of the class
 <span class="math">\(\mathcal{L}_\mathcal{A}\)</span>,</p>
 <div class="math">
 \[\mathbb{E}_{Z^n}\left[ \Delta(P, z^n)\right]\leq 2\mathbb{E}_{Z^n} \left[ \mathsf{R}\left(\mathcal{L}_{\mathcal{A}}(Z^n)\right) \right].\]</div>
 <p>This inequality follows from a symmetrization argument discussed at the
-end of {notebook 02}.</p>
+end of {notebook 02}. <strong>TODO:</strong> Elaborate on symmetrization in Notebook-02.</p>
 <p>Unfortunately, the Rademacher complexity still depends on the unknown
 distribution <span class="math">\(P\)</span> governing the iid sampling. There are many
 different ways to bound the Rademacher complexity&#8212;and together the
@@ -738,7 +735,7 @@ misspecification error vanishes.</li>
 <li>However, the range of the decision rule also plays a key role in the
 size of the estimation error and its ability to generalize. The
 non-asymptotic tail bounds teach us that in order to achieve low
-estimation error and good generalization the complexity of the class
+estimation error and good generalization, the complexity of the class
 <span class="math">\(\mathcal{L}_\mathcal{A}\)</span> has to be small. The complexity is
 weakly increasing in the action space, <span class="math">\(\mathcal{A}\)</span>.</li>
 </ul>
@@ -758,7 +755,7 @@ there is <strong>overfitting</strong>.</li>
 </ul>
 <p>An ideal decision rule traces the minimum of the U shaped excess risk.
 By controlling the range of the decision rule, the action space
-<span class="math">\(\mathcal{A}\)</span>, the approach of statistical learning theory can
+<span class="math">\(\mathcal{A}\)</span>, the approach of statistical learning theory seeks to
 balance the trade-off between the estimation error and the
 misspecification error.</p>
 <div class="section" id="controlling-excess-risk-through-the-action-space">
@@ -815,9 +812,9 @@ of the following form</p>
 <p>There are two logically distinct steps in this procedure.</p>
 <ol class="arabic simple">
 <li>The &#8220;inner loop&#8221; is the <em>empirical loss minimization</em> problem picking
-an action within a given model.</li>
+an action within a given model <span class="math">\(\mathcal{A}_k\)</span>.</li>
 <li>The &#8220;outer loop&#8221; is the <em>model selection</em> problem specifying the
-action space.</li>
+action space by choosing <span class="math">\(k^*\)</span>.</li>
 </ol>
 <p>The model selection problem in the classical approach is &#8220;degenerate&#8221;.
 We can nest the classical decision rule corresponding to
@@ -828,6 +825,7 @@ We can nest the classical decision rule corresponding to
 <li>and assigns infinity to every other element in the sequence,
 <span class="math">\(\{\mathcal{A}_k\}_{k\in\mathcal{K}} \setminus \mathcal{A}\)</span>.</li>
 </ul>
+<p><strong>TODO:</strong> asymptotic penalization methods: Akaike, BIC, etc.</p>
 <p>Intuitively, for a given realization of the sample, the overall level of
 the cost function <span class="math">\(\Phi\)</span> over its domain captures how much
 emphasis we put on the estimation error versus the misspecification
@@ -877,7 +875,7 @@ parameter</em> and it is the main tool in the model selection problem.</p>
 <div class="section" id="model-selection-via-cross-validation">
 <h4>Model selection via cross-validation<a class="headerlink" href="#model-selection-via-cross-validation" title="Permalink to this headline">¶</a></h4>
 <p>As noted before selecting <span class="math">\(\lambda\)</span> effectively corresponds to
-selecting a model &#8211; how much complexity is the statisticion willing to
+selecting a model &#8211; how much complexity is the statistician willing to
 tolerate while trying to fit the data. We can treat it as a <em>taste
 parameter</em> which describes the preferences of the decision maker (the
 statistician in our case).</p>
@@ -942,7 +940,7 @@ variables fixing other variables at their means.</p>
 <p>We observe a random sample of size 100.</p>
 <p>Suppose that we consider a model containing all level, quadratic and
 interaction terms of the two covariates as we suspect ahead that the
-relationship is non-linear&#8212;hence we are in a correctly sepcified
+relationship is non-linear&#8212;hence we are in a correctly specified
 framework. The action space is relatively &#8220;complex&#8221; and hence it is
 prone to fit any noise present in the data.</p>
 <p>Define the non-linear feature mapping including all level, quadratic and
@@ -954,7 +952,7 @@ interaction terms together with a constant unit vector as
 <p>The Ridge approach &#8211; a special case of the SLT approach &#8211; for a given
 tuning parameter <span class="math">\(\lambda\)</span> would be</p>
 <div class="math">
-\[d^{SLT}(z^n; \lambda) = \arg\min_{\beta} \sum_{i=1}^n \left(y_i - \langle \beta, K(x_i)\rangle\right)^2 + \lVert\beta \rVert_2^2.\]</div>
+\[d^{SLT}(z^n; \lambda) = \arg\min_{\beta} \sum_{i=1}^n \left(y_i - \langle \beta, K(x_i)\rangle\right)^2 + \lambda \lVert\beta \rVert_2^2.\]</div>
 <p>Knowing the true DGP we can simulate the true excess loss of the actions
 picked by the different decision rules. We vary the tuning parameter of
 the Ridge regression to trace out the model space and the corresponding
@@ -968,9 +966,11 @@ out-of-sample prediction. Ridge regression is equivalent to OLS when we
 set the tuning parameter to zero and effectively cancel the penalty
 term. For small values of <span class="math">\(\lambda\)</span> we reduce overfitting the
 noise and hence smaller excess loss for the picked action relative to
-OLS. However, for larger values the penalty term prevents us to pick up
+OLS. However, for larger values the penalty term prevents us from picking up
 the general characteristics of the data and the model underfits the
 sample resulting in higher excess risk than that of the OLS.</p>
+<hr class="docutils" />
+<p>The code for the simulations and generating the graphs can be found <a class="reference external" href="https://github.com/QuantEcon/econometrics/blob/master/Notebook_03_finite/finite_code.ipynb">here</a>.</p>
 </div>
 </div>
 <hr class="docutils" />
@@ -1018,8 +1018,6 @@ sample resulting in higher excess risk than that of the OLS.</p>
 <tr><td class="label"><a class="fn-backref" href="#id2">[Theil-1967]</a></td><td>Theil, H. (1967). Economics and information theory. Amsterdam: North-Holland.</td></tr>
 </tbody>
 </table>
-<hr class="docutils" />
-<p>The code for the simulations and generating the graphs can be found <a class="reference external" href="https://github.com/QuantEcon/econometrics/blob/master/Notebook_03_finite/finite_code.ipynb">here</a>.</p>
 </div>
 </div>
 <hr class="docutils" />
@@ -1170,7 +1168,7 @@ Taylor expansion. For simplicity, make use of the following notation</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/Notebook_03_finite/finite_text.rst.txt"
+      <li><a href="../_sources/Notebook_03_finite/finite_text.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -1192,11 +1190,11 @@ Taylor expansion. For simplicity, make use of the following notation</p>
       &copy;2016, Daniel Csaba, Balint Szoke.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="../_sources/Notebook_03_finite/finite_text.rst.txt"
+      <a href="../_sources/Notebook_03_finite/finite_text.txt"
           rel="nofollow">Page source</a>
     </div>
 

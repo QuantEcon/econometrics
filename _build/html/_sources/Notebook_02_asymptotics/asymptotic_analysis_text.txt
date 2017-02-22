@@ -1,8 +1,8 @@
 
-Asymptotic analysis and consistency
+Asymptotic Analysis and Consistency
 ===================================
 
-**Date: February 2017**
+**February 2017**
 
 In this notebook we discuss the asymptotic properties of decision rules.
 After a general introduction we restrict attention to empirical loss
@@ -881,7 +881,7 @@ real valued functions.
 
 --------------
 
-The code for the simulations and producing the graphs ican be found
+The code for the simulations and producing the graphs can be found
 `here <https://github.com/QuantEcon/econometrics/blob/master/Notebook_02_asymptotics/asymptotic_analysis_code.ipynb>`__.
 
 --------------

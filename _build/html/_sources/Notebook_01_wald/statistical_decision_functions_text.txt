@@ -2,7 +2,7 @@
 Estimators as Statistical Decision Functions
 ============================================
 
-**Date: February 2017**
+**February 2017**
 
 In this notebook we discuss some key concepts of statistical decision
 theory in order to provide a general framework for the comparison of
@@ -904,6 +904,10 @@ that we cannot deliver here, but it is worth keeping in mind the list of
 very strong assumptions that we are (implicitly) using when we give
 well-defined meaning to our parameter estimates. An interesting
 discussion can be found in Chapter 4 of [White-1994]_.
+
+
+--------------
+
 
 The code used for the simulations and generating the graphs can be found under the following link_.
 
