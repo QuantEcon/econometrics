@@ -904,10 +904,10 @@ the cost function :math:`\Phi` over its domain captures how much
 emphasis we put on the estimation error versus the misspecification
 error.
 
--  If the overall value level of the cost is low then the decision rule
+-  If the overall level of the cost is low then the decision rule
    will likely pick an action from a large class for which the
    misspecification is less of an issue.
--  If the overall value level of the cost is high then the decision rule
+-  If the overall level of the cost is high then the decision rule
    will likely pick an action from a small class for which the
    estimation error is typically not so severe.
 
